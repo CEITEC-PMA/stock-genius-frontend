@@ -1,12 +1,7 @@
+import Login from "@/components/login";
 import { TextField, Button } from "@mui/material";
 import React from "react";
 
-export default function Login() {
-  return (
-    <div>
-      Login
-      <TextField />
-      <Button>Enviar</Button>
-    </div>
-  );
+export default function LoginPage() {
+  return <Login />;
 }
