@@ -1,10 +1,3 @@
-import ToggleTheme from "@/components/toggleTheme";
-
-export default function Dashboard() {
-  return (
-    <div>
-      Dashboard
-      <ToggleTheme />
-    </div>
-  );
+export default function DashboardPage() {
+  return <div>Dashboard</div>;
 }
