@@ -1,19 +1,51 @@
 import { Button, Grid } from "@mui/material";
 import React from "react";
-import ComponenteTeste from "./ComponenteTeste";
-import CpfInput from "../inputs/CpfInput";
-import { registerDTOs } from "@/utils/dtos/registerDTOs";
+import { RegisterDTO } from "@/utils/dtos/registerDTOs";
 import TextInput from "../inputs/TextInput";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Inputs } from "../register";
+import EmailInput from "../inputs/EmailInput";
+import CpfInput from "../inputs/CpfInput";
 import DateInput from "../inputs/DateInput";
+import FoneInput from "../inputs/FoneInput";
+import SelectInput from "../inputs/SelectInput";
 
-export default function FormBuilder({ control, errors }) {
+interface FormBuilderProps {
+  onSubmit: SubmitHandler<Inputs>;
+  formDTOs: RegisterDTO[];
+}
+
+export default function FormBuilder({ onSubmit, formDTOs }: FormBuilderProps) {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>({ mode: "onBlur" });
+
+  console.log(errors);
+
+  const renderInput = (dto: RegisterDTO) => {
+    switch (dto.input) {
+      case "text":
+        return <TextInput control={control} errors={errors} inputDTO={dto} />;
+      case "email":
+        return <EmailInput control={control} errors={errors} inputDTO={dto} />;
+      case "cpf":
+        return <CpfInput control={control} errors={errors} />;
+      case "date":
+        return <DateInput control={control} errors={errors} inputDTO={dto} />;
+      case "fone":
+        return <FoneInput control={control} errors={errors} inputDTO={dto} />;
+      case "select":
+        return <SelectInput control={control} errors={errors} inputDTO={dto} />;
+      default:
+        return <p>Erro Gerando Input</p>;
+    }
+  };
+
   return (
-    <form>
-      <Grid container>
-        {registerDTOs.map((dto, i) => (
-          <TextInput key={i} control={control} errors={errors} inputDTO={dto} />
-        ))}
-      </Grid>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Grid container>{formDTOs.map((dto, i) => renderInput(dto))}</Grid>
       <Button>enviar</Button>
     </form>
   );

@@ -1,6 +1,7 @@
 "use client";
 import { useForm, SubmitHandler } from "react-hook-form";
 import FormBuilder from "../form/FormBuilder";
+import { registerDTOs } from "@/utils/dtos/registerDTOs";
 
 export type Inputs = {
   cpf: string;
@@ -18,17 +19,11 @@ export type Inputs = {
 };
 
 export default function Register() {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>();
-
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data);
   };
 
-  return <FormBuilder control={control} errors={errors} />;
+  return <FormBuilder onSubmit={onSubmit} formDTOs={registerDTOs} />;
 
   // return (
   //   <form style={{ marginTop: "20px" }} onSubmit={handleSubmit(onSubmit)}>

@@ -5,13 +5,17 @@ import { Inputs } from "../register";
 import { PatternFormat } from "react-number-format";
 import { RegisterDTO } from "@/utils/dtos/registerDTOs";
 
-interface TextInputs {
+interface DateInputProps {
   control: Control<Inputs, any>;
   errors: FieldErrors<Inputs>;
   inputDTO: RegisterDTO;
 }
 
-export default function DateInput({ control, errors, inputDTO }: TextInputs) {
+export default function DateInput({
+  control,
+  errors,
+  inputDTO,
+}: DateInputProps) {
   return (
     <Controller
       name={inputDTO.name}

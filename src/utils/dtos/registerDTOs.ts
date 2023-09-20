@@ -132,4 +132,6 @@ export const registerDTOs = [
   telefoneDTO,
   dataInicioDocencia,
   dataEntrada,
+  cursoGestorDTO,
+  funcaoDTO,
 ];

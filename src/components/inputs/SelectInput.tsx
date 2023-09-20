@@ -8,30 +8,33 @@ import {
 import React from "react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import { Inputs } from "../register";
+import { RegisterDTO } from "@/utils/dtos/registerDTOs";
 
-interface TextInputs {
+interface SelectInputProps {
   control: Control<Inputs, any>;
-  name: keyof Inputs;
   errors: FieldErrors<Inputs>;
-  label: string;
+  inputDTO: RegisterDTO;
 }
 
 export default function SelectInput({
   control,
-  name,
   errors,
-  label,
-}: TextInputs) {
+  inputDTO,
+}: SelectInputProps) {
   return (
     <FormControl fullWidth>
-      <InputLabel id={`label-${name}`}>{label}</InputLabel>
+      <InputLabel id={`label-${inputDTO.name}`}>{inputDTO.label}</InputLabel>
       <Controller
-        name={name}
+        name={inputDTO.name}
         defaultValue=""
         control={control}
-        rules={{ required: `${label} é obrigatório` }}
+        rules={{ required: `${inputDTO.label} é obrigatório` }}
         render={({ field }) => (
-          <Select {...field} label={label} labelId={`label-${name}`}>
+          <Select
+            {...field}
+            label={inputDTO.label}
+            labelId={`label-${inputDTO.name}`}
+          >
             <MenuItem value={10}>Ten</MenuItem>
             <MenuItem value={20}>Twenty</MenuItem>
             <MenuItem value={30}>Thirty</MenuItem>

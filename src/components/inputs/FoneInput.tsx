@@ -3,35 +3,34 @@ import React from "react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import { Inputs } from "../register";
 import { PatternFormat } from "react-number-format";
+import { RegisterDTO } from "@/utils/dtos/registerDTOs";
 
-interface TextInputs {
+interface FoneInputProps {
   control: Control<Inputs, any>;
-  name: keyof Inputs;
   errors: FieldErrors<Inputs>;
-  label: string;
+  inputDTO: RegisterDTO;
 }
 
 export default function FoneInput({
   control,
-  name,
   errors,
-  label,
-}: TextInputs) {
+  inputDTO,
+}: FoneInputProps) {
   return (
     <Controller
-      name={name}
+      name={inputDTO.name}
       defaultValue=""
       control={control}
-      rules={{ required: `${label} é obrigatório` }}
+      rules={{ required: `${inputDTO.label} é obrigatório` }}
       render={({ field }) => (
         <PatternFormat
           fullWidth
-          error={errors[name] ? true : false}
+          error={errors[inputDTO.name] ? true : false}
           customInput={TextField}
           format={"(##) #####-####"}
           mask={"_"}
-          label={label}
-          helperText={errors[name]?.message}
+          label={inputDTO.label}
+          helperText={errors[inputDTO.name]?.message}
           {...field}
         />
       )}

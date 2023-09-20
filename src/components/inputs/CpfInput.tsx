@@ -5,12 +5,12 @@ import { Inputs } from "../register";
 import { PatternFormat } from "react-number-format";
 import { cpf } from "cpf-cnpj-validator";
 
-interface CpfInputs {
+interface CpfInputProps {
   control: Control<Inputs, any>;
   errors: FieldErrors<Inputs>;
 }
 
-export default function CpfInput({ control, errors }: CpfInputs) {
+export default function CpfInput({ control, errors }: CpfInputProps) {
   return (
     <Controller
       name={"cpf"}

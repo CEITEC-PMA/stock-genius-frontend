@@ -2,27 +2,26 @@ import { TextField } from "@mui/material";
 import React from "react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import { Inputs } from "../register";
+import { RegisterDTO } from "@/utils/dtos/registerDTOs";
 
-interface TextInputs {
+interface EmailInputProps {
   control: Control<Inputs, any>;
-  name: keyof Inputs;
   errors: FieldErrors<Inputs>;
-  label: string;
+  inputDTO: RegisterDTO;
 }
 
 export default function EmailInput({
   control,
-  name,
   errors,
-  label,
-}: TextInputs) {
+  inputDTO,
+}: EmailInputProps) {
   return (
     <Controller
-      name={name}
+      name={inputDTO.name}
       defaultValue=""
       control={control}
       rules={{
-        required: `${label} é obrigatório`,
+        required: `${inputDTO.label} é obrigatório`,
         pattern: {
           value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
           message: "E-mail invalido",
@@ -31,9 +30,9 @@ export default function EmailInput({
       render={({ field }) => (
         <TextField
           fullWidth
-          error={errors[name] ? true : false}
-          label={label}
-          helperText={errors[name]?.message}
+          error={errors[inputDTO.name] ? true : false}
+          label={inputDTO.label}
+          helperText={errors[inputDTO.name]?.message}
           {...field}
         />
       )}
