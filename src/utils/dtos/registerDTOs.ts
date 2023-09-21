@@ -1,12 +1,12 @@
-import { Inputs } from "@/components/register";
+import { CandidatoInputs } from "@/components/register/CandidatoRegister";
 
 interface SelectField {
-  value: string | boolean;
+  value: string;
   label: string;
 }
 
 export interface RegisterDTO {
-  name: keyof Inputs;
+  name: keyof CandidatoInputs;
   label: string;
   input: string;
   rules?: {
@@ -36,6 +36,12 @@ const matriculaDTO: RegisterDTO = {
   rules: {
     required: "Matrícula é obrigatório",
   },
+};
+
+const cpfDTO: RegisterDTO = {
+  name: "cpf",
+  label: "CPF",
+  input: "cpf",
 };
 
 const telefoneDTO: RegisterDTO = {
@@ -95,11 +101,11 @@ const cursoGestorDTO: RegisterDTO = {
   rules: { required: "Campo Obrigatório" },
   selectFields: [
     {
-      value: true,
+      value: "sim",
       label: "Sim",
     },
     {
-      value: false,
+      value: "nao",
       label: "Não",
     },
   ],
@@ -112,26 +118,28 @@ const obsCursoGestor: RegisterDTO = {
 };
 
 const dataEntrada: RegisterDTO = {
-  name: "data_entrada",
+  name: "data_entrada_inst",
   label: "Data de Entrada",
-  input: "data",
+  input: "date",
   rules: { required: "Data de Entra é Obrigatório" },
 };
 
 const dataInicioDocencia: RegisterDTO = {
-  name: "data_inicio_docencia",
+  name: "data_entrada_docencia",
   label: "Data Inicio Docencia",
-  input: "data",
+  input: "date",
   rules: { required: "Data de Inicio Docencia é Obrigatorio" },
 };
 
 export const registerDTOs = [
   nomeDTO,
-  matriculaDTO,
-  cargoDTO,
+  cpfDTO,
+  emailDTO,
   telefoneDTO,
-  dataInicioDocencia,
-  dataEntrada,
-  cursoGestorDTO,
+  cargoDTO,
   funcaoDTO,
+  cursoGestorDTO,
+  dataEntrada,
+  dataInicioDocencia,
+  matriculaDTO,
 ];
