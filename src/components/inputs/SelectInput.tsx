@@ -7,12 +7,12 @@ import {
 } from "@mui/material";
 import React from "react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
-import { Inputs } from "../register";
+import { CandidatoInputs } from "../register/CandidatoRegister";
 import { RegisterDTO } from "@/utils/dtos/registerDTOs";
 
 interface SelectInputProps {
-  control: Control<Inputs, any>;
-  errors: FieldErrors<Inputs>;
+  control: Control<CandidatoInputs, any>;
+  errors: FieldErrors<CandidatoInputs>;
   inputDTO: RegisterDTO;
 }
 
@@ -35,9 +35,11 @@ export default function SelectInput({
             label={inputDTO.label}
             labelId={`label-${inputDTO.name}`}
           >
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            {inputDTO.selectFields?.map((field, i) => (
+              <MenuItem key={i} value={field.value}>
+                {field.label}
+              </MenuItem>
+            ))}
           </Select>
         )}
       />

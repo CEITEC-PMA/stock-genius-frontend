@@ -1,13 +1,13 @@
 import { TextField } from "@mui/material";
 import React from "react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
-import { Inputs } from "../register";
+import { CandidatoInputs } from "../register/CandidatoRegister";
 import { PatternFormat } from "react-number-format";
 import { RegisterDTO } from "@/utils/dtos/registerDTOs";
 
 interface FoneInputProps {
-  control: Control<Inputs, any>;
-  errors: FieldErrors<Inputs>;
+  control: Control<CandidatoInputs, any>;
+  errors: FieldErrors<CandidatoInputs>;
   inputDTO: RegisterDTO;
 }
 
