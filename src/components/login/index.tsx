@@ -33,6 +33,7 @@ export default function LoginPage() {
       if (senha.length < 6) {
         alert("a senha deve ter pelo menos 6 caracteres");
       } else {
+        //Trocar dispatch para um post utilizando o https://nextjs.org/docs/app/api-reference/functions/fetch
         dispatch(userSlice.actions.loginUser(dataToSend));
         router.push("/dashboard");
       }
