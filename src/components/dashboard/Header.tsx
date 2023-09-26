@@ -13,6 +13,8 @@ export default function Header() {
     setOpen(!open);
   };
 
+  const drawerWidth: number = 240;
+
   useEffect(() => {
     if (!usuario) {
       router.push("/login");
@@ -21,8 +23,16 @@ export default function Header() {
 
   return (
     <div>
-      <AppBarComponent open={open} toggleDrawer={toggleDrawer} />
-      <DrawerComponent open={open} toggleDrawer={toggleDrawer} />
+      <AppBarComponent
+        open={open}
+        toggleDrawer={toggleDrawer}
+        drawerWidth={drawerWidth}
+      />
+      <DrawerComponent
+        open={open}
+        toggleDrawer={toggleDrawer}
+        drawerWidth={drawerWidth}
+      />
     </div>
   );
 }
