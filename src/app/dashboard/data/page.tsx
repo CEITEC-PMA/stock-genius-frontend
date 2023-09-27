@@ -5,6 +5,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { Typography } from "@mui/material";
 
 const columns: GridColDef[] = [
   // { field: "id", headerName: "ID", width: 70 },
@@ -21,27 +22,29 @@ const columns: GridColDef[] = [
       <div>
         <IconButton
           color="primary"
-          onClick={() => handleDetalhar(params.row.id)}
+          onClick={(event) => handleDetalhar(event, params.row.id)}
           title="Detalhar"
         >
           <VisibilityIcon />
         </IconButton>
         <IconButton
           color="primary"
-          onClick={() => handleEditar(params.row.id)}
+          onClick={(event) => handleEditar(event, params.row.id)}
           title="Editar"
         >
           <EditIcon />
         </IconButton>
         <IconButton
           color="primary"
-          onClick={() => handleValidar(params.row.id)}
+          onClick={(event) => handleValidar(event, params.row.id)}
           title="Validar"
         >
           <CheckCircleIcon />
         </IconButton>
       </div>
     ),
+    headerCheckboxSelection: true,
+    checkboxSelection: true,
   },
   // {
   //   field: "fullName",
@@ -204,22 +207,25 @@ const rows = [
   },
 ];
 
-const handleDetalhar = (id) => {
+const handleDetalhar = (event, id) => {
+  event.stopPropagation();
   // Implemente a lógica para a ação "Detalhar" aqui
 };
 
-const handleEditar = (id) => {
+const handleEditar = (event, id) => {
+  event.stopPropagation();
   // Implemente a lógica para a ação "Editar" aqui
 };
 
-const handleValidar = (id) => {
+const handleValidar = (event, id) => {
+  event.stopPropagation();
   // Implemente a lógica para a ação "Validar" aqui
 };
 
 export default function DataTable() {
   return (
     <>
-      <h1>Lista de Candidatos</h1>
+      <Typography variant="h3">Lista de Candidatos</Typography>
       <div
         style={{
           height: "645px",
@@ -237,6 +243,7 @@ export default function DataTable() {
           }}
           pageSizeOptions={[5, 10]}
           checkboxSelection
+          disableRowSelectionOnClick
         />
       </div>
     </>
