@@ -18,6 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
+
     <Providers>
       <html lang="pt-br">
         <ThemeProviderComponent>
@@ -25,5 +26,6 @@ export default function RootLayout({
         </ThemeProviderComponent>
       </html>
     </Providers>
+
   );
 }
