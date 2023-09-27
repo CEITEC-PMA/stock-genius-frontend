@@ -1,4 +1,4 @@
-import { Button, Grid } from "@mui/material";
+import { Button, Container, Grid } from "@mui/material";
 import React from "react";
 import { RegisterDTO } from "@/utils/dtos/registerDTOs";
 import TextInput from "../inputs/TextInput";
@@ -44,9 +44,17 @@ export default function FormBuilder({ onSubmit, formDTOs }: FormBuilderProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Grid container>{formDTOs.map((dto, i) => renderInput(dto))}</Grid>
-      <Button type="submit">enviar</Button>
-    </form>
+    <Container>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Grid container spacing={2}>
+          {formDTOs.map((dto, i) => (
+            <Grid item xs={12} sm={6} key={i}>
+              {renderInput(dto)}
+            </Grid>
+          ))}
+        </Grid>
+        <Button type="submit">Enviar</Button>
+      </form>
+    </Container>
   );
 }

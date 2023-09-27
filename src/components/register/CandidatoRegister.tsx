@@ -2,6 +2,10 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import FormBuilder from "../form/FormBuilder";
 import { registerDTOs } from "@/utils/dtos/registerDTOs";
+import Header from "../header";
+import { Avatar, Button, Grid, Typography } from "@mui/material";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { styled } from "@mui/material/styles";
 
 export type CandidatoInputs = {
   cpf: string;
@@ -18,6 +22,18 @@ export type CandidatoInputs = {
   obs_curso_gestor: string;
 };
 
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});
+
 export default function CandidatoRegister() {
   const onSubmit: SubmitHandler<CandidatoInputs> = async (data) => {
     console.log(data);
@@ -31,5 +47,65 @@ export default function CandidatoRegister() {
     console.log(response);
   };
 
-  return <FormBuilder onSubmit={onSubmit} formDTOs={registerDTOs} />;
+  return (
+    <>
+      <Header />
+      <Grid
+        container
+        justifyContent="center"
+        alignItems="center"
+        mt={0.5}
+        spacing={2}
+        bgcolor="#e0e0e0"
+      >
+        <Grid item container>
+          <Grid
+            item
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            xs={12}
+          >
+            <Typography variant="h4">Cadastro de candidato</Typography>
+          </Grid>
+          <Grid
+            item
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            xs={12}
+          >
+            <Avatar
+              alt="User"
+              src={"/user-15.png"}
+              sx={{
+                width: 230,
+                height: 230,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginBottom: "10px",
+              }}
+            />
+            <Button
+              component="label"
+              variant="contained"
+              startIcon={<CloudUploadIcon />}
+            >
+              Enviar foto do candidato
+              <VisuallyHiddenInput type="file" />
+            </Button>
+          </Grid>
+        </Grid>
+        <Grid item xs={12} sm={12}>
+          <FormBuilder onSubmit={onSubmit} formDTOs={registerDTOs} />
+        </Grid>
+      </Grid>
+    </>
+  );
 }
