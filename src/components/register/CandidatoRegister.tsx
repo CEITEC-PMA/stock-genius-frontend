@@ -2,7 +2,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import FormBuilder from "../form/FormBuilder";
 import { registerDTOs } from "@/utils/dtos/registerDTOs";
-import Header from "../header";
 import { Avatar, Button, Grid, Typography } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
@@ -49,7 +48,6 @@ export default function CandidatoRegister() {
 
   return (
     <>
-      <Header />
       <Grid
         container
         justifyContent="center"
