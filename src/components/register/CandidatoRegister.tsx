@@ -54,9 +54,8 @@ export default function CandidatoRegister() {
         container
         justifyContent="center"
         alignItems="center"
-        mt={0.5}
-        spacing={2}
-        bgcolor="#e0e0e0"
+        bgcolor="#f4f4f4"
+        sx={{ minHeight: "100vh" }}
       >
         <Grid item container>
           <Grid
@@ -97,7 +96,7 @@ export default function CandidatoRegister() {
               variant="contained"
               startIcon={<CloudUploadIcon />}
             >
-              Enviar foto do candidato
+              Foto do candidato
               <VisuallyHiddenInput type="file" />
             </Button>
           </Grid>

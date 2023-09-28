@@ -46,14 +46,24 @@ export default function FormBuilder({ onSubmit, formDTOs }: FormBuilderProps) {
   return (
     <Container>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} alignItems="center">
           {formDTOs.map((dto, i) => (
             <Grid item xs={12} sm={6} key={i}>
               {renderInput(dto)}
             </Grid>
           ))}
         </Grid>
-        <Button type="submit">Enviar</Button>
+        <Grid container justifyContent="center" spacing={2}>
+          <Grid item>
+            <Button
+              type="submit"
+              variant="contained"
+              style={{ margin: "12px" }}
+            >
+              Enviar formulário
+            </Button>
+          </Grid>
+        </Grid>
       </form>
     </Container>
   );
