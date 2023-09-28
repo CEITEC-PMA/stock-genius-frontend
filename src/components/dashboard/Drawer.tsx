@@ -10,7 +10,6 @@ interface DrawerProps {
 }
 
 export default function DrawerComponent({
-
   open,
   toggleDrawer,
   drawerWidth,
@@ -41,9 +40,8 @@ export default function DrawerComponent({
     },
   }));
 
-
   return (
-    <Drawer variant="permanent" open={open} >
+    <Drawer variant="permanent" open={open}>
       <Toolbar
         sx={{
           display: "flex",
@@ -59,22 +57,19 @@ export default function DrawerComponent({
 
       <Divider />
 
-      <List component="nav" >
+      <List component="nav">
         <ListItems
           label="Candidatar-se"
-          icon='PersonAddAlt1'
+          icon="PersonAddAlt1"
           to="/register/candidato"
         />
-
         <ListItems
-          label="Listar Candidatos"
-          icon=" List"
-          to="/register/user"
+          label="Candidatos"
+          icon="PersonAddAlt1"
+          to="/dashboard/data"
         />
+        <ListItems label="Listar Candidatos" icon=" List" to="/register/user" />
       </List>
     </Drawer>
-
-
-
   );
 }
