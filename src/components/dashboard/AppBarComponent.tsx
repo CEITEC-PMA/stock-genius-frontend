@@ -8,6 +8,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { selectUser, useDispatch, useSelector, userSlice } from "@/lib/redux";
+import Image from "next/image";
+import Hidden from "@mui/material/Hidden";
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -53,7 +55,8 @@ export default function AppBarComponent({
     <AppBar position="absolute" open={open}>
       <Toolbar
         sx={{
-          pr: "24px", // keep right padding when drawer closed
+          backgroundColor: "#0f4c81",
+          pr: "24px",
         }}
       >
         <IconButton
@@ -75,18 +78,32 @@ export default function AppBarComponent({
           noWrap
           sx={{ flexGrow: 1 }}
         >
-          SED - Sistema de Eleição de Diretores
+          Sistema de Eleição de Diretores
         </Typography>
+        <div>
+          <Image
+            width={320}
+            height={55}
+            src={
+              "https://portaleducacao.anapolis.go.gov.br/portal/wp-content/uploads/2021/04/LOGO-SECRETARIA-EDUCACAO-1.png"
+            }
+            alt="Logo"
+          />
+        </div>
         <Typography
           component="h1"
           variant="h6"
           color="inherit"
           noWrap
-          sx={{ flexGrow: 1 }}
+          sx={{ flexGrow: 1, textAlign: "right" }}
         >
           {usuario}
         </Typography>
-        <IconButton onClick={() => handleOnClick()} color="inherit">
+        <IconButton
+          onClick={() => handleOnClick()}
+          color="inherit"
+          sx={{ marginLeft: "10px" }}
+        >
           <LogoutIcon />
         </IconButton>
       </Toolbar>
