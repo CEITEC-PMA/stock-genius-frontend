@@ -1,72 +1,54 @@
+'use client'
 import * as React from 'react';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import PeopleIcon from '@mui/icons-material/People';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import LayersIcon from '@mui/icons-material/Layers';
-import AssignmentIcon from '@mui/icons-material/Assignment';
+import { List, Person, PersonAddAlt1 } from '@mui/icons-material';
+import { useRouter } from 'next/navigation'
+import Icon from '@mui/material/Icon';
 
-export const mainListItems = (
-  <React.Fragment>
-    <ListItemButton>
-      <ListItemIcon>
-        <DashboardIcon />
-      </ListItemIcon>
-      <ListItemText primary="Dashboard" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <ShoppingCartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Orders" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <PeopleIcon />
-      </ListItemIcon>
-      <ListItemText primary="Customers" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <BarChartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Reports" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText primary="Integrations" />
-    </ListItemButton>
-  </React.Fragment>
-);
+interface IListItemsProps {
+  label: string
+  to: string
+  icon: string
 
-export const secondaryListItems = (
-  <React.Fragment>
-    <ListSubheader component="div" inset>
-      Saved reports
-    </ListSubheader>
-    <ListItemButton>
+}
+
+
+export default function ListItems({ label, to, icon }: IListItemsProps) {
+
+  const router = useRouter()
+  const handleNavigation = () => {
+    router.push(to);
+
+  }
+
+  return (
+    <ListItemButton onClick={handleNavigation}>
       <ListItemIcon>
-        <AssignmentIcon />
+        <Icon>
+          {icon === 'PersonAddAlt1' ? <PersonAddAlt1 /> : icon === ' List' ? < List /> : null}
+        </Icon>
       </ListItemIcon>
-      <ListItemText primary="Current month" />
+      <ListItemText primary={label} />
     </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Last quarter" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Year-end sale" />
-    </ListItemButton>
-  </React.Fragment>
-);
+
+  )
+}
+
+// export const mainListItems = (
+//   <React.Fragment>
+//     <ListItemButton>
+//       <ListItemIcon onClick={() => handleNavigation('/dashboard')}>
+//         <PersonAddAlt1 />
+//       </ListItemIcon>
+//       <ListItemText primary="Candidatar" />
+//     </ListItemButton>
+//     <ListItemButton>
+//       <ListItemIcon>
+//         <List />
+//       </ListItemIcon>
+//       <ListItemText primary="Listar Candidatos" />
+//     </ListItemButton>
+//   </React.Fragment>
+// );

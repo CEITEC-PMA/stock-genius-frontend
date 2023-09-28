@@ -6,7 +6,7 @@ import { selectUser, useSelector } from "@/lib/redux";
 import { useRouter } from "next/navigation";
 
 export default function Header() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const router = useRouter();
   const { usuario } = useSelector(selectUser);
   const toggleDrawer = () => {
