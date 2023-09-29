@@ -2,7 +2,7 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import FormBuilder from "../form/FormBuilder";
 import { registerDTOs } from "@/utils/dtos/registerDTOs";
-import { Avatar, Button, Grid, Typography } from "@mui/material";
+import { Avatar, Button, Grid, Paper, Typography } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
 
@@ -47,12 +47,12 @@ export default function CandidatoRegister() {
   };
 
   return (
-    <>
+    <Paper elevation={2}>
       <Grid
         container
         justifyContent="center"
         alignItems="center"
-        bgcolor="#f4f4f4"
+        bgcolor="#fff"
         sx={{ minHeight: "100vh" }}
       >
         <Grid item container>
@@ -62,10 +62,14 @@ export default function CandidatoRegister() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
+              marginTop: "16px",
+              marginBottom: "8px",
             }}
             xs={12}
           >
-            <Typography variant="h4">Cadastro de candidato</Typography>
+            <Typography variant="h4" textAlign="center">
+              Cadastro de candidato
+            </Typography>
           </Grid>
           <Grid
             item
@@ -74,6 +78,7 @@ export default function CandidatoRegister() {
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
+              marginBottom: "8px",
             }}
             xs={12}
           >
@@ -81,8 +86,8 @@ export default function CandidatoRegister() {
               alt="User"
               src={"/user-15.png"}
               sx={{
-                width: 230,
-                height: 230,
+                width: { xs: 85, sm: 130, md: 150, lg: 175 },
+                height: { xs: 85, sm: 130, md: 150, lg: 175 },
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -103,6 +108,6 @@ export default function CandidatoRegister() {
           <FormBuilder onSubmit={onSubmit} formDTOs={registerDTOs} />
         </Grid>
       </Grid>
-    </>
+    </Paper>
   );
 }
