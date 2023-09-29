@@ -1,8 +1,7 @@
 "use client";
-import ChecklistCard from "@/components/checklistCard";
 import ChecklistCardWithController from "@/components/checklistCard/checklistCardWithController";
 import { documents } from "@/components/checklistCard/dataChecklist";
-import { Button, Container, Paper, Typography } from "@mui/material";
+import { Box, Button, Container, Paper, Typography } from "@mui/material";
 import React from "react";
 import { useForm } from "react-hook-form";
 
@@ -49,9 +48,16 @@ export default function DocsCandidato() {
               key={i}
             />
           ))}
-          <Button type="submit" variant="contained" style={{ margin: "12px" }}>
-            Salvar
-          </Button>
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <Button
+              type="submit"
+              variant="contained"
+              style={{ margin: "12px" }}
+              fullWidth
+            >
+              Salvar
+            </Button>
+          </Box>
         </form>
       </Paper>
     </Container>

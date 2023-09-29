@@ -13,7 +13,7 @@ export default function ChecklistCard({ name, alt, src, checked, onClick }) {
   return (
     <Paper elevation={2} sx={{ padding: "6px", margin: "12px" }}>
       <FormGroup>
-        <Box display="flex">
+        <Box display="flex" alignItems="center">
           <Box margin="8px">
             <Link href={src}>
               <Avatar
