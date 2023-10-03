@@ -49,6 +49,7 @@ export default function LoginPage() {
             const resJson = await response.json();
             const token = resJson.usuario.token;
             localStorage.setItem("token", token);
+            router.push("/dashboard");
           })
           .catch((error) => {
             console.log(error);

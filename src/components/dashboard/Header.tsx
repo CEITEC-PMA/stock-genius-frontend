@@ -20,6 +20,7 @@ export default function Header() {
     if (!token) {
       router.push("/login");
     } else {
+      //fetch
     }
   }, [router, token]);
 
