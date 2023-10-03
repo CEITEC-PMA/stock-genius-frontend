@@ -10,8 +10,8 @@ import { Typography } from "@mui/material";
 const columns: GridColDef[] = [
   // { field: "id", headerName: "ID", width: 70 },
   { field: "cpf", headerName: "CPF", width: 130 },
+  { field: "inep", headerName: "Inep da U.E.", width: 100 },
   { field: "nome", headerName: "Nome completo", width: 575 },
-  { field: "funcao", headerName: "Função", width: 130 },
   { field: "telefone", headerName: "Telefone", width: 130, sortable: false },
   {
     field: "acoes",
@@ -61,6 +61,7 @@ const rows = [
   {
     id: 1,
     cpf: "031.543.551-89",
+    inep: "52021459",
     nome: "Jon",
     funcao: "professor",
     telefone: "(62) 99237-6865",
@@ -68,6 +69,7 @@ const rows = [
   {
     id: 2,
     cpf: "031.543.551-89",
+    inep: "52021459",
     nome: "Cersei",
     funcao: "professor",
     telefone: "(62) 99237-6865",
@@ -75,6 +77,7 @@ const rows = [
   {
     id: 3,
     cpf: "031.543.551-89",
+    inep: "52021459",
     nome: "Jaime",
     funcao: "professor",
     telefone: "(62) 99237-6865",
@@ -82,6 +85,7 @@ const rows = [
   {
     id: 4,
     cpf: "031.543.551-89",
+    inep: "52021459",
     nome: "Arya",
     funcao: "professor",
     telefone: "(62) 99237-6865",
@@ -89,6 +93,7 @@ const rows = [
   {
     id: 5,
     cpf: "031.543.551-89",
+    inep: "52021459",
     nome: "Daenerys",
     funcao: "cantor",
     telefone: "(62) 99237-6865",
@@ -96,6 +101,7 @@ const rows = [
   {
     id: 6,
     cpf: "031.543.551-89",
+    inep: "52021459",
     nome: "Raphael",
     funcao: "professor",
     telefone: "(62) 99237-6865",
@@ -103,6 +109,7 @@ const rows = [
   {
     id: 7,
     cpf: "031.543.551-89",
+    inep: "52021459",
     nome: "Ferrara",
     funcao: "professor",
     telefone: "(62) 99237-6865",
@@ -110,6 +117,7 @@ const rows = [
   {
     id: 8,
     cpf: "031.543.551-89",
+    inep: "52021459",
     nome: "Rossini",
     funcao: "professor",
     telefone: "(62) 99237-6865",
@@ -117,6 +125,7 @@ const rows = [
   {
     id: 9,
     cpf: "031.543.551-89",
+    inep: "52021459",
     nome: "Harvey",
     funcao: "professor",
     telefone: "(62) 99237-6865",
@@ -124,6 +133,7 @@ const rows = [
   {
     id: 10,
     cpf: "031.543.551-89",
+    inep: "52021459",
     nome: "Harvey",
     funcao: "professor",
     telefone: "(62) 99237-6865",
@@ -131,6 +141,7 @@ const rows = [
   {
     id: 11,
     cpf: "031.543.551-89",
+    inep: "52021459",
     nome: "Harvey",
     funcao: "professor",
     telefone: "(62) 99237-6865",
@@ -138,6 +149,7 @@ const rows = [
   {
     id: 12,
     cpf: "031.543.551-89",
+    inep: "52021459",
     nome: "Harvey",
     funcao: "professor",
     telefone: "(62) 99237-6865",
@@ -145,6 +157,7 @@ const rows = [
   {
     id: 13,
     cpf: "031.543.551-89",
+    inep: "52021459",
     nome: "Harvey",
     funcao: "professor",
     telefone: "(62) 99237-6865",
@@ -152,6 +165,7 @@ const rows = [
   {
     id: 14,
     cpf: "031.543.551-89",
+    inep: "52021459",
     nome: "Harvey",
     funcao: "professor",
     telefone: "(62) 99237-6865",
@@ -159,6 +173,7 @@ const rows = [
   {
     id: 15,
     cpf: "031.543.551-89",
+    inep: "52021459",
     nome: "Harvey",
     funcao: "professor",
     telefone: "(62) 99237-6865",
@@ -166,6 +181,7 @@ const rows = [
   {
     id: 16,
     cpf: "031.543.551-89",
+    inep: "52021459",
     nome: "Harvey",
     funcao: "professor",
     telefone: "(62) 99237-6865",
@@ -173,6 +189,7 @@ const rows = [
   {
     id: 17,
     cpf: "031.543.551-89",
+    inep: "52021459",
     nome: "Harvey",
     funcao: "professor",
     telefone: "(62) 99237-6865",
@@ -180,6 +197,7 @@ const rows = [
   {
     id: 18,
     cpf: "031.543.551-89",
+    inep: "52021459",
     nome: "Harvey",
     funcao: "professor",
     telefone: "(62) 99237-6865",
@@ -187,6 +205,7 @@ const rows = [
   {
     id: 19,
     cpf: "031.543.551-89",
+    inep: "52021459",
     nome: "Harvey",
     funcao: "professor",
     telefone: "(62) 99237-6865",
@@ -194,6 +213,7 @@ const rows = [
   {
     id: 20,
     cpf: "031.543.551-89",
+    inep: "52021459",
     nome: "Harvey",
     funcao: "professor",
     telefone: "(62) 99237-6865",
@@ -201,6 +221,7 @@ const rows = [
   {
     id: 21,
     cpf: "031.543.551-89",
+    inep: "52021459",
     nome: "Harvey",
     funcao: "professor",
     telefone: "(62) 99237-6865",
