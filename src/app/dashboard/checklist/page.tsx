@@ -1,26 +1,28 @@
 "use client";
-import DocslistCard from "@/components/form/DocsListCard";
-import { documentsList } from "@/components/form/formsDocsList";
+import ChecklistCardWithController from "@/components/checklistCard/checklistCardWithController";
+import { documents } from "@/components/checklistCard/dataChecklist";
 import { Box, Button, Container, Paper, Typography } from "@mui/material";
 import React from "react";
 import { useForm } from "react-hook-form";
 
-const onSubmit = (data: any) => {
-  console.log(data);
-  console.log("enviou");
-};
+export default function DocsCandidato() {
+  const nomeUnidade = "Escola Municipal Teste";
+  const nomeCandidato = "Candidato Teste da Silva";
 
-const nomeUnidade = "Escola Municipal Teste";
-const nomeCandidato = "Candidato Teste da Silva";
-
-export default function FormDocs() {
   const { control, handleSubmit } = useForm();
+
+  const onSubmit = (data: any) => {
+    console.log(data);
+    console.log("enviou");
+  };
 
   return (
     <Container>
       <Typography variant="h4" textAlign="center">
-        Documentos do candidato
+        Checklist dos documentos necessários para registro da
+        candidatura/indicação
       </Typography>
+
       <Paper sx={{ padding: "12px" }}>
         <Box margin="0 12px">
           <Typography variant="h6">
@@ -37,8 +39,14 @@ export default function FormDocs() {
           </Typography>
         </Box>
         <form onSubmit={handleSubmit(onSubmit)}>
-          {documentsList.map((document, i) => (
-            <DocslistCard name={document.name} key={i} />
+          {documents.map((document, i) => (
+            <ChecklistCardWithController
+              name={document.name}
+              alt={document.alt}
+              src={document.src}
+              control={control}
+              key={i}
+            />
           ))}
           <Box display="flex" justifyContent="center" alignItems="center">
             <Button
