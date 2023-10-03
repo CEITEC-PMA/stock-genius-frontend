@@ -13,29 +13,48 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { PatternFormat } from "react-number-format";
-import { useDispatch, userSlice } from "@/lib/redux";
+import { useDispatch } from "@/lib/redux";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const dataToSend = {
-      usuario: data.get("usuario"),
-      senha: data.get("senha"),
+      inep: data.get("inep"),
+      password: data.get("senha"),
     };
-    const { senha, usuario } = dataToSend;
-    if (!senha) {
+    const { password, inep } = dataToSend;
+    if (!password) {
       alert("Por favor digite uma senha");
     } else {
-      if (senha.length < 6) {
+      if (password.length < 6) {
         alert("a senha deve ter pelo menos 6 caracteres");
       } else {
         //Trocar dispatch para um post utilizando o https://nextjs.org/docs/app/api-reference/functions/fetch
-        dispatch(userSlice.actions.loginUser(dataToSend));
-        router.push("/dashboard");
+
+        const response = await fetch(
+          "http://localhost:3002/api/v1/usuarios/login",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(dataToSend),
+          }
+        )
+          .then(async (response) => {
+            const resJson = await response.json();
+            const token = resJson.usuario.token;
+            localStorage.setItem("token", token);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        // dispatch(userSlice.actions.loginUser(dataToSend));
+        // router.push("/dashboard");
       }
     }
   };
@@ -58,18 +77,15 @@ export default function LoginPage() {
           Entrar
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <PatternFormat
-            format="###.###.###-##"
-            customInput={TextField}
-            mask="_"
+          <TextField
             margin="normal"
             required
             fullWidth
-            id="usuario"
-            label="Usuário"
-            name="usuario"
-            autoComplete="usuario"
-            autoFocus
+            name="inep"
+            label="INEP"
+            type="tel"
+            id="inep"
+            autoComplete="inep"
           />
           <TextField
             margin="normal"

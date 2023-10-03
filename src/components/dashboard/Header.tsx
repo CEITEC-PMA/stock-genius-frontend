@@ -8,7 +8,8 @@ import { useRouter } from "next/navigation";
 export default function Header() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const { usuario } = useSelector(selectUser);
+  // const { usuario } = useSelector(selectUser);
+  const token = localStorage.getItem("token");
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -16,10 +17,11 @@ export default function Header() {
   const drawerWidth: number = 240;
 
   useEffect(() => {
-    if (!usuario) {
+    if (!token) {
       router.push("/login");
+    } else {
     }
-  }, [router, usuario]);
+  }, [router, token]);
 
   return (
     <div>
