@@ -4,6 +4,7 @@ import AppBarComponent from "./AppBarComponent";
 import DrawerComponent from "./Drawer";
 import { selectUser, useSelector } from "@/lib/redux";
 import { useRouter } from "next/navigation";
+import { apiUrl } from "@/utils/api";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -23,7 +24,7 @@ export default function Header() {
       // //fetch
       // const getDadosUser = async () => {
       //   const response = await fetch(
-      //     "http://localhost:3002/api/v1/usuarios/registrar",
+      // `${apiUrl}/api/v1/usuarios/registrar`,
       //     {
       //       headers: {
       //         Authorization: `Bearer ${token}`,
