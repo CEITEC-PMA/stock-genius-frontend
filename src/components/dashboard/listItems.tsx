@@ -4,6 +4,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { List, Person, PersonAddAlt1 } from '@mui/icons-material';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { useRouter } from 'next/navigation'
 import Icon from '@mui/material/Icon';
 
@@ -27,7 +28,7 @@ export default function ListItems({ label, to, icon }: IListItemsProps) {
     <ListItemButton onClick={handleNavigation}>
       <ListItemIcon>
         <Icon>
-          {icon === 'PersonAddAlt1' ? <PersonAddAlt1 /> : icon === ' List' ? < List /> : null}
+          {icon === 'PersonAddAlt1' ? <PersonAddAlt1 /> : icon === 'AccountBoxIcon' ? <AccountBoxIcon /> : null}
         </Icon>
       </ListItemIcon>
       <ListItemText primary={label} />

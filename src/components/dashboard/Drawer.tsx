@@ -1,7 +1,8 @@
 import { Divider, IconButton, List, Toolbar, styled } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ListItems from "./ListItems";
+import ListItems from "./listItems";
+
 //import { mainListItems } from "./ListItems";
 interface DrawerProps {
   open: boolean;
@@ -59,16 +60,15 @@ export default function DrawerComponent({
 
       <List component="nav">
         <ListItems
-          label="Candidatar-se"
+          label="Registrar Candidato"
           icon="PersonAddAlt1"
-          to="/register/candidato"
+          to="/dashboard/candidato"
         />
+
         <ListItems
-          label="Candidatos"
-          icon="PersonAddAlt1"
-          to="/dashboard/data"
-        />
-        <ListItems label="Listar Candidatos" icon=" List" to="/register/user" />
+          label="Exibir Perfil"
+          icon="AccountBoxIcon"
+          to="/dashboard/profile" />
       </List>
     </Drawer>
   );
