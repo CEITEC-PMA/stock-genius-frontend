@@ -20,7 +20,19 @@ export default function Header() {
     if (!token) {
       router.push("/login");
     } else {
-      //fetch
+      // //fetch
+      // const getDadosUser = async () => {
+      //   const response = await fetch(
+      //     "http://localhost:3002/api/v1/usuarios/registrar",
+      //     {
+      //       headers: {
+      //         Authorization: `Bearer ${token}`,
+      //       },
+      //     }
+      //   );
+      //   return response;
+      // };
+      // getDadosUser();
     }
   }, [router, token]);
 
