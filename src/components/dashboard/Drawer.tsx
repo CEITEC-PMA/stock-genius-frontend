@@ -66,7 +66,7 @@ export default function DrawerComponent({
         />
 
         <ListItems
-          label="Perfil"
+          label="Exibir Perfil"
           icon="AccountBoxIcon"
           to="/dashboard/profile" />
       </List>
