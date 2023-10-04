@@ -19,6 +19,7 @@ export type CandidatoInputs = {
   data_entrada_inst: string;
   data_entrada_docencia: string;
   obs_curso_gestor: string;
+  zona?: string;
 };
 
 const VisuallyHiddenInput = styled("input")({
@@ -36,11 +37,15 @@ const VisuallyHiddenInput = styled("input")({
 export default function CandidatoRegister() {
   const onSubmit: SubmitHandler<CandidatoInputs> = async (data) => {
     console.log(data);
+    data.zona = "651c2130669db209a4d7833a";
     const response = await fetch(
-      "http://192.168.1.124:3002/api/v1/candidato/",
+      "http://192.168.0.100:3002/api/v1/candidato/",
       {
         method: "POST",
         body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
     );
     console.log(response);
