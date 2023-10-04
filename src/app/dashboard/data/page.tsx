@@ -1,11 +1,11 @@
 "use client";
-import * as React from "react";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 
 const columns: GridColDef[] = [
   // { field: "id", headerName: "ID", width: 70 },
@@ -244,6 +244,24 @@ const handleValidar = (event, id) => {
 };
 
 export default function DataTable() {
+  const token = localStorage.getItem("token");
+  const [candidatos, setCandidatos] = useState([]);
+  useEffect(() => {
+    //fetch
+    const getDadosCandidatos = async () => {
+      const response = await fetch(
+        "http://localhost:3002/api/v1/candidato/candidatoZona/651c2130669db209a4d7833a",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const responseJson = await response.json();
+      setCandidatos(responseJson.candidatos);
+    };
+    getDadosCandidatos();
+  }, []);
   return (
     <>
       <Typography variant="h3">Lista de Candidatos</Typography>
@@ -255,7 +273,8 @@ export default function DataTable() {
         }}
       >
         <DataGrid
-          rows={rows}
+          getRowId={(row) => row._id}
+          rows={candidatos}
           columns={columns}
           initialState={{
             pagination: {
