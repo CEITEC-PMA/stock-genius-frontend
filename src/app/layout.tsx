@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import ThemeProviderComponent from "./theme-provider";
 import { Providers } from "@/lib/providers";
+import { getServerSession } from "next-auth";
+import SessionProvider from "@/components/sessionProvider/SessionProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,20 +14,21 @@ export const metadata: Metadata = {
   description: "Sistema de Eleição de Diretores",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession();
   return (
-
     <Providers>
       <html lang="pt-br">
         <ThemeProviderComponent>
-          <body className={inter.className}>{children}</body>
+          <body className={inter.className}>
+            <SessionProvider session={session}>{children}</SessionProvider>
+          </body>
         </ThemeProviderComponent>
       </html>
     </Providers>
-
   );
 }
