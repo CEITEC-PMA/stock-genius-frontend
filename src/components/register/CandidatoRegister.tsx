@@ -5,7 +5,7 @@ import { registerDTOs } from "@/utils/dtos/registerDTOs";
 import { Avatar, Button, Grid, Paper, Typography } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { apiUrl } from "@/utils/api";
 import { useRouter } from "next/navigation";
 
@@ -37,8 +37,12 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-export default function CandidatoRegister() {
+export default function CandidatoRegister({ id }: { id: string }) {
+  const [candidato, setCandidato] = useState({});
   const router = useRouter();
+
+  const token = localStorage.getItem("token");
+
   const onSubmit: SubmitHandler<CandidatoInputs> = async (data) => {
     data.zona = "651c2130669db209a4d7833a";
     const response = await fetch(`${apiUrl}/api/v1/candidato/`, {
@@ -49,6 +53,22 @@ export default function CandidatoRegister() {
       },
     });
   };
+
+  useEffect(() => {
+    const getUserId = async () => {
+      const response = await fetch(
+        `${apiUrl}/api/v1/candidato/candidatoId/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const responseJson = await response.json();
+      setCandidato(responseJson.candidato);
+    };
+    getUserId();
+  }, [id, token]);
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -71,6 +91,8 @@ export default function CandidatoRegister() {
       });
     }
   };
+
+  console.log(candidato);
 
   return (
     <Paper elevation={2}>
