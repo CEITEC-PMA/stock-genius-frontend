@@ -9,7 +9,19 @@ import {
 import Link from "next/link";
 import React from "react";
 
-export default function ChecklistCard({ name, alt, src, checked, onClick }) {
+export default function ChecklistCard({
+  name,
+  alt,
+  src,
+  checked,
+  onClick,
+}: {
+  name: string;
+  alt: string;
+  src: string;
+  checked: boolean;
+  onClick: any;
+}) {
   return (
     <Paper elevation={2} sx={{ padding: "6px", margin: "12px" }}>
       <FormGroup>
