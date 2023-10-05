@@ -15,6 +15,9 @@ import Container from "@mui/material/Container";
 import { PatternFormat } from "react-number-format";
 import { useDispatch } from "@/lib/redux";
 import { useRouter } from "next/navigation";
+import Header from "../dashboard/Header";
+import AppBarComponent from "../dashboard/AppBarComponent";
+import { apiUrl } from "@/utils/api";
 
 export default function LoginPage() {
   const dispatch = useDispatch();
@@ -35,24 +38,25 @@ export default function LoginPage() {
       } else {
         //Trocar dispatch para um post utilizando o https://nextjs.org/docs/app/api-reference/functions/fetch
 
-        const response = await fetch(
-          "http://localhost:3002/api/v1/usuarios/login",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(dataToSend),
-          }
-        )
+        const response = await fetch(`${apiUrl}/api/v1/usuarios/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataToSend),
+        })
           .then(async (response) => {
-            const resJson = await response.json();
-            const token = resJson.usuario.token;
-            localStorage.setItem("token", token);
-            router.push("/dashboard");
+            if (response.status === 200) {
+              const resJson = await response.json();
+              const token = resJson.usuario.token;
+              localStorage.setItem("token", token);
+              router.push("/dashboard");
+            } else if (response.status === 401) {
+              throw new Error("Inep ou senha incorretos");
+            }
           })
           .catch((error) => {
-            console.log(error);
+            console.log(error.message);
           });
         // dispatch(userSlice.actions.loginUser(dataToSend));
         // router.push("/dashboard");
@@ -98,10 +102,6 @@ export default function LoginPage() {
             id="senha"
             autoComplete="senha-atual"
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Lembrar-me"
-          />
           <Button
             type="submit"
             fullWidth
@@ -110,18 +110,6 @@ export default function LoginPage() {
           >
             Enviar
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Esqueceu sua senha?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="/register" variant="body2">
-                {"Cadastrar como Candidato"}
-              </Link>
-            </Grid>
-          </Grid>
         </Box>
       </Box>
     </Container>

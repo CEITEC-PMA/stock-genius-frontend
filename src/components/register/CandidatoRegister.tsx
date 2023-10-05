@@ -5,6 +5,8 @@ import { registerDTOs } from "@/utils/dtos/registerDTOs";
 import { Avatar, Button, Grid, Paper, Typography } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
+import { ChangeEvent, useState } from "react";
+import { apiUrl } from "@/utils/api";
 
 export type CandidatoInputs = {
   cpf: string;
@@ -35,20 +37,37 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 export default function CandidatoRegister() {
+  const [cpf, setCpf] = useState("");
+  const [file, setFile] = useState({});
   const onSubmit: SubmitHandler<CandidatoInputs> = async (data) => {
-    console.log(data);
     data.zona = "651c2130669db209a4d7833a";
-    const response = await fetch(
-      "http://192.168.0.100:3002/api/v1/candidato/",
-      {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    console.log(response);
+    const response = await fetch(`${apiUrl}/api/v1/candidato/`, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
+  const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const fileLoaded = e.target.files[0];
+      const formData = new FormData();
+      formData.append("file", fileLoaded);
+
+      //fetch
+      fetch(
+        `${apiUrl}/api/v1/candidato/images/651c7593e04b20642c3e07fb?cpf=700.193.291-48`,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          method: "PUT",
+          body: formData,
+        }
+      );
+    }
   };
 
   return (
@@ -99,14 +118,15 @@ export default function CandidatoRegister() {
                 marginBottom: "10px",
               }}
             />
-            <Button
+            <input type="file" onChange={(e) => handleOnChange(e)} />
+            {/* <Button
               component="label"
               variant="contained"
               startIcon={<CloudUploadIcon />}
             >
               Foto do candidato
               <VisuallyHiddenInput type="file" />
-            </Button>
+            </Button> */}
           </Grid>
         </Grid>
         <Grid item xs={12} sm={12}>

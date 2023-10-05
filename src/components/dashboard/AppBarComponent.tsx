@@ -8,6 +8,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { selectUser, useDispatch, useSelector, userSlice } from "@/lib/redux";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Hidden from "@mui/material/Hidden";
 
@@ -29,8 +30,12 @@ export default function AppBarComponent({
   const dispatch = useDispatch();
   const { usuario } = useSelector(selectUser);
 
+  const router = useRouter()
   const handleOnClick = () => {
     dispatch(userSlice.actions.logoutUser());
+    localStorage.removeItem("token");
+    router.push("/login")
+
   };
 
   const AppBar = styled(MuiAppBar, {
