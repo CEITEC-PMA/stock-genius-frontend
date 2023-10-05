@@ -40,7 +40,6 @@ export default function CandidatoRegister() {
   const [cpf, setCpf] = useState("");
   const [file, setFile] = useState({});
   const onSubmit: SubmitHandler<CandidatoInputs> = async (data) => {
-    console.log(data);
     data.zona = "651c2130669db209a4d7833a";
     const response = await fetch(`${apiUrl}/api/v1/candidato/`, {
       method: "POST",
@@ -49,7 +48,6 @@ export default function CandidatoRegister() {
         "Content-Type": "application/json",
       },
     });
-    console.log(response);
   };
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -71,8 +69,6 @@ export default function CandidatoRegister() {
       );
     }
   };
-
-  console.log(file);
 
   return (
     <Paper elevation={2}>
