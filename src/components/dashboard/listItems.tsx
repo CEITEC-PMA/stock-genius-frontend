@@ -11,7 +11,6 @@ interface IListItemsProps {
   icon: any
 }
 
-
 export default function ListItems({ label, to, icon }: IListItemsProps) {
 
   const router = useRouter()
@@ -32,3 +31,4 @@ export default function ListItems({ label, to, icon }: IListItemsProps) {
 
   )
 }
+
