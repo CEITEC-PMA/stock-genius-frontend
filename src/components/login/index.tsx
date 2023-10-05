@@ -46,13 +46,17 @@ export default function LoginPage() {
           body: JSON.stringify(dataToSend),
         })
           .then(async (response) => {
-            const resJson = await response.json();
-            const token = resJson.usuario.token;
-            localStorage.setItem("token", token);
-            router.push("/dashboard");
+            if (response.status === 200) {
+              const resJson = await response.json();
+              const token = resJson.usuario.token;
+              localStorage.setItem("token", token);
+              router.push("/dashboard");
+            } else if (response.status === 401) {
+              throw new Error("Inep ou senha incorretos");
+            }
           })
           .catch((error) => {
-            console.log(error);
+            console.log(error.message);
           });
         // dispatch(userSlice.actions.loginUser(dataToSend));
         // router.push("/dashboard");
