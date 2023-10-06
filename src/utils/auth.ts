@@ -1,13 +1,10 @@
+import { signIn } from "next-auth/react";
 import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { apiUrl } from "@/utils/api";
 
 export const authOptions = {
   providers: [
-    GitHubProvider({
-      clientId: process.env.GITHUB_ID ?? "",
-      clientSecret: process.env.GITHUB_SECRET ?? "",
-    }),
     CredentialsProvider({
       name: "credentials",
       credentials: {
@@ -27,13 +24,16 @@ export const authOptions = {
         });
         const user = await response.json();
 
-        console.log(user);
+        console.log(user.usuario);
 
         if (user && response.ok) {
-          return user;
+          return user.usuario;
         }
         return null;
       },
     }),
   ],
+  pages: {
+    signIn: "/",
+  },
 };

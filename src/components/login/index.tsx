@@ -22,6 +22,7 @@ import {
   Stack,
 } from "@mui/material";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
   const [open, setOpen] = React.useState(false);
@@ -116,10 +117,10 @@ export default function LoginPage() {
             if (response.status === 200) {
               const resJson = await response.json();
               if (resJson.usuario.acesso === 0) {
-                handleOpenDialog();
-              } else {
                 const token = resJson.usuario.token;
                 localStorage.setItem("token", token);
+                handleOpenDialog();
+              } else {
                 router.push("/dashboard");
               }
             } else if (response.status === 401) {
@@ -130,8 +131,6 @@ export default function LoginPage() {
             setErrorMessage(error.message);
             setOpen(true);
           });
-        // dispatch(userSlice.actions.loginUser(dataToSend));
-        // router.push("/dashboard");
       }
     }
   };

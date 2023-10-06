@@ -4,6 +4,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 
 export default function AuthButton() {
   const { data: session } = useSession();
+  console.log(session);
   return (
     <Grid height={"100%"} item container justifyContent={"end"}>
       <Grid item alignSelf={"center"}>
@@ -14,9 +15,12 @@ export default function AuthButton() {
           noWrap
           sx={{ flexGrow: 1, textAlign: "right" }}
         >
-          USER_NAME
+          {session?.user?.nome}
         </Typography>
       </Grid>
+      <button onClick={() => signIn(undefined, { callbackUrl: "/dashboard" })}>
+        signin
+      </button>
       <Grid item alignSelf={"center"}>
         <IconButton
           onClick={() => signOut()}
@@ -25,6 +29,7 @@ export default function AuthButton() {
         >
           <LogoutIcon />
         </IconButton>
+        b
       </Grid>
     </Grid>
   );
