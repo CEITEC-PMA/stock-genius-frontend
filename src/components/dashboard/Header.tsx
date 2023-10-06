@@ -2,14 +2,13 @@
 import React, { useEffect, useState } from "react";
 import AppBarComponent from "./AppBarComponent";
 import DrawerComponent from "./Drawer";
-import { selectUser, useSelector } from "@/lib/redux";
 import { useRouter } from "next/navigation";
 import { apiUrl } from "@/utils/api";
+import { getDadosUser } from "@/actions/getDadosUser";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  // const { usuario } = useSelector(selectUser);
   const token = localStorage.getItem("token");
   const toggleDrawer = () => {
     setOpen(!open);
@@ -21,19 +20,7 @@ export default function Header() {
     if (!token) {
       router.push("/login");
     } else {
-      // //fetch
-      // const getDadosUser = async () => {
-      //   const response = await fetch(
-      // `${apiUrl}/api/v1/usuarios/registrar`,
-      //     {
-      //       headers: {
-      //         Authorization: `Bearer ${token}`,
-      //       },
-      //     }
-      //   );
-      //   return response;
-      // };
-      // getDadosUser();
+      getDadosUser(token);
     }
   }, [router, token]);
 

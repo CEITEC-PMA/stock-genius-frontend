@@ -3,7 +3,6 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import ThemeProviderComponent from "./theme-provider";
-import { Providers } from "@/lib/providers";
 import { getServerSession } from "next-auth";
 import SessionProvider from "@/components/sessionProvider/SessionProvider";
 
@@ -21,14 +20,12 @@ export default async function RootLayout({
 }) {
   const session = await getServerSession();
   return (
-    <Providers>
-      <html lang="pt-br">
-        <ThemeProviderComponent>
-          <body className={inter.className}>
-            <SessionProvider session={session}>{children}</SessionProvider>
-          </body>
-        </ThemeProviderComponent>
-      </html>
-    </Providers>
+    <html lang="pt-br">
+      <ThemeProviderComponent>
+        <body className={inter.className}>
+          <SessionProvider session={session}>{children}</SessionProvider>
+        </body>
+      </ThemeProviderComponent>
+    </html>
   );
 }

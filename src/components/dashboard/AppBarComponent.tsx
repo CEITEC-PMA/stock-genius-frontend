@@ -6,11 +6,8 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import { selectUser, useDispatch, useSelector, userSlice } from "@/lib/redux";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Hidden from "@mui/material/Hidden";
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -27,16 +24,7 @@ export default function AppBarComponent({
   toggleDrawer,
   drawerWidth,
 }: AppBarComponentProps) {
-  const dispatch = useDispatch();
-  const { usuario } = useSelector(selectUser);
-
-  const router = useRouter()
-  const handleOnClick = () => {
-    dispatch(userSlice.actions.logoutUser());
-    localStorage.removeItem("token");
-    router.push("/login")
-
-  };
+  const router = useRouter();
 
   const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== "open",
@@ -102,13 +90,9 @@ export default function AppBarComponent({
           noWrap
           sx={{ flexGrow: 1, textAlign: "right" }}
         >
-          {usuario}
+          NOME_USUARIO
         </Typography>
-        <IconButton
-          onClick={() => handleOnClick()}
-          color="inherit"
-          sx={{ marginLeft: "10px" }}
-        >
+        <IconButton color="inherit" sx={{ marginLeft: "10px" }}>
           <LogoutIcon />
         </IconButton>
       </Toolbar>
