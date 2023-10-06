@@ -93,14 +93,16 @@ export default function LoginPage() {
     };
     const { password, inep } = dataToSend;
     if (!inep) {
-      setErrorInep("Campo Obrigatório");
-      alert("Por favor digite o número do INEP");
+      setErrorMessage("Por favor digite o número do INEP");
+      setOpen(true);
     }
     if (!password) {
-      alert("Por favor digite uma senha");
+      setErrorMessage("Por favor digite uma senha");
+      setOpen(true);
     } else {
       if (password.length < 6) {
-        alert("a senha deve ter pelo menos 6 caracteres");
+        setErrorMessage("a senha deve ter pelo menos 6 caracteres");
+        setOpen(true);
       } else {
         //Trocar dispatch para um post utilizando o https://nextjs.org/docs/app/api-reference/functions/fetch
 
