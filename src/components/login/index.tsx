@@ -4,16 +4,23 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { PatternFormat } from "react-number-format";
 import { useRouter } from "next/navigation";
+import { apiUrl } from "@/utils/api";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Snackbar,
+} from "@mui/material";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import Header from "../dashboard/Header";
 import AppBarComponent from "../dashboard/AppBarComponent";
 import { apiUrl } from "@/utils/api";
@@ -42,10 +49,65 @@ export default function LoginPage() {
 
   const dispatch = useDispatch();
   const router = useRouter();
+  const [open, setOpen] = React.useState(false);
+  const [openSnack, setOpenSnack] = useState(false);
+  const [password, setPassword] = useState("");
+  const [rePassword, setRePassword] = useState("");
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
+
+  const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref
+  ) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
+  const handleOpenDialog = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleCloseSnack = (
+    event: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnack(false);
+    router.push("/dashboard");
+  };
+
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newPassword = event.target.value;
+    setPassword(newPassword);
+    setPasswordsMatch(newPassword === rePassword);
+  };
+
+  const handleRePasswordChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const newRePassword = event.target.value;
+    setRePassword(newRePassword);
+    setPasswordsMatch(password === newRePassword);
+  };
+
+  const handleResetPassword = () => {
+    if (password.length >= 6 && password === rePassword) {
+      setOpenSnack(true);
+    } else {
+    }
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const dataToSend = {
+      inep: data.get("inep"),
+      password: data.get("senha"),
       inep: data.get("inep"),
       password: data.get("senha"),
     };
@@ -112,7 +174,7 @@ export default function LoginPage() {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
@@ -147,6 +209,57 @@ export default function LoginPage() {
           >
             Enviar
           </Button>
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>Redefina a sua senha</DialogTitle>
+            <DialogContent>
+              <DialogContentText marginBottom="8px">
+                Seja bem-vindo ao Sistema de Eleição de Diretores! Neste
+                primeiro acesso, redefina sua senha.
+              </DialogContentText>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="password"
+                label="Digite a sua senha"
+                type="password"
+                inputProps={{
+                  minLength: 6,
+                }}
+                fullWidth
+                onChange={handlePasswordChange}
+              />
+              <TextField
+                error={!passwordsMatch}
+                margin="dense"
+                id="confirmpassword"
+                label="Confirme a sua senha"
+                type="password"
+                inputProps={{
+                  minLength: 6,
+                }}
+                fullWidth
+                onChange={handleRePasswordChange}
+                helperText={!passwordsMatch && "As senhas não coincidem."}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancelar</Button>
+              <Button onClick={handleResetPassword}>Enviar</Button>
+            </DialogActions>
+          </Dialog>
+          <Snackbar
+            open={openSnack}
+            autoHideDuration={2000}
+            onClose={handleCloseSnack}
+          >
+            <Alert
+              onClose={(e) => handleCloseSnack(e)}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              Senha redefinida com sucesso!
+            </Alert>
+          </Snackbar>
         </Box>
       </Box>
     </Container>
