@@ -4,38 +4,115 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { PatternFormat } from "react-number-format";
-import { useDispatch, userSlice } from "@/lib/redux";
+import { useDispatch } from "@/lib/redux";
 import { useRouter } from "next/navigation";
+import { apiUrl } from "@/utils/api";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Snackbar,
+} from "@mui/material";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
 export default function LoginPage() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const [open, setOpen] = React.useState(false);
+  const [openSnack, setOpenSnack] = useState(false);
+  const [password, setPassword] = useState("");
+  const [rePassword, setRePassword] = useState("");
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
+
+  const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref
+  ) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
+  const handleOpenDialog = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleCloseSnack = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnack(false);
+    router.push("/dashboard");
+  };
+
+  const handlePasswordChange = (event) => {
+    const newPassword = event.target.value;
+    setPassword(newPassword);
+    setPasswordsMatch(newPassword === rePassword);
+  };
+
+  const handleRePasswordChange = (event) => {
+    const newRePassword = event.target.value;
+    setRePassword(newRePassword);
+    setPasswordsMatch(password === newRePassword);
+  };
+
+  const handleResetPassword = () => {
+    if (password.length >= 6 && password === rePassword) {
+      setOpenSnack(true);
+    } else {
+    }
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const dataToSend = {
-      usuario: data.get("usuario"),
-      senha: data.get("senha"),
+      inep: data.get("inep"),
+      password: data.get("senha"),
     };
-    const { senha, usuario } = dataToSend;
-    if (!senha) {
+    const { password, inep } = dataToSend;
+    if (!password) {
       alert("Por favor digite uma senha");
     } else {
-      if (senha.length < 6) {
+      if (password.length < 6) {
         alert("a senha deve ter pelo menos 6 caracteres");
       } else {
         //Trocar dispatch para um post utilizando o https://nextjs.org/docs/app/api-reference/functions/fetch
-        dispatch(userSlice.actions.loginUser(dataToSend));
-        router.push("/dashboard");
+
+        const response = await fetch(`${apiUrl}/api/v1/usuarios/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataToSend),
+        })
+          .then(async (response) => {
+            const resJson = await response.json();
+            if (response.status === 200) {
+              if (resJson.usuario.acesso === 0) {
+                const token = resJson.usuario.token;
+                localStorage.setItem("token", token);
+                handleOpenDialog();
+              }
+            } else if (response.status === 401) {
+              throw new Error("Inep ou senha incorretos");
+            }
+          })
+          .catch((error) => {
+            console.log(error.message);
+          });
+        // dispatch(userSlice.actions.loginUser(dataToSend));
+        // router.push("/dashboard");
       }
     }
   };
@@ -51,25 +128,22 @@ export default function LoginPage() {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           Entrar
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <PatternFormat
-            format="###.###.###-##"
-            customInput={TextField}
-            mask="_"
+          <TextField
             margin="normal"
             required
             fullWidth
-            id="usuario"
-            label="Usuário"
-            name="usuario"
-            autoComplete="usuario"
-            autoFocus
+            name="inep"
+            label="INEP"
+            type="tel"
+            id="inep"
+            autoComplete="inep"
           />
           <TextField
             margin="normal"
@@ -81,10 +155,6 @@ export default function LoginPage() {
             id="senha"
             autoComplete="senha-atual"
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Lembrar-me"
-          />
           <Button
             type="submit"
             fullWidth
@@ -93,18 +163,58 @@ export default function LoginPage() {
           >
             Enviar
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Esqueceu sua senha?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="/register" variant="body2">
-                {"Cadastrar como Candidato"}
-              </Link>
-            </Grid>
-          </Grid>
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>Redefina a sua senha</DialogTitle>
+            <DialogContent>
+              <DialogContentText marginBottom="8px">
+                Seja bem-vindo ao Sistema de Eleição de Diretores! Neste
+                primeiro acesso, redefina sua senha.
+              </DialogContentText>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="password"
+                label="Digite a sua senha"
+                type="password"
+                inputProps={{
+                  minLength: 6,
+                }}
+                fullWidth
+                onChange={handlePasswordChange}
+              />
+              <TextField
+                error={!passwordsMatch}
+                margin="dense"
+                id="confirmpassword"
+                label="Confirme a sua senha"
+                type="password"
+                inputProps={{
+                  minLength: 6,
+                }}
+                fullWidth
+                onChange={handleRePasswordChange}
+                helperText={!passwordsMatch && "As senhas não coincidem."}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancelar</Button>
+              <Button onClick={handleResetPassword}>Enviar</Button>
+            </DialogActions>
+          </Dialog>
+          <Snackbar
+            open={openSnack}
+            autoHideDuration={2000}
+            onClose={handleCloseSnack}
+          >
+            <Alert
+              onClose={handleCloseSnack}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              Senha redefinida com sucesso!
+            </Alert>
+          </Snackbar>
+          ;
         </Box>
       </Box>
     </Container>
