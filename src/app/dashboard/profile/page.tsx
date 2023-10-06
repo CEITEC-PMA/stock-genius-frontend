@@ -17,20 +17,20 @@ const Profile = () => {
     confirmPassword: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     console.log("Dados enviados:", formData);
   };
 
-  const handleFormChange = (e) => {
-    const { name, value } = e.target;
+  // const handleFormChange = (e: React.FormEvent<HTMLFormElement>) => {
+  //   const { name, value } = e.target;
 
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  //   setFormData({
+  //     ...formData,
+  //     [name]: value,
+  //   });
+  // };
 
   return (
     <>
@@ -53,7 +53,7 @@ const Profile = () => {
                 />
               </Box>
               <form
-                onSubmit={handleSubmit}
+                onSubmit={(e) => handleSubmit(e)}
                 style={{ maxWidth: 600, margin: "0 auto" }}
               >
                 <Grid container spacing={3}>
@@ -64,7 +64,7 @@ const Profile = () => {
                       label="Nome"
                       name="firstName"
                       value={formData.firstName}
-                      onChange={handleFormChange}
+                      // onChange={handleFormChange}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -74,7 +74,7 @@ const Profile = () => {
                       label="Sobrenome"
                       name="lastName"
                       value={formData.lastName}
-                      onChange={handleFormChange}
+                      // onChange={handleFormChange}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -85,7 +85,7 @@ const Profile = () => {
                       label="Senha"
                       name="password"
                       value={formData.password}
-                      onChange={handleFormChange}
+                      // onChange={handleFormChange}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -96,7 +96,7 @@ const Profile = () => {
                       label="Email"
                       name="email"
                       value={formData.email}
-                      onChange={handleFormChange}
+                      // onChange={handleFormChange}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -107,7 +107,7 @@ const Profile = () => {
                       label="Confirmar"
                       name="confirmPassword"
                       value={formData.confirmPassword}
-                      onChange={handleFormChange}
+                      // onChange={handleFormChange}
                     />
                   </Grid>
                   <Grid item xs={12}>
