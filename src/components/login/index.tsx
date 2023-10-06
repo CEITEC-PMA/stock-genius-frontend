@@ -19,14 +19,9 @@ import {
   DialogContentText,
   DialogTitle,
   Snackbar,
+  Stack,
 } from "@mui/material";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import Header from "../dashboard/Header";
-import AppBarComponent from "../dashboard/AppBarComponent";
-import { apiUrl } from "@/utils/api";
-import { TransitionProps } from "@mui/material/transitions";
-import { Alert, Fade, IconButton, Snackbar, Stack } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 
 export default function LoginPage() {
   const [open, setOpen] = React.useState(false);
@@ -36,18 +31,7 @@ export default function LoginPage() {
   // const handleClick = () => {
   //   setOpen(true);
   // };
-
-  const handleClose = (
-    event: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
-  };
   const router = useRouter();
-  const [open, setOpen] = React.useState(false);
   const [openSnack, setOpenSnack] = useState(false);
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
@@ -104,8 +88,6 @@ export default function LoginPage() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const dataToSend = {
-      inep: data.get("inep"),
-      password: data.get("senha"),
       inep: data.get("inep"),
       password: data.get("senha"),
     };
