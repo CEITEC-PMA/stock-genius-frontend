@@ -38,7 +38,7 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 export default function CandidatoRegister({ id }: { id: string }) {
-  const [candidato, setCandidato] = useState({});
+  const [candidato, setCandidato] = useState({ foto: [] });
   const router = useRouter();
 
   const token = localStorage.getItem("token");
@@ -93,6 +93,12 @@ export default function CandidatoRegister({ id }: { id: string }) {
   };
 
   console.log(candidato);
+  let cpfSemTraco = candidato.cpf;
+  if (cpfSemTraco) {
+    cpfSemTraco = cpfSemTraco.replace(".", "");
+    cpfSemTraco = cpfSemTraco.replace(".", "");
+    cpfSemTraco = cpfSemTraco.replace("-", "");
+  }
 
   return (
     <Paper elevation={2}>
@@ -132,7 +138,7 @@ export default function CandidatoRegister({ id }: { id: string }) {
           >
             <Avatar
               alt="User"
-              src={"/user-15.png"}
+              src={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${candidato.foto[0]}`}
               sx={{
                 width: { xs: 85, sm: 130, md: 150, lg: 175 },
                 height: { xs: 85, sm: 130, md: 150, lg: 175 },
