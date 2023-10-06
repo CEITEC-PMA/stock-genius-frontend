@@ -25,12 +25,9 @@ import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
 export default function LoginPage() {
   const [open, setOpen] = React.useState(false);
+  const [openDialog, setOpenDialog] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
   const [errorInep, setErrorInep] = React.useState("");
-
-  // const handleClick = () => {
-  //   setOpen(true);
-  // };
   const router = useRouter();
   const [openSnack, setOpenSnack] = useState(false);
   const [password, setPassword] = useState("");
@@ -45,7 +42,11 @@ export default function LoginPage() {
   });
 
   const handleOpenDialog = () => {
-    setOpen(true);
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
 
   const handleClose = () => {
@@ -104,8 +105,6 @@ export default function LoginPage() {
         setErrorMessage("a senha deve ter pelo menos 6 caracteres");
         setOpen(true);
       } else {
-        //Trocar dispatch para um post utilizando o https://nextjs.org/docs/app/api-reference/functions/fetch
-
         const response = await fetch(`${apiUrl}/api/v1/usuarios/login`, {
           method: "POST",
           headers: {
@@ -116,9 +115,13 @@ export default function LoginPage() {
           .then(async (response) => {
             if (response.status === 200) {
               const resJson = await response.json();
-              const token = resJson.usuario.token;
-              localStorage.setItem("token", token);
-              router.push("/dashboard");
+              if (resJson.usuario.acesso === 0) {
+                handleOpenDialog();
+              } else {
+                const token = resJson.usuario.token;
+                localStorage.setItem("token", token);
+                router.push("/dashboard");
+              }
             } else if (response.status === 401) {
               throw new Error("Inep ou Senha Inválidos");
             }
@@ -191,7 +194,7 @@ export default function LoginPage() {
           >
             Enviar
           </Button>
-          <Dialog open={open} onClose={handleClose}>
+          <Dialog open={openDialog} onClose={handleCloseDialog}>
             <DialogTitle>Redefina a sua senha</DialogTitle>
             <DialogContent>
               <DialogContentText marginBottom="8px">
@@ -225,7 +228,7 @@ export default function LoginPage() {
               />
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClose}>Cancelar</Button>
+              <Button onClick={handleCloseDialog}>Cancelar</Button>
               <Button onClick={handleResetPassword}>Enviar</Button>
             </DialogActions>
           </Dialog>
