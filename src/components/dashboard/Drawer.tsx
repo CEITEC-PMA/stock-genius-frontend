@@ -1,7 +1,10 @@
 import { Divider, IconButton, List, Toolbar, styled } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ListItems from "./ListItems";
+import { PersonAddAlt1, AccountBox } from '@mui/icons-material';
+import ListItems from "./listItems";
+
+
 //import { mainListItems } from "./ListItems";
 interface DrawerProps {
   open: boolean;
@@ -10,7 +13,6 @@ interface DrawerProps {
 }
 
 export default function DrawerComponent({
-
   open,
   toggleDrawer,
   drawerWidth,
@@ -41,9 +43,8 @@ export default function DrawerComponent({
     },
   }));
 
-
   return (
-    <Drawer variant="permanent" open={open} >
+    <Drawer variant="permanent" open={open}>
       <Toolbar
         sx={{
           display: "flex",
@@ -59,22 +60,19 @@ export default function DrawerComponent({
 
       <Divider />
 
-      <List component="nav" >
+      <List component="nav">
         <ListItems
-          label="Candidatar-se"
-          icon='PersonAddAlt1'
-          to="/register/candidato"
+          label="Registrar Candidato"
+          icon={<PersonAddAlt1 />}
+          to="/dashboard/candidato"
         />
 
         <ListItems
-          label="Listar Candidatos"
-          icon=" List"
-          to="/register/user"
-        />
+          label="Exibir Perfil"
+          icon={<AccountBox />}
+          to="/dashboard/profile" />
       </List>
+
     </Drawer>
-
-
-
   );
 }

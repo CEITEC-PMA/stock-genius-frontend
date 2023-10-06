@@ -5,6 +5,9 @@ import { registerDTOs } from "@/utils/dtos/registerDTOs";
 import { Avatar, Button, Grid, Paper, Typography } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
+import { ChangeEvent, useEffect, useState } from "react";
+import { apiUrl } from "@/utils/api";
+import { useRouter } from "next/navigation";
 
 export type CandidatoInputs = {
   cpf: string;
@@ -19,6 +22,7 @@ export type CandidatoInputs = {
   data_entrada_inst: string;
   data_entrada_docencia: string;
   obs_curso_gestor: string;
+  zona?: string;
 };
 
 const VisuallyHiddenInput = styled("input")({
@@ -33,18 +37,68 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-export default function CandidatoRegister() {
+export default function CandidatoRegister({ id }: { id: string }) {
+  const [candidato, setCandidato] = useState({ foto: [] });
+  const router = useRouter();
+
+  const token = localStorage.getItem("token");
+
   const onSubmit: SubmitHandler<CandidatoInputs> = async (data) => {
-    console.log(data);
-    const response = await fetch(
-      "http://192.168.1.124:3002/api/v1/candidato/",
-      {
-        method: "POST",
-        body: JSON.stringify(data),
-      }
-    );
-    console.log(response);
+    data.zona = "651c2130669db209a4d7833a";
+    const response = await fetch(`${apiUrl}/api/v1/candidato/`, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   };
+
+  useEffect(() => {
+    const getUserId = async () => {
+      const response = await fetch(
+        `${apiUrl}/api/v1/candidato/candidatoId/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const responseJson = await response.json();
+      setCandidato(responseJson.candidato);
+    };
+    getUserId();
+  }, [id, token]);
+
+  const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const fileLoaded = e.target.files[0];
+      const formData = new FormData();
+      formData.append("file", fileLoaded);
+
+      //fetch
+      fetch(
+        `${apiUrl}/api/v1/candidato/images/651c7593e04b20642c3e07fb?cpf=700.193.291-48`,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          method: "PUT",
+          body: formData,
+        }
+      ).then(() => {
+        router.refresh();
+      });
+    }
+  };
+
+  console.log(candidato);
+  let cpfSemTraco = candidato.cpf;
+  if (cpfSemTraco) {
+    cpfSemTraco = cpfSemTraco.replace(".", "");
+    cpfSemTraco = cpfSemTraco.replace(".", "");
+    cpfSemTraco = cpfSemTraco.replace("-", "");
+  }
 
   return (
     <Paper elevation={2}>
@@ -84,7 +138,7 @@ export default function CandidatoRegister() {
           >
             <Avatar
               alt="User"
-              src={"/user-15.png"}
+              src={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${candidato.foto[0]}`}
               sx={{
                 width: { xs: 85, sm: 130, md: 150, lg: 175 },
                 height: { xs: 85, sm: 130, md: 150, lg: 175 },
@@ -100,7 +154,10 @@ export default function CandidatoRegister() {
               startIcon={<CloudUploadIcon />}
             >
               Foto do candidato
-              <VisuallyHiddenInput type="file" />
+              <VisuallyHiddenInput
+                onChange={(e) => handleOnChange(e)}
+                type="file"
+              />
             </Button>
           </Grid>
         </Grid>

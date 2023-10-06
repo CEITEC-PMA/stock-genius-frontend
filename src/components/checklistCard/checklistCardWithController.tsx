@@ -1,5 +1,5 @@
 import React from "react";
-import { Controller } from "react-hook-form";
+import { Control, Controller, FieldValues } from "react-hook-form";
 import ChecklistCard from "./";
 
 interface ChecklistCardWithControllerProps {
@@ -12,6 +12,17 @@ interface ChecklistCardWithControllerProps {
 const ChecklistCardWithController: React.FC<
   ChecklistCardWithControllerProps
 > = ({ name, alt, src, control }) => {
+const ChecklistCardWithController = ({
+  name,
+  alt,
+  src,
+  control,
+}: {
+  name: string;
+  alt: string;
+  src: string;
+  control: Control<FieldValues, any>;
+}) => {
   return (
     <Controller
       name={name}

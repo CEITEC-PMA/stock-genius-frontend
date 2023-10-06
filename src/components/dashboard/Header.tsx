@@ -2,13 +2,14 @@
 import React, { useEffect, useState } from "react";
 import AppBarComponent from "./AppBarComponent";
 import DrawerComponent from "./Drawer";
-import { selectUser, useSelector } from "@/lib/redux";
 import { useRouter } from "next/navigation";
+import { apiUrl } from "@/utils/api";
+import { getDadosUser } from "@/actions/getDadosUser";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const { usuario } = useSelector(selectUser);
+  const token = localStorage.getItem("token");
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -16,10 +17,12 @@ export default function Header() {
   const drawerWidth: number = 240;
 
   useEffect(() => {
-    if (!usuario) {
+    if (!token) {
       router.push("/login");
+    } else {
+      getDadosUser(token);
     }
-  }, [router, usuario]);
+  }, [router, token]);
 
   return (
     <div>
