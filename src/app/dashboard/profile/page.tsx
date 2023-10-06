@@ -18,13 +18,14 @@ const Profile = () => {
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     console.log("Dados enviados:", formData);
   };
 
-  // const handleFormChange = (e: React.FormEvent<HTMLFormElement>) => {
-  //   const { name, value } = e.target;
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
 
   //   setFormData({
   //     ...formData,
