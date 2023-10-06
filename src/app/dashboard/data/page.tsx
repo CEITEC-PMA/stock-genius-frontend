@@ -8,7 +8,10 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Typography } from "@mui/material";
 
 const columns: GridColDef[] = [
-  // { field: "id", headerName: "ID", width: 70 },
+  {
+    field: "__checkbox__",
+    width: 50,
+  },
   { field: "cpf", headerName: "CPF", width: 130 },
   { field: "inep", headerName: "Inep da U.E.", width: 100 },
   { field: "nome", headerName: "Nome completo", width: 575 },
@@ -18,7 +21,7 @@ const columns: GridColDef[] = [
     headerName: "Ações",
     width: 130,
     sortable: false,
-    renderCell: (params: GridValueGetterParams) => (
+    renderCell: (params) => (
       <div>
         <IconButton
           color="primary"
@@ -43,8 +46,6 @@ const columns: GridColDef[] = [
         </IconButton>
       </div>
     ),
-    headerCheckboxSelection: true,
-    checkboxSelection: true,
   },
   // {
   //   field: "fullName",
@@ -228,19 +229,16 @@ const rows = [
   },
 ];
 
-const handleDetalhar = (event, id) => {
+const handleDetalhar = (event: React.MouseEvent, id: string) => {
   event.stopPropagation();
-  // Implemente a lógica para a ação "Detalhar" aqui
 };
 
-const handleEditar = (event, id) => {
+const handleEditar = (event: React.MouseEvent, id: string) => {
   event.stopPropagation();
-  // Implemente a lógica para a ação "Editar" aqui
 };
 
-const handleValidar = (event, id) => {
+const handleValidar = (event: React.MouseEvent, id: string) => {
   event.stopPropagation();
-  // Implemente a lógica para a ação "Validar" aqui
 };
 
 export default function DataTable() {

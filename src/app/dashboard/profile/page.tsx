@@ -17,13 +17,13 @@ const Profile = () => {
     confirmPassword: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     console.log("Dados enviados:", formData);
   };
 
-  const handleFormChange = (e) => {
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
     setFormData({

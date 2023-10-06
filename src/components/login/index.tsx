@@ -46,7 +46,10 @@ export default function LoginPage() {
     setOpen(false);
   };
 
-  const handleCloseSnack = (event, reason) => {
+  const handleCloseSnack = (
+    event: React.SyntheticEvent | Event,
+    reason: string
+  ) => {
     if (reason === "clickaway") {
       return;
     }
@@ -54,13 +57,15 @@ export default function LoginPage() {
     router.push("/dashboard");
   };
 
-  const handlePasswordChange = (event) => {
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newPassword = event.target.value;
     setPassword(newPassword);
     setPasswordsMatch(newPassword === rePassword);
   };
 
-  const handleRePasswordChange = (event) => {
+  const handleRePasswordChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const newRePassword = event.target.value;
     setRePassword(newRePassword);
     setPasswordsMatch(password === newRePassword);
@@ -214,7 +219,6 @@ export default function LoginPage() {
               Senha redefinida com sucesso!
             </Alert>
           </Snackbar>
-          ;
         </Box>
       </Box>
     </Container>
