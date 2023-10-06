@@ -39,8 +39,6 @@ export default function LoginPage() {
     }
     setOpen(false);
   };
-
-  const dispatch = useDispatch();
   const router = useRouter();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
