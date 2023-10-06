@@ -4,11 +4,9 @@ import AppBarComponent from "./AppBarComponent";
 import DrawerComponent from "./Drawer";
 import { useRouter } from "next/navigation";
 import { apiUrl } from "@/utils/api";
-import { getDadosUser } from "@/actions/getDadosUser";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const router = useRouter();
   const toggleDrawer = () => {
     setOpen(!open);
   };
