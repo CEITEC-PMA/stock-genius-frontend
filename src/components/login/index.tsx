@@ -13,14 +13,12 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { PatternFormat } from "react-number-format";
-import { useDispatch } from "@/lib/redux";
 import { useRouter } from "next/navigation";
 import Header from "../dashboard/Header";
 import AppBarComponent from "../dashboard/AppBarComponent";
 import { apiUrl } from "@/utils/api";
 
 export default function LoginPage() {
-  const dispatch = useDispatch();
   const router = useRouter();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
