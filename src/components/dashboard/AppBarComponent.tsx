@@ -122,7 +122,7 @@ export default function AppBarComponent({
           noWrap
           sx={{ flexGrow: 1, textAlign: "right" }}
         >
-          {usuario.nome}
+          {usuario?.nome}
         </Typography>
         <IconButton
           onClick={() => handleOnClick()}
