@@ -1,11 +1,11 @@
 "use client";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 
 const columns: GridColDef[] = [
   // { field: "id", headerName: "ID", width: 70 },
@@ -18,7 +18,7 @@ const columns: GridColDef[] = [
     headerName: "Ações",
     width: 130,
     sortable: false,
-    renderCell: (params: GridValueGetterParams) => (
+    renderCell: (params: GridRenderCellParams) => (
       <div>
         <IconButton
           color="primary"
@@ -43,8 +43,6 @@ const columns: GridColDef[] = [
         </IconButton>
       </div>
     ),
-    headerCheckboxSelection: true,
-    checkboxSelection: true,
   },
   // {
   //   field: "fullName",
@@ -57,188 +55,26 @@ const columns: GridColDef[] = [
   // },
 ];
 
-const rows = [
-  {
-    id: 1,
-    cpf: "031.543.551-89",
-    inep: "52021459",
-    nome: "Jon",
-    funcao: "professor",
-    telefone: "(62) 99237-6865",
-  },
-  {
-    id: 2,
-    cpf: "031.543.551-89",
-    inep: "52021459",
-    nome: "Cersei",
-    funcao: "professor",
-    telefone: "(62) 99237-6865",
-  },
-  {
-    id: 3,
-    cpf: "031.543.551-89",
-    inep: "52021459",
-    nome: "Jaime",
-    funcao: "professor",
-    telefone: "(62) 99237-6865",
-  },
-  {
-    id: 4,
-    cpf: "031.543.551-89",
-    inep: "52021459",
-    nome: "Arya",
-    funcao: "professor",
-    telefone: "(62) 99237-6865",
-  },
-  {
-    id: 5,
-    cpf: "031.543.551-89",
-    inep: "52021459",
-    nome: "Daenerys",
-    funcao: "cantor",
-    telefone: "(62) 99237-6865",
-  },
-  {
-    id: 6,
-    cpf: "031.543.551-89",
-    inep: "52021459",
-    nome: "Raphael",
-    funcao: "professor",
-    telefone: "(62) 99237-6865",
-  },
-  {
-    id: 7,
-    cpf: "031.543.551-89",
-    inep: "52021459",
-    nome: "Ferrara",
-    funcao: "professor",
-    telefone: "(62) 99237-6865",
-  },
-  {
-    id: 8,
-    cpf: "031.543.551-89",
-    inep: "52021459",
-    nome: "Rossini",
-    funcao: "professor",
-    telefone: "(62) 99237-6865",
-  },
-  {
-    id: 9,
-    cpf: "031.543.551-89",
-    inep: "52021459",
-    nome: "Harvey",
-    funcao: "professor",
-    telefone: "(62) 99237-6865",
-  },
-  {
-    id: 10,
-    cpf: "031.543.551-89",
-    inep: "52021459",
-    nome: "Harvey",
-    funcao: "professor",
-    telefone: "(62) 99237-6865",
-  },
-  {
-    id: 11,
-    cpf: "031.543.551-89",
-    inep: "52021459",
-    nome: "Harvey",
-    funcao: "professor",
-    telefone: "(62) 99237-6865",
-  },
-  {
-    id: 12,
-    cpf: "031.543.551-89",
-    inep: "52021459",
-    nome: "Harvey",
-    funcao: "professor",
-    telefone: "(62) 99237-6865",
-  },
-  {
-    id: 13,
-    cpf: "031.543.551-89",
-    inep: "52021459",
-    nome: "Harvey",
-    funcao: "professor",
-    telefone: "(62) 99237-6865",
-  },
-  {
-    id: 14,
-    cpf: "031.543.551-89",
-    inep: "52021459",
-    nome: "Harvey",
-    funcao: "professor",
-    telefone: "(62) 99237-6865",
-  },
-  {
-    id: 15,
-    cpf: "031.543.551-89",
-    inep: "52021459",
-    nome: "Harvey",
-    funcao: "professor",
-    telefone: "(62) 99237-6865",
-  },
-  {
-    id: 16,
-    cpf: "031.543.551-89",
-    inep: "52021459",
-    nome: "Harvey",
-    funcao: "professor",
-    telefone: "(62) 99237-6865",
-  },
-  {
-    id: 17,
-    cpf: "031.543.551-89",
-    inep: "52021459",
-    nome: "Harvey",
-    funcao: "professor",
-    telefone: "(62) 99237-6865",
-  },
-  {
-    id: 18,
-    cpf: "031.543.551-89",
-    inep: "52021459",
-    nome: "Harvey",
-    funcao: "professor",
-    telefone: "(62) 99237-6865",
-  },
-  {
-    id: 19,
-    cpf: "031.543.551-89",
-    inep: "52021459",
-    nome: "Harvey",
-    funcao: "professor",
-    telefone: "(62) 99237-6865",
-  },
-  {
-    id: 20,
-    cpf: "031.543.551-89",
-    inep: "52021459",
-    nome: "Harvey",
-    funcao: "professor",
-    telefone: "(62) 99237-6865",
-  },
-  {
-    id: 21,
-    cpf: "031.543.551-89",
-    inep: "52021459",
-    nome: "Harvey",
-    funcao: "professor",
-    telefone: "(62) 99237-6865",
-  },
-];
-
-const handleDetalhar = (event, id) => {
+const handleDetalhar = (
+  event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+  id: string
+) => {
   event.stopPropagation();
   // Implemente a lógica para a ação "Detalhar" aqui
 };
 
-const handleEditar = (event, id) => {
+const handleEditar = (
+  event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+  id: string
+) => {
   event.stopPropagation();
   // Implemente a lógica para a ação "Editar" aqui
 };
 
-const handleValidar = (event, id) => {
+const handleValidar = (
+  event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+  id: string
+) => {
   event.stopPropagation();
   // Implemente a lógica para a ação "Validar" aqui
 };
@@ -261,7 +97,7 @@ export default function DataTable() {
       setCandidatos(responseJson.candidatos);
     };
     getDadosCandidatos();
-  }, []);
+  }, [token]);
   return (
     <>
       <Typography variant="h3">Lista de Candidatos</Typography>

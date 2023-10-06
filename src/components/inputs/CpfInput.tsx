@@ -20,6 +20,7 @@ export default function CpfInput({ control, errors, inputDTO }: CpfInputProps) {
       control={control}
       rules={{
         required: `${inputDTO.label} é obrigatório`,
+        //@ts-ignore
         validate: (value) => cpf.isValid(value) || "CPF invalido",
       }}
       render={({ field }) => (

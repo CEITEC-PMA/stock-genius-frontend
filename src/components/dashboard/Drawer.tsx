@@ -2,7 +2,6 @@ import { Divider, IconButton, List, Toolbar, styled } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { PersonAddAlt1, AccountBox } from '@mui/icons-material';
-//import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import ListItems from "./listItems";
 
 

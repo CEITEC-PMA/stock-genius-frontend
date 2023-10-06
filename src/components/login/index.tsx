@@ -79,7 +79,6 @@ export default function LoginPage() {
               const token = resJson.usuario.token;
               localStorage.setItem("token", token);
               router.push("/dashboard");
-
             } else if (response.status === 401) {
               throw new Error("Inep ou Senha Inválidos")
             }

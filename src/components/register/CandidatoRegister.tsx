@@ -5,8 +5,9 @@ import { registerDTOs } from "@/utils/dtos/registerDTOs";
 import { Avatar, Button, Grid, Paper, Typography } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { apiUrl } from "@/utils/api";
+import { useRouter } from "next/navigation";
 
 export type CandidatoInputs = {
   cpf: string;
@@ -36,11 +37,13 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-export default function CandidatoRegister() {
-  const [cpf, setCpf] = useState("");
-  const [file, setFile] = useState({});
+export default function CandidatoRegister({ id }: { id: string }) {
+  const [candidato, setCandidato] = useState({});
+  const router = useRouter();
+
+  const token = localStorage.getItem("token");
+
   const onSubmit: SubmitHandler<CandidatoInputs> = async (data) => {
-    console.log(data);
     data.zona = "651c2130669db209a4d7833a";
     const response = await fetch(`${apiUrl}/api/v1/candidato/`, {
       method: "POST",
@@ -49,8 +52,23 @@ export default function CandidatoRegister() {
         "Content-Type": "application/json",
       },
     });
-    console.log(response);
   };
+
+  useEffect(() => {
+    const getUserId = async () => {
+      const response = await fetch(
+        `${apiUrl}/api/v1/candidato/candidatoId/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const responseJson = await response.json();
+      setCandidato(responseJson.candidato);
+    };
+    getUserId();
+  }, [id, token]);
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -68,11 +86,13 @@ export default function CandidatoRegister() {
           method: "PUT",
           body: formData,
         }
-      );
+      ).then(() => {
+        router.refresh();
+      });
     }
   };
 
-  console.log(file);
+  console.log(candidato);
 
   return (
     <Paper elevation={2}>
@@ -122,15 +142,17 @@ export default function CandidatoRegister() {
                 marginBottom: "10px",
               }}
             />
-            <input type="file" onChange={(e) => handleOnChange(e)} />
-            {/* <Button
+            <Button
               component="label"
               variant="contained"
               startIcon={<CloudUploadIcon />}
             >
               Foto do candidato
-              <VisuallyHiddenInput type="file" />
-            </Button> */}
+              <VisuallyHiddenInput
+                onChange={(e) => handleOnChange(e)}
+                type="file"
+              />
+            </Button>
           </Grid>
         </Grid>
         <Grid item xs={12} sm={12}>

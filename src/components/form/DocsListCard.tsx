@@ -22,7 +22,7 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-export default function DocslistCard({ name }) {
+export default function DocslistCard({ name }: { name: string }) {
   const isSmallScreen = useMediaQuery("(max-width: 600px)");
 
   return (
