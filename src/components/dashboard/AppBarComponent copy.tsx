@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { styled } from "@mui/material/styles";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -9,8 +9,6 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import AuthButton from "../auth/AuthButton";
 import { Grid } from "@mui/material";
-import LogoutIcon from "@mui/icons-material/Logout";
-import { getDadosUser } from "@/actions/getDadosUser";
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -27,22 +25,7 @@ export default function AppBarComponent({
   toggleDrawer,
   drawerWidth,
 }: AppBarComponentProps) {
-  const [usuario, setUsuario] = useState({});
   const router = useRouter();
-
-  const handleOnClick = () => {
-    localStorage.removeItem("token");
-    router.push("/login");
-  };
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      router.push("/login");
-    } else {
-      getDadosUser(token);
-    }
-  }, [router]);
 
   const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== "open",
@@ -115,22 +98,7 @@ export default function AppBarComponent({
             />
           </Grid>
           <Grid item xs={4}>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              sx={{ flexGrow: 1, textAlign: "right" }}
-            >
-              USER_NAME
-            </Typography>
-            <IconButton
-              onClick={() => handleOnClick()}
-              color="inherit"
-              sx={{ marginLeft: "10px" }}
-            >
-              <LogoutIcon />
-            </IconButton>
+            <AuthButton />
           </Grid>
         </Grid>
       </Toolbar>

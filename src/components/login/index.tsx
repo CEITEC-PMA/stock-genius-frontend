@@ -22,6 +22,7 @@ import {
   Stack,
 } from "@mui/material";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
   const [open, setOpen] = React.useState(false);
@@ -105,31 +106,42 @@ export default function LoginPage() {
         setErrorMessage("a senha deve ter pelo menos 6 caracteres");
         setOpen(true);
       } else {
-        const response = await fetch(`${apiUrl}/api/v1/usuarios/login`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(dataToSend),
-        })
-          .then(async (response) => {
-            if (response.status === 200) {
-              const resJson = await response.json();
-              if (resJson.usuario.acesso === 0) {
-                handleOpenDialog();
-              } else {
-                const token = resJson.usuario.token;
-                localStorage.setItem("token", token);
-                router.push("/dashboard");
-              }
-            } else if (response.status === 401) {
-              throw new Error("Inep ou Senha Inválidos");
-            }
-          })
-          .catch((error) => {
-            setErrorMessage(error.message);
-            setOpen(true);
-          });
+        const result = await signIn("credentials", {
+          inep: dataToSend.inep,
+          password: dataToSend.password,
+          redirect: false,
+        });
+        if (result?.error) {
+          setErrorMessage(result.error);
+          setOpen(true);
+          return;
+        }
+        router.push("/dashboard");
+        // const response = await fetch(`${apiUrl}/api/v1/usuarios/login`, {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify(dataToSend),
+        // })
+        //   .then(async (response) => {
+        //     if (response.status === 200) {
+        //       const resJson = await response.json();
+        //       if (resJson.usuario.acesso === 0) {
+        //         handleOpenDialog();
+        //       } else {
+        //         const token = resJson.usuario.token;
+        //         localStorage.setItem("token", token);
+        //         router.push("/dashboard");
+        //       }
+        //     } else if (response.status === 401) {
+        //       throw new Error("Inep ou Senha Inválidos");
+        //     }
+        //   })
+        //   .catch((error) => {
+        //     setErrorMessage(error.message);
+        //     setOpen(true);
+        //   });
         // dispatch(userSlice.actions.loginUser(dataToSend));
         // router.push("/dashboard");
       }
