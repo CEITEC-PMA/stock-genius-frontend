@@ -48,7 +48,7 @@ export default function LoginPage() {
 
   const handleCloseSnack = (
     event: React.SyntheticEvent | Event,
-    reason: string
+    reason?: string
   ) => {
     if (reason === "clickaway") {
       return;
@@ -212,7 +212,7 @@ export default function LoginPage() {
             onClose={handleCloseSnack}
           >
             <Alert
-              onClose={handleCloseSnack}
+              onClose={(e) => handleCloseSnack(e)}
               severity="success"
               sx={{ width: "100%" }}
             >
