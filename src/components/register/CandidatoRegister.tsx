@@ -38,7 +38,7 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 export default function CandidatoRegister({ id }: { id: string }) {
-  const [candidato, setCandidato] = useState({ foto: [] });
+  const [candidato, setCandidato] = useState({ foto: [], cpf: "" });
   const router = useRouter();
 
   const token = localStorage.getItem("token");
