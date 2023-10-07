@@ -26,6 +26,7 @@ import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
   const [open, setOpen] = React.useState(false);
+  const [token, setToken] = useState("");
   const [openDialog, setOpenDialog] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
   const [errorInep, setErrorInep] = React.useState("");
@@ -34,6 +35,11 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(true);
+
+  React.useEffect(() => {
+    const token = localStorage.getItem("token");
+    setToken(token);
+  }, []);
 
   const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -79,9 +85,19 @@ export default function LoginPage() {
     setPasswordsMatch(password === newRePassword);
   };
 
-  const handleResetPassword = () => {
+  const handleResetPassword = async () => {
     if (password.length >= 6 && password === rePassword) {
-      setOpenSnack(true);
+      await fetch(`${apiUrl}/api/v1/zona/`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ password }),
+      }).then(() => {
+        localStorage.setItem("token", token);
+        router.push("/dashboard");
+      });
     } else {
     }
   };
@@ -117,10 +133,9 @@ export default function LoginPage() {
             if (response.status === 200) {
               const resJson = await response.json();
               if (resJson.usuario.acesso === 0) {
-                const token = resJson.usuario.token;
-                localStorage.setItem("token", token);
-                router.push("/dashboard");
-                // handleOpenDialog();
+                const tokenBackEnd = resJson.usuario.token;
+                setToken(tokenBackEnd);
+                handleOpenDialog();
               } else {
                 const token = resJson.usuario.token;
                 localStorage.setItem("token", token);
