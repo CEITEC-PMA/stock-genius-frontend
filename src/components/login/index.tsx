@@ -38,7 +38,7 @@ export default function LoginPage() {
 
   React.useEffect(() => {
     const token = localStorage.getItem("token");
-    setToken(token);
+    if (typeof token === "string") setToken(token);
   }, []);
 
   const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
