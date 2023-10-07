@@ -9,6 +9,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { apiUrl } from "@/utils/api";
+import { useUserContext } from "@/userContext";
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -25,7 +26,7 @@ export default function AppBarComponent({
   toggleDrawer,
   drawerWidth,
 }: AppBarComponentProps) {
-  const [usuario, setUsuario] = useState({ nome: "" });
+  const { user, setUser } = useUserContext();
   const router = useRouter();
 
   useEffect(() => {
@@ -42,15 +43,12 @@ export default function AppBarComponent({
         });
         const resJson = await response.json();
         console.log(resJson);
-        setUsuario(resJson.usuario);
+        setUser(resJson.usuario);
         return response;
       };
-      getDadosUser().catch(() => {
-        alert("erro de conecção");
-        router.push("/login");
-      });
+      getDadosUser();
     }
-  }, [router]);
+  }, [router, setUser]);
 
   const handleOnClick = () => {
     localStorage.removeItem("token");
@@ -74,7 +72,7 @@ export default function AppBarComponent({
       }),
     }),
   }));
-  console.log(usuario);
+  console.log(user);
 
   return (
     <AppBar position="absolute" open={open}>
@@ -122,7 +120,7 @@ export default function AppBarComponent({
           noWrap
           sx={{ flexGrow: 1, textAlign: "right" }}
         >
-          {usuario?.nome}
+          {user?.nome}
         </Typography>
         <IconButton
           onClick={() => handleOnClick()}
