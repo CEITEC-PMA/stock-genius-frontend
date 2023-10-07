@@ -15,7 +15,7 @@ export default function AuthButton() {
           noWrap
           sx={{ flexGrow: 1, textAlign: "right" }}
         >
-          {session?.user?.nome}
+          USER_NAME
         </Typography>
       </Grid>
       <button onClick={() => signIn(undefined, { callbackUrl: "/dashboard" })}>
