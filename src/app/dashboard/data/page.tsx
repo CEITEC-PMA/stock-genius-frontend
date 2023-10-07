@@ -6,6 +6,8 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Typography } from "@mui/material";
 import { MouseEvent, useEffect, useState } from "react";
+import { useUserContext } from "@/userContext";
+import { apiUrl } from "@/utils/api";
 
 const columns: GridColDef[] = [
   {
@@ -80,24 +82,27 @@ const handleValidar = (
 };
 
 export default function DataTable() {
+  const { user } = useUserContext();
   const token = localStorage.getItem("token");
   const [candidatos, setCandidatos] = useState([]);
   useEffect(() => {
     //fetch
-    const getDadosCandidatos = async () => {
-      const response = await fetch(
-        "http://localhost:3002/api/v1/candidato/candidatoZona/651c2130669db209a4d7833a",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      const responseJson = await response.json();
-      setCandidatos(responseJson.candidatos);
-    };
-    getDadosCandidatos();
-  }, [token]);
+    if (user._id) {
+      const getDadosCandidatos = async () => {
+        const response = await fetch(
+          `${apiUrl}/api/v1/candidato/candidatoZona/${user._id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const responseJson = await response.json();
+        setCandidatos(responseJson.candidatos);
+      };
+      getDadosCandidatos();
+    }
+  }, [token, user._id]);
   return (
     <>
       <Typography variant="h3">Lista de Candidatos</Typography>
