@@ -6,5 +6,8 @@ export const getDadosUser = async (token: string) => {
       Authorization: `Bearer ${token}`,
     },
   });
-  return response;
+  const resJson = response.json();
+  console.log(resJson);
+
+  return resJson;
 };

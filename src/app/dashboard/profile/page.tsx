@@ -8,7 +8,7 @@ import Avatar from "@mui/material/Avatar";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
-const Profile = () => {
+export default function Profile() {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -18,7 +18,6 @@ const Profile = () => {
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     console.log("Dados enviados:", formData);
@@ -27,11 +26,11 @@ const Profile = () => {
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-  //   setFormData({
-  //     ...formData,
-  //     [name]: value,
-  //   });
-  // };
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
   return (
     <>
@@ -124,6 +123,4 @@ const Profile = () => {
       </Box>
     </>
   );
-};
-
-export default Profile;
+}

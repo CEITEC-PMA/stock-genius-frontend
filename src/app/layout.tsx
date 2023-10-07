@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import ThemeProviderComponent from "./theme-provider";
 import { getServerSession } from "next-auth";
 import SessionProvider from "@/components/sessionProvider/SessionProvider";
+import { UserContextProvider } from "@/userContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +24,9 @@ export default async function RootLayout({
     <html lang="pt-br">
       <ThemeProviderComponent>
         <body className={inter.className}>
-          <SessionProvider session={session}>{children}</SessionProvider>
+          <UserContextProvider>
+            <SessionProvider session={session}>{children}</SessionProvider>
+          </UserContextProvider>
         </body>
       </ThemeProviderComponent>
     </html>
