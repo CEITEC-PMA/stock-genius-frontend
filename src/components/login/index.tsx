@@ -119,8 +119,11 @@ export default function LoginPage() {
               if (resJson.usuario.acesso === 0) {
                 const token = resJson.usuario.token;
                 localStorage.setItem("token", token);
-                handleOpenDialog();
+                router.push("/dashboard");
+                // handleOpenDialog();
               } else {
+                const token = resJson.usuario.token;
+                localStorage.setItem("token", token);
                 router.push("/dashboard");
               }
             } else if (response.status === 401) {
