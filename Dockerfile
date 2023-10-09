@@ -1,32 +1,30 @@
-FROM node:alpine AS DEPS
-WORKDIR /usr/app
+# Stage 1
+FROM node:alpine AS deps
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
 COPY package.json package-lock.json ./
-RUN apk add --no-cache git \
-    && npm ci \
-    && rm -rf /root/.npm
-
-FROM node:alpine AS BUILD_IMAGE
-WORKDIR /usr/app
-COPY --from=DEPS /usr/app/node_modules ./node_modules
 COPY . .
-RUN apk add --no-cache git curl \
-    && npm run build \
-    && rm -rf node_modules \
-    && npm ci --omit=dev \
-    && rm -rf /root/.npm
+RUN npm install --omit=dev --production=true
 
-FROM node:alpine as CLEAN
+# Stage 2
+FROM node:alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+ARG HOST_API
+ENV NEXT_PUBLIC_HOST_API=${HOST_API}
+RUN NODE_ENV=production npm run build && npm prune --production
+
+# Stage 3
+FROM node:alpine AS runner
+WORKDIR /app
 ENV NODE_ENV production
-WORKDIR /usr/app
-COPY --from=BUILD_IMAGE /usr/app/package.json /usr/app/package-lock.json ./
-COPY --from=BUILD_IMAGE /usr/app/node_modules ./node_modules
-COPY --from=BUILD_IMAGE /usr/app/public ./public
-COPY --from=BUILD_IMAGE /usr/app/.next ./.next
-COPY --from=BUILD_IMAGE /usr/app/next.config.js ./
-
-FROM node:alpine as PRODUCTION
-WORKDIR /usr/app
-COPY --from=CLEAN /usr/app .
+RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
+COPY --from=builder /app/next.config.js ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+USER nextjs
 EXPOSE 3030
-
-CMD ["npm", "start"]
+ENV PORT 3030
+ENV NEXT_TELEMETRY_DISABLED 1
+CMD ["node", "server.js"]
