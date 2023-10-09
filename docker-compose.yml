@@ -4,6 +4,7 @@ services:
   frontend:
     build:
       dockerfile: Dockerfile
+    restart: always
     networks:
       - host
 
@@ -11,6 +12,7 @@ services:
     build: ./nginx
     ports:
       - 3030:80
+    restart: always
     depends_on:
       - frontend
     networks:
