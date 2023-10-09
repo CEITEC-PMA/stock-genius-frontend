@@ -7,6 +7,11 @@ services:
     restart: always
     networks:
       - host
+    environment:
+      - NEXTAUTH_URL="http://localhost:3030"
+      - NEXTAUTH_SECRET="cyytdoNtqxVc151S+vLNHSOZ6IgT3c2wp6HwLnVtHO0="
+      - GITHUB_ID="ffc6d9c7da6226f956cc"
+      - GITHUB_SECRET="4a39edf619e81dae7209ae402111b7d72cfb8e51"
 
   nginx:
     build: ./nginx
