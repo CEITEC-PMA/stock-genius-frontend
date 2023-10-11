@@ -6,11 +6,12 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, useState } from "react";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
 import { useRouter } from "next/navigation";
 import { apiUrl } from "@/utils/api";
+import { RotatingLines } from "react-loader-spinner";
 
 interface CandidatoClass {
   curso_gestor: string;
@@ -64,9 +65,14 @@ export default function DocslistCard({
 }) {
   const isSmallScreen = useMediaQuery("(max-width: 600px)");
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [buttonColor, setButtonColor] = useState(
+    candidato.docs[categoria]?.file ? "success" : "primary"
+  );
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
+      setIsLoading(true);
       const fileLoaded = e.target.files[0];
       const formData = new FormData();
       formData.append("file", fileLoaded);
@@ -80,6 +86,9 @@ export default function DocslistCard({
           body: formData,
         }
       ).then(() => {
+        setIsLoading(false);
+        alert("Envio concluído");
+        setButtonColor("success");
         router.refresh();
       });
     }
@@ -98,14 +107,32 @@ export default function DocslistCard({
           <Box margin="8px">
             <Typography variant="body1">{name}</Typography>
           </Box>
-          <Box>
+          <Box
+            alignItems="center"
+            display="flex"
+            justifyContent="center"
+            marginLeft="12px"
+            gap="12px"
+          >
+            {isLoading ? (
+              <RotatingLines
+                strokeColor="grey"
+                strokeWidth="4"
+                animationDuration="0.75"
+                width="28"
+                visible={true}
+              />
+            ) : (
+              ""
+            )}
             <Button
               component="label"
+              color={buttonColor}
               variant="contained"
               startIcon={<CloudUploadIcon />}
               sx={{ whiteSpace: "nowrap" }}
             >
-              Escolher arquivo
+              Escolher Arquivo
               <VisuallyHiddenInput
                 onChange={(e) => handleOnChange(e)}
                 type="file"
