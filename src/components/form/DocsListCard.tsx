@@ -66,6 +66,9 @@ export default function DocslistCard({
   const isSmallScreen = useMediaQuery("(max-width: 600px)");
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [buttonColor, setButtonColor] = useState(
+    candidato.docs[categoria]?.file ? "success" : "primary"
+  );
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -85,6 +88,7 @@ export default function DocslistCard({
       ).then(() => {
         setIsLoading(false);
         alert("Envio concluído");
+        setButtonColor("success");
         router.refresh();
       });
     }
@@ -123,11 +127,12 @@ export default function DocslistCard({
             )}
             <Button
               component="label"
+              color={buttonColor}
               variant="contained"
               startIcon={<CloudUploadIcon />}
               sx={{ whiteSpace: "nowrap" }}
             >
-              Escolher arquivo
+              Escolher Arquivo
               <VisuallyHiddenInput
                 onChange={(e) => handleOnChange(e)}
                 type="file"
