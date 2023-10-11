@@ -54,6 +54,8 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
+interface ButtonColor {}
+
 export default function DocslistCard({
   name,
   categoria,
@@ -66,7 +68,7 @@ export default function DocslistCard({
   const isSmallScreen = useMediaQuery("(max-width: 600px)");
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [buttonColor, setButtonColor] = useState(
+  const [buttonColor, setButtonColor] = useState<"success" | "primary">(
     candidato.docs[categoria]?.file ? "success" : "primary"
   );
 
