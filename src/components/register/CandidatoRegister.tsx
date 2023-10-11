@@ -55,7 +55,7 @@ export default function CandidatoRegister({ id }: { id: string }) {
   };
 
   useEffect(() => {
-    const getUserId = async () => {
+    const getCandidatoId = async () => {
       const response = await fetch(
         `${apiUrl}/api/v1/candidato/candidatoId/${id}`,
         {
@@ -67,7 +67,7 @@ export default function CandidatoRegister({ id }: { id: string }) {
       const responseJson = await response.json();
       setCandidato(responseJson.candidato);
     };
-    getUserId();
+    getCandidatoId();
   }, [id, token]);
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
