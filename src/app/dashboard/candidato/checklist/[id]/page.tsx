@@ -2,64 +2,124 @@
 import ChecklistCardWithController from "@/components/checklistCard/checklistCardWithController";
 import { documents } from "@/components/checklistCard/dataChecklist";
 import { Box, Button, Container, Paper, Typography } from "@mui/material";
-import React from "react";
 import { useForm } from "react-hook-form";
+import { useUserContext } from "@/userContext";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { apiUrl } from "@/utils/api";
 
-export default function DocsCandidato() {
-  const nomeUnidade = "Escola Municipal Teste";
-  const nomeCandidato = "Candidato Teste da Silva";
+interface Candidato {
+  candidato: CandidatoClass;
+}
+
+interface CandidatoClass {
+  curso_gestor: string;
+  foto: any[];
+  docs: { [key: string]: Doc };
+  deletado: boolean;
+  _id: string;
+  cpf: string;
+  nome: string;
+  email: string;
+  telefone: string;
+  cargo: string;
+  funcao: string;
+  matricula: number;
+  data_entrada_inst: Date;
+  data_entrada_docencia: Date;
+  tempo_modulacao: string;
+  tempo_docencia: string;
+  protocolo: string;
+  zona: string;
+  createdAt: Date;
+  updatedAt: Date;
+  __v: number;
+}
+
+interface Doc {
+  file: string;
+  original_file: string;
+}
+
+export default function ChecklistCandidato({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const { user, setUser } = useUserContext();
+  const router = useRouter();
+  const [candidato, setCandidato] = useState<CandidatoClass>();
 
   const { control, handleSubmit } = useForm();
+  console.log(typeof candidato);
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-    console.log("enviou");
-  };
+  useEffect(() => {
+    const getDadosCandidato = async (id: string, token: string) => {
+      const response = await fetch(
+        `${apiUrl}/api/v1/candidato/candidatoId/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const responseJson = await response.json();
+      setCandidato(responseJson.candidato);
+      return;
+    };
+    const token = localStorage.getItem("token");
+    if (token) {
+      getDadosCandidato(params.id, token);
+    }
+  }, [params.id]);
+
+  const onSubmit = (data: any) => {};
 
   return (
-    <Container>
-      <Typography variant="h4" textAlign="center">
-        Checklist dos documentos necessários para registro da
-        candidatura/indicação
-      </Typography>
-
-      <Paper sx={{ padding: "12px" }}>
-        <Box margin="0 12px">
-          <Typography variant="h6">
-            Unidade de ensino:{" "}
-            <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
-              {nomeUnidade}
-            </span>
-          </Typography>
-          <Typography variant="h6">
-            Nome do candidato(a)/indicado(a):{" "}
-            <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
-              {nomeCandidato}
-            </span>
-          </Typography>
-        </Box>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {documents.map((document, i) => (
-            <ChecklistCardWithController
-              name={document.name}
-              alt={document.alt}
-              src={document.src}
-              control={control}
-              key={i}
-            />
-          ))}
-          <Box display="flex" justifyContent="center" alignItems="center">
-            <Button
-              type="submit"
-              variant="contained"
-              style={{ margin: "12px" }}
-              fullWidth
-            >
-              Salvar
-            </Button>
+    <Box margin="24px">
+      <Container>
+        <Typography variant="h4" marginBottom="12px" textAlign="center">
+          Checklist dos documentos necessários para registro da
+          candidatura/indicação
+        </Typography>
+        <Paper sx={{ padding: "12px" }}>
+          <Box margin="0 12px">
+            <Typography variant="h6">
+              Unidade de ensino:{" "}
+              <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
+                {user?.nome}
+              </span>
+            </Typography>
+            <Typography variant="h6">
+              Nome do candidato(a)/indicado(a):{" "}
+              <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
+                {candidato?.nome}
+              </span>
+            </Typography>
           </Box>
-        </form>
-      </Paper>
-    </Container>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {documents.map((document, i) => (
+              <ChecklistCardWithController
+                name={document.name}
+                alt={document.alt}
+                src={document.src}
+                control={control}
+                key={i}
+              />
+            ))}
+            <Box display="flex" justifyContent="center" alignItems="center">
+              <Button
+                type="submit"
+                variant="contained"
+                style={{ margin: "12px" }}
+                fullWidth
+              >
+                Salvar
+              </Button>
+            </Box>
+          </form>
+        </Paper>
+      </Container>
+    </Box>
   );
 }

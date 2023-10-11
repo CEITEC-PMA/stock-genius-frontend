@@ -10,7 +10,7 @@ import { UserContextProvider } from "@/userContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "SED",
+  title: "SED - Sistema de Eleição de Diretores",
   description: "Sistema de Eleição de Diretores",
 };
 
