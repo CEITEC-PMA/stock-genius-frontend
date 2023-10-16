@@ -13,8 +13,14 @@ import Link from "next/link";
 
 export default function DataTable() {
   const { user } = useUserContext();
+  const [token, setToken] = useState("" as string | null);
+
+  useEffect(() => {
+    const localStorageToken = localStorage.getItem("token");
+    setToken(localStorageToken);
+  }, []);
+
   const router = useRouter();
-  const token = localStorage.getItem("token");
   const [candidatos, setCandidatos] = useState([]);
 
   const columns: GridColDef[] = [
