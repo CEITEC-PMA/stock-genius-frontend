@@ -159,18 +159,21 @@ export default function CandidatoRegister({ id }: { id: string }) {
             }}
             xs={12}
           >
-            <Avatar
-              alt="User"
-              src={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${candidato.foto[0]}`}
-              sx={{
-                width: { xs: 85, sm: 130, md: 150, lg: 175 },
-                height: { xs: 85, sm: 130, md: 150, lg: 175 },
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                marginBottom: "10px",
-              }}
-            />
+            {cpfSemTraco && (
+              <Avatar
+                alt="User"
+                src={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${candidato.foto[0]}`}
+                sx={{
+                  width: { xs: 85, sm: 130, md: 150, lg: 175 },
+                  height: { xs: 85, sm: 130, md: 150, lg: 175 },
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginBottom: "10px",
+                }}
+              />
+            )}
+
             <Button
               component="label"
               variant="contained"
