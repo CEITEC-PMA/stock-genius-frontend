@@ -28,12 +28,13 @@ export default function DataTable() {
       sortable: false,
       renderCell: (params: GridRenderCellParams) => (
         <div>
-          <Link href={`/dashboard/candidato/register/${params.row._id}`}>
-            <IconButton color="primary" title="Detalhar">
-              <VisibilityIcon />
-            </IconButton>
-          </Link>
-
+          <IconButton
+            color="primary"
+            onClick={(event) => handleDetalhar(event, params.row._id)}
+            title="Detalhar"
+          >
+            <VisibilityIcon />
+          </IconButton>
           <IconButton
             color="primary"
             onClick={(event) => handleEditar(event, params.row._id)}
