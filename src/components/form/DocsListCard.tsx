@@ -12,6 +12,7 @@ import { styled } from "@mui/material/styles";
 import { useRouter } from "next/navigation";
 import { apiUrl } from "@/utils/api";
 import { RotatingLines } from "react-loader-spinner";
+import FindInPageIcon from "@mui/icons-material/FindInPage";
 
 interface CandidatoClass {
   curso_gestor: string;
@@ -96,6 +97,13 @@ export default function DocslistCard({
     }
   };
 
+  let cpfSemTraco = candidato.cpf;
+  if (cpfSemTraco) {
+    cpfSemTraco = cpfSemTraco.replace(".", "");
+    cpfSemTraco = cpfSemTraco.replace(".", "");
+    cpfSemTraco = cpfSemTraco.replace("-", "");
+  }
+
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
       <Paper elevation={2} sx={{ padding: "6px", margin: "12px" }}>
@@ -116,6 +124,16 @@ export default function DocslistCard({
             marginLeft="12px"
             gap="12px"
           >
+            {candidato.docs[categoria]?.file ? (
+              <Button
+                href={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${candidato.docs[categoria]?.file}`}
+                target="_blank"
+              >
+                <FindInPageIcon color="success" />
+              </Button>
+            ) : (
+              ""
+            )}
             {isLoading ? (
               <RotatingLines
                 strokeColor="grey"

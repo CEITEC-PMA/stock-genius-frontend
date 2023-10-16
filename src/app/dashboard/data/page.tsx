@@ -4,18 +4,20 @@ import AttachFileIcon from "@mui/icons-material/AttachFile";
 import IconButton from "@mui/material/IconButton";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Box, Container, Typography } from "@mui/material";
 import { MouseEvent, useEffect, useState } from "react";
 import { useUserContext } from "@/userContext";
 import { apiUrl } from "@/utils/api";
 import { useRouter } from "next/navigation";
+import { Candidato } from "@/utils/types/candidato.types";
 import Link from "next/link";
 
 export default function DataTable() {
   const { user } = useUserContext();
 
   const router = useRouter();
-  const [candidatos, setCandidatos] = useState([]);
+  const [candidatos, setCandidatos] = useState<Candidato[]>([]);
 
   const columns: GridColDef[] = [
     { field: "cpf", headerName: "CPF", width: 130 },
@@ -24,7 +26,7 @@ export default function DataTable() {
     {
       field: "acoes",
       headerName: "Ações",
-      width: 130,
+      width: 180,
       sortable: false,
       renderCell: (params: GridRenderCellParams) => (
         <div>
@@ -41,6 +43,13 @@ export default function DataTable() {
             title="Inserir"
           >
             <AttachFileIcon />
+          </IconButton>
+          <IconButton
+            color="primary"
+            onClick={(event) => handleDeletar(event, params.row._id)}
+            title="Remover"
+          >
+            <DeleteIcon />
           </IconButton>
           <IconButton
             color="primary"
@@ -69,6 +78,35 @@ export default function DataTable() {
     event.stopPropagation();
     console.log(id);
     router.push(`/dashboard/candidato/docs/${id}`);
+  };
+
+  const handleDeletar = async (
+    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+    id: string
+  ) => {
+    event.stopPropagation();
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${apiUrl}/api/v1/candidato/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const updatedCandidatos = candidatos.filter(
+          (candidato) => candidato._id !== id
+        );
+        console.log("deletado");
+        setCandidatos(updatedCandidatos);
+      } else {
+        console.error("Erro ao excluir candidato. Else!!!!");
+      }
+    } catch (error) {
+      console.error("Erro ao excluir candidato:", error);
+    }
   };
 
   const handleValidar = (
