@@ -17,11 +17,11 @@ import FoneInput from "../inputs/FoneInput";
 import SelectInput from "../inputs/SelectInput";
 
 interface FormBuilderDTO {
-  formDTOs: RegisterDTO[];
+  formDTOs: any[];
   onSubmit: SubmitHandler<any>;
-  control: Control<CandidatoInputs, any>;
+  control: Control<any>;
   handleSubmit: UseFormHandleSubmit<any, undefined>;
-  errors: FieldErrors<CandidatoInputs>;
+  errors: FieldErrors<any>;
 }
 
 export default function FormBuilder({

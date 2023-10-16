@@ -30,6 +30,13 @@ export default function CandidatoRegisterSemFoto() {
   const [candidato, setCandidato] = useState({ foto: [], cpf: "" });
   const { user, setUser } = useUserContext();
 
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm<CandidatoInputs>({ mode: "onBlur" });
+
   const router = useRouter();
 
   function FormataStringData(data: string) {
@@ -64,6 +71,14 @@ export default function CandidatoRegisterSemFoto() {
     cpfSemTraco = cpfSemTraco.replace(".", "");
     cpfSemTraco = cpfSemTraco.replace("-", "");
   }
+
+  const formBuilderDTO = {
+    formDTOs: registerDTOs,
+    onSubmit,
+    control,
+    handleSubmit,
+    errors,
+  };
 
   return (
     <Paper elevation={2}>
@@ -103,7 +118,7 @@ export default function CandidatoRegisterSemFoto() {
           ></Grid>
         </Grid>
         <Grid item xs={12} sm={12}>
-          <FormBuilder onSubmit={onSubmit} formDTOs={registerDTOs} />
+          <FormBuilder formBuilderDTO={formBuilderDTO} />
         </Grid>
       </Grid>
     </Paper>
