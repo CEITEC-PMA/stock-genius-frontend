@@ -76,6 +76,7 @@ export default function DataTable() {
     id: string
   ) => {
     event.stopPropagation();
+    router.push(`/dashboard/candidato/checklist/${id}`);
   };
 
   useEffect(() => {
