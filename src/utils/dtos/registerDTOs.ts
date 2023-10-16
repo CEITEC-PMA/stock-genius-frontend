@@ -133,7 +133,6 @@ const dataInicioDocencia: RegisterDTO = {
 
 export const registerDTOs = [
   nomeDTO,
-  cpfDTO,
   emailDTO,
   telefoneDTO,
   cargoDTO,
