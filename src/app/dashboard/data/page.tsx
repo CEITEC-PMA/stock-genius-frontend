@@ -9,6 +9,7 @@ import { MouseEvent, useEffect, useState } from "react";
 import { useUserContext } from "@/userContext";
 import { apiUrl } from "@/utils/api";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function DataTable() {
   const { user } = useUserContext();
@@ -27,13 +28,12 @@ export default function DataTable() {
       sortable: false,
       renderCell: (params: GridRenderCellParams) => (
         <div>
-          <IconButton
-            color="primary"
-            onClick={(event) => handleDetalhar(event, params.row._id)}
-            title="Detalhar"
-          >
-            <VisibilityIcon />
-          </IconButton>
+          <Link href={`/dashboard/candidato/register/${params.row._id}`}>
+            <IconButton color="primary" title="Detalhar">
+              <VisibilityIcon />
+            </IconButton>
+          </Link>
+
           <IconButton
             color="primary"
             onClick={(event) => handleEditar(event, params.row._id)}
