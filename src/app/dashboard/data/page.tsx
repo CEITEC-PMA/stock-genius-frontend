@@ -13,12 +13,6 @@ import Link from "next/link";
 
 export default function DataTable() {
   const { user } = useUserContext();
-  const [token, setToken] = useState("" as string | null);
-
-  useEffect(() => {
-    const localStorageToken = localStorage.getItem("token");
-    setToken(localStorageToken);
-  }, []);
 
   const router = useRouter();
   const [candidatos, setCandidatos] = useState([]);
@@ -85,6 +79,7 @@ export default function DataTable() {
 
   useEffect(() => {
     //fetch
+    const token = localStorage.getItem("token");
     if (user._id) {
       const getDadosCandidatos = async () => {
         const response = await fetch(
@@ -100,7 +95,7 @@ export default function DataTable() {
       };
       getDadosCandidatos();
     }
-  }, [token, user._id]);
+  }, [user._id]);
   return (
     <Box margin="24px">
       <Container>
