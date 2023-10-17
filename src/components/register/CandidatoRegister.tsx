@@ -52,7 +52,7 @@ export default function CandidatoRegister({ id }: { id: string }) {
   const [token, setToken] = useState("" as string | null);
   const router = useRouter();
 
-  const onSubmit: SubmitHandler<CandidatoInputs> = async (data) => {
+  const onSubmit: SubmitHandler<CandidatoInputs> = async (data: any) => {
     const response = await fetch(
       `${apiUrl}/api/v1/candidato/${candidato._id}`,
       {
@@ -66,7 +66,7 @@ export default function CandidatoRegister({ id }: { id: string }) {
     );
   };
 
-  function converterData(dataOriginal) {
+  function converterData(dataOriginal: string) {
     // Criar um objeto Date a partir da data original
     const data = new Date(dataOriginal);
 
