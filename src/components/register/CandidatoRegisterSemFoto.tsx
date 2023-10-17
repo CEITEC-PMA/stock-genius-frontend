@@ -30,6 +30,13 @@ export default function CandidatoRegisterSemFoto() {
   const [candidato, setCandidato] = useState({ foto: [], cpf: "" });
   const { user, setUser } = useUserContext();
 
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm<CandidatoInputs>({ mode: "onBlur" });
+
   const router = useRouter();
 
   function FormataStringData(data: string) {
@@ -45,6 +52,22 @@ export default function CandidatoRegisterSemFoto() {
     data.zona = user._id;
     data.data_entrada_inst = FormataStringData(data.data_entrada_inst);
     data.data_entrada_docencia = FormataStringData(data.data_entrada_docencia);
+
+    const dataEntradaUnidade = new Date(data.data_entrada_inst);
+    var dataCorteUnidade = new Date("2021-10-17");
+    var dataCorteDocencia = new Date("2020-10-17");
+    if (dataEntradaUnidade > dataCorteUnidade) {
+      alert("Data de inicio na unidade superior ao ponto de corte (2 ANOS)");
+      return;
+    }
+
+    const dataEntradaDocencia = new Date(data.data_entrada_docencia);
+    var dataCorteDocencia = new Date("2020-10-17");
+    if (dataEntradaDocencia > dataCorteDocencia) {
+      alert("Data de docência superior ao ponto de corte (3 ANOS)");
+      return;
+    }
+
     const response = await fetch(`${apiUrl}/api/v1/candidato/`, {
       method: "POST",
       body: JSON.stringify(data),
@@ -64,6 +87,14 @@ export default function CandidatoRegisterSemFoto() {
     cpfSemTraco = cpfSemTraco.replace(".", "");
     cpfSemTraco = cpfSemTraco.replace("-", "");
   }
+
+  const formBuilderDTO = {
+    formDTOs: registerDTOs,
+    onSubmit,
+    control,
+    handleSubmit,
+    errors,
+  };
 
   return (
     <Paper elevation={2}>
@@ -103,7 +134,7 @@ export default function CandidatoRegisterSemFoto() {
           ></Grid>
         </Grid>
         <Grid item xs={12} sm={12}>
-          <FormBuilder onSubmit={onSubmit} formDTOs={registerDTOs} />
+          <FormBuilder formBuilderDTO={formBuilderDTO} />
         </Grid>
       </Grid>
     </Paper>

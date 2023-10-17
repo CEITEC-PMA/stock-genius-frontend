@@ -7,6 +7,8 @@ import { useUserContext } from "@/userContext";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { apiUrl } from "@/utils/api";
+import SelectInput from "@/components/inputs/SelectInput";
+import { analiseCandidaturaDTO } from "@/utils/dtos/analiseDTO";
 
 interface Candidato {
   candidato: CandidatoClass;
@@ -50,8 +52,11 @@ export default function ChecklistCandidato({
   const router = useRouter();
   const [candidato, setCandidato] = useState<CandidatoClass>();
 
-  const { control, handleSubmit } = useForm();
-  console.log(typeof candidato);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   useEffect(() => {
     const getDadosCandidato = async (id: string, token: string) => {
@@ -73,7 +78,9 @@ export default function ChecklistCandidato({
     }
   }, [params.id]);
 
-  const onSubmit = (data: any) => {};
+  const onSubmit = (data: any) => {
+    console.log(data);
+  };
 
   return (
     <Box margin="24px">
@@ -107,6 +114,11 @@ export default function ChecklistCandidato({
                 key={i}
               />
             ))}
+            <SelectInput
+              control={control}
+              errors={errors}
+              inputDTO={analiseCandidaturaDTO}
+            />
             <Box display="flex" justifyContent="center" alignItems="center">
               <Button
                 type="submit"

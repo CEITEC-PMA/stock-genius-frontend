@@ -2,7 +2,13 @@ import { Button, Container, Grid } from "@mui/material";
 import React from "react";
 import { RegisterDTO } from "@/utils/dtos/registerDTOs";
 import TextInput from "../inputs/TextInput";
-import { SubmitHandler, useForm } from "react-hook-form";
+import {
+  Control,
+  FieldErrors,
+  SubmitHandler,
+  UseFormHandleSubmit,
+  useForm,
+} from "react-hook-form";
 import { CandidatoInputs } from "../register/CandidatoRegister";
 import EmailInput from "../inputs/EmailInput";
 import CpfInput from "../inputs/CpfInput";
@@ -10,20 +16,20 @@ import DateInput from "../inputs/DateInput";
 import FoneInput from "../inputs/FoneInput";
 import SelectInput from "../inputs/SelectInput";
 
-interface FormBuilderProps {
-  onSubmit: SubmitHandler<any>;
+interface FormBuilderDTO {
   formDTOs: any[];
+  onSubmit: SubmitHandler<any>;
+  control: Control<any>;
+  handleSubmit: UseFormHandleSubmit<any, undefined>;
+  errors: FieldErrors<any>;
 }
 
-export default function FormBuilder({ onSubmit, formDTOs }: FormBuilderProps) {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<CandidatoInputs>({ mode: "onBlur" });
-
-  console.log(errors);
-
+export default function FormBuilder({
+  formBuilderDTO,
+}: {
+  formBuilderDTO: FormBuilderDTO;
+}) {
+  const { control, errors, handleSubmit, onSubmit, formDTOs } = formBuilderDTO;
   const renderInput = (dto: RegisterDTO) => {
     switch (dto.input) {
       case "text":

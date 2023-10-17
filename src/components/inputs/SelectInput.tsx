@@ -11,9 +11,9 @@ import { CandidatoInputs } from "../register/CandidatoRegister";
 import { RegisterDTO } from "@/utils/dtos/registerDTOs";
 
 interface SelectInputProps {
-  control: Control<CandidatoInputs, any>;
-  errors: FieldErrors<CandidatoInputs>;
-  inputDTO: RegisterDTO;
+  control: Control<any>;
+  errors: FieldErrors<any>;
+  inputDTO: any;
 }
 
 export default function SelectInput({

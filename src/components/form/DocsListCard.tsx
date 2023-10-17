@@ -125,7 +125,11 @@ export default function DocslistCard({
             marginLeft="12px"
             gap="12px"
           >
+<<<<<<< HEAD
             {hasDoc ? (
+=======
+            {candidato.docs[categoria]?.file ? (
+>>>>>>> main
               <Button
                 href={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${candidato.docs[categoria]?.file}`}
                 target="_blank"
