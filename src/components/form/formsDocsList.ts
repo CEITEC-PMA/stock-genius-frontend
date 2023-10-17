@@ -2,47 +2,47 @@ export const documentsList = [
   {
     id: 1,
     name: "Requerimento de registro do candidato(a)/indicado(a) a Gestor(a)",
-    categoria: "doc_1",
+    categoria: "doc_01",
   },
   {
     id: 2,
     name: "Ficha de qualificação do(a) candidato(a)/indicado(a)",
-    categoria: "doc_2",
+    categoria: "doc_02",
   },
   {
     id: 3,
     name: "Cópia do título de habilitação profissional autenticada em cartório",
-    categoria: "doc_3",
+    categoria: "doc_03",
   },
   {
     id: 4,
     name: "Cópia da Proposta de Trabalho, em consonância com o Projeto Político Pedagógico da Unidade de Ensino",
-    categoria: "doc_4",
+    categoria: "doc_04",
   },
   {
     id: 5,
     name: "Declaração de disponibilidade para dedicação exclusiva",
-    categoria: "doc_5",
+    categoria: "doc_05",
   },
   {
     id: 6,
     name: "Cópia do certificado do curso de Formação Continuada para Gestores, realizado no biênio 2022-2023, devidamente autenticado em cartório ou Declaração do CEFOPE comprovando a aprovação na formação",
-    categoria: "doc_6",
+    categoria: "doc_06",
   },
   {
     id: 7,
     name: "Declaração de efetivo exercício na Rede Municipal de Ensino",
-    categoria: "doc_7",
+    categoria: "doc_07",
   },
   {
     id: 8,
     name: "Certificado do curso de Formação Básica para candidatos/indicados a gestores para o biênio 2024/2025 oferecido pela SEMED",
-    categoria: "doc_8",
+    categoria: "doc_08",
   },
   {
     id: 9,
     name: "Certidão Negativa Criminal e Cível Estadual",
-    categoria: "doc_9",
+    categoria: "doc_09",
   },
   {
     id: 10,

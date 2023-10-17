@@ -12,6 +12,7 @@ import { styled } from "@mui/material/styles";
 import { useRouter } from "next/navigation";
 import { apiUrl } from "@/utils/api";
 import { RotatingLines } from "react-loader-spinner";
+import FindInPageIcon from "@mui/icons-material/FindInPage";
 
 interface CandidatoClass {
   curso_gestor: string;
@@ -54,6 +55,8 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
+interface ButtonColor {}
+
 export default function DocslistCard({
   name,
   categoria,
@@ -66,9 +69,10 @@ export default function DocslistCard({
   const isSmallScreen = useMediaQuery("(max-width: 600px)");
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [buttonColor, setButtonColor] = useState(
+  const [buttonColor, setButtonColor] = useState<"success" | "primary">(
     candidato.docs[categoria]?.file ? "success" : "primary"
   );
+  const [hasDoc, setHasDoc] = useState(!!candidato.docs[categoria]?.file);
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -89,10 +93,17 @@ export default function DocslistCard({
         setIsLoading(false);
         alert("Envio concluído");
         setButtonColor("success");
-        router.refresh();
+        setHasDoc(true);
       });
     }
   };
+
+  let cpfSemTraco = candidato.cpf;
+  if (cpfSemTraco) {
+    cpfSemTraco = cpfSemTraco.replace(".", "");
+    cpfSemTraco = cpfSemTraco.replace(".", "");
+    cpfSemTraco = cpfSemTraco.replace("-", "");
+  }
 
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -114,6 +125,16 @@ export default function DocslistCard({
             marginLeft="12px"
             gap="12px"
           >
+            {hasDoc ? (
+              <Button
+                href={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${candidato.docs[categoria]?.file}`}
+                target="_blank"
+              >
+                <FindInPageIcon color="success" />
+              </Button>
+            ) : (
+              ""
+            )}
             {isLoading ? (
               <RotatingLines
                 strokeColor="grey"
