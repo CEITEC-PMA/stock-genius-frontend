@@ -52,6 +52,22 @@ export default function CandidatoRegisterSemFoto() {
     data.zona = user._id;
     data.data_entrada_inst = FormataStringData(data.data_entrada_inst);
     data.data_entrada_docencia = FormataStringData(data.data_entrada_docencia);
+
+    const dataEntradaUnidade = new Date(data.data_entrada_inst);
+    var dataCorteUnidade = new Date("2021-10-17");
+    var dataCorteDocencia = new Date("2020-10-17");
+    if (dataEntradaUnidade > dataCorteUnidade) {
+      alert("Data de inicio na unidade superior ao ponto de corte (2 ANOS)");
+      return;
+    }
+
+    const dataEntradaDocencia = new Date(data.data_entrada_docencia);
+    var dataCorteDocencia = new Date("2020-10-17");
+    if (dataEntradaDocencia > dataCorteDocencia) {
+      alert("Data de docência superior ao ponto de corte (3 ANOS)");
+      return;
+    }
+
     const response = await fetch(`${apiUrl}/api/v1/candidato/`, {
       method: "POST",
       body: JSON.stringify(data),
