@@ -35,7 +35,7 @@ export default function SelectInput({
             label={inputDTO.label}
             labelId={`label-${inputDTO.name}`}
           >
-            {inputDTO.selectFields?.map((field, i) => (
+            {inputDTO.selectFields?.map((field: any, i: number) => (
               <MenuItem key={i} value={field.value}>
                 {field.label}
               </MenuItem>
