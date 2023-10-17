@@ -66,6 +66,23 @@ export default function CandidatoRegister({ id }: { id: string }) {
     );
   };
 
+  function converterData(dataOriginal) {
+    // Criar um objeto Date a partir da data original
+    const data = new Date(dataOriginal);
+
+    // Extrair o dia, mês e ano da data
+    const dia = data.getDate();
+    const mes = data.getMonth() + 1; // Lembre-se de que os meses em JavaScript são indexados a partir de 0, então adicionamos 1.
+    const ano = data.getFullYear();
+
+    // Formatar a data no formato desejado
+    const dataFormatada = `${dia.toString().padStart(2, "0")}/${mes
+      .toString()
+      .padStart(2, "0")}/${ano}`;
+
+    return dataFormatada;
+  }
+
   useEffect(() => {
     const localToken = localStorage.getItem("token");
     setToken(localToken);
@@ -82,8 +99,14 @@ export default function CandidatoRegister({ id }: { id: string }) {
       setValue("funcao", candidato.funcao);
       setValue("cargo", candidato.cargo);
       setValue("curso_gestor", candidato.curso_gestor);
-      setValue("data_entrada_inst", candidato.data_entrada_inst);
-      setValue("data_entrada_docencia", candidato.data_entrada_docencia);
+      console.log("data_entrada_inst", candidato.data_entrada_inst);
+      const dataFormatada = converterData(candidato.data_entrada_inst);
+
+      setValue("data_entrada_inst", converterData(candidato.data_entrada_inst));
+      setValue(
+        "data_entrada_docencia",
+        converterData(candidato.data_entrada_docencia)
+      );
     }
   }, [candidato, setValue]);
 
