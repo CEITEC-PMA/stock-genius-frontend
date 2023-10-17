@@ -68,19 +68,16 @@ export default function CandidatoRegisterSemFoto() {
       return;
     }
 
-    console.log(dataEntradaUnidade.getTime());
-    console.log(data.data_entrada_inst);
-
-    // const response = await fetch(${apiUrl}/api/v1/candidato/, {
-    //   method: "POST",
-    //   body: JSON.stringify(data),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // }).then((response) => {
-    //   alert("candidato cadastrado com sucesso");
-    //   router.push("/dashboard/data");
-    // });
+    const response = await fetch(`${apiUrl}/api/v1/candidato/`, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+      alert("candidato cadastrado com sucesso");
+      router.push("/dashboard/data");
+    });
   };
 
   console.log(candidato);
