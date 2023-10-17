@@ -72,6 +72,7 @@ export default function DocslistCard({
   const [buttonColor, setButtonColor] = useState<"success" | "primary">(
     candidato.docs[categoria]?.file ? "success" : "primary"
   );
+  const [hasDoc, setHasDoc] = useState(!!candidato.docs[categoria]?.file);
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -92,7 +93,7 @@ export default function DocslistCard({
         setIsLoading(false);
         alert("Envio concluído");
         setButtonColor("success");
-        router.refresh();
+        setHasDoc(true);
       });
     }
   };
@@ -124,7 +125,7 @@ export default function DocslistCard({
             marginLeft="12px"
             gap="12px"
           >
-            {candidato.docs[categoria]?.file ? (
+            {hasDoc ? (
               <Button
                 href={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${candidato.docs[categoria]?.file}`}
                 target="_blank"
