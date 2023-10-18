@@ -67,7 +67,7 @@ export default function CandidatoRegister({ id }: { id: string }) {
     );
   };
 
-  function converterData(dataOriginal) {
+  function converterData(dataOriginal: string) {
     // Criar um objeto Date a partir da data original
     const data = new Date(dataOriginal);
 
