@@ -6,7 +6,7 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState, useEffect } from "react";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
 import { useRouter } from "next/navigation";
@@ -72,9 +72,13 @@ export default function DocslistCard({
   const [buttonColor, setButtonColor] = useState<"success" | "primary">(
     candidato.docs[categoria]?.file ? "success" : "primary"
   );
-  const [fileLink, setFileLink] = useState(null);
+  const [fileLink, setFileLink] = useState("");
 
   const [hasDoc, setHasDoc] = useState(!!candidato.docs[categoria]?.file);
+
+  useEffect(() => {
+    setFileLink(candidato.docs[categoria]?.file);
+  }, [candidato.docs, categoria]);
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
