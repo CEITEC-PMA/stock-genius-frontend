@@ -52,7 +52,7 @@ export default function AppBarComponent({
 
   const handleOnClick = () => {
     localStorage.removeItem("token");
-    router.push("/login");
+    router.push("/");
   };
 
   const AppBar = styled(MuiAppBar, {
