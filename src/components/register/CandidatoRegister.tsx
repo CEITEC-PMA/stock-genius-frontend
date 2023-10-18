@@ -53,7 +53,13 @@ export default function CandidatoRegister({ id }: { id: string }) {
   const router = useRouter();
   const [fotoCandidato, setFotoCandidato] = useState("");
 
-  const onSubmit: SubmitHandler<CandidatoInputs> = async (data: any) => {
+  const onSubmit: SubmitHandler<CandidatoInputs> = async (data) => {
+    const toDate = (dateStr: string) => {
+      const [day, month, year] = dateStr.split("/");
+      return `${year}-${month}-${day}`;
+    };
+    data.data_entrada_inst = toDate(data.data_entrada_inst);
+    data.data_entrada_docencia = toDate(data.data_entrada_docencia);
     const response = await fetch(
       `${apiUrl}/api/v1/candidato/${candidato._id}`,
       {
@@ -98,6 +104,13 @@ export default function CandidatoRegister({ id }: { id: string }) {
 
   useEffect(() => {
     if (candidato.nome) {
+      const dataInst = new Date(candidato.data_entrada_inst).toLocaleDateString(
+        "pt-BR",
+        { timeZone: "UTC" }
+      );
+      const dataDocencia = new Date(
+        candidato.data_entrada_docencia
+      ).toLocaleDateString("pt-BR", { timeZone: "UTC" });
       setValue("nome", candidato.nome);
       setValue("cpf", candidato.cpf);
       setValue("matricula", candidato.matricula);
@@ -106,14 +119,8 @@ export default function CandidatoRegister({ id }: { id: string }) {
       setValue("funcao", candidato.funcao);
       setValue("cargo", candidato.cargo);
       setValue("curso_gestor", candidato.curso_gestor);
-      console.log("data_entrada_inst", candidato.data_entrada_inst);
-      const dataFormatada = converterData(candidato.data_entrada_inst);
-
-      setValue("data_entrada_inst", converterData(candidato.data_entrada_inst));
-      setValue(
-        "data_entrada_docencia",
-        converterData(candidato.data_entrada_docencia)
-      );
+      setValue("data_entrada_inst", dataInst);
+      setValue("data_entrada_docencia", dataDocencia);
     }
   }, [candidato, setValue]);
 
