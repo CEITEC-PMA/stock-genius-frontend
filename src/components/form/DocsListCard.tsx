@@ -72,6 +72,8 @@ export default function DocslistCard({
   const [buttonColor, setButtonColor] = useState<"success" | "primary">(
     candidato.docs[categoria]?.file ? "success" : "primary"
   );
+  const [fileLink, setFileLink] = useState(null);
+
   const [hasDoc, setHasDoc] = useState(!!candidato.docs[categoria]?.file);
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -89,12 +91,22 @@ export default function DocslistCard({
           method: "PUT",
           body: formData,
         }
-      ).then(() => {
-        setIsLoading(false);
-        alert("Envio concluído");
-        setButtonColor("success");
-        setHasDoc(true);
-      });
+      )
+        .then(async (res) => {
+          const resJSON = await res.json();
+          setFileLink(resJSON.candidato.docs[categoria].file);
+          setIsLoading(false);
+          alert("Envio concluído");
+          setButtonColor("success");
+          router.refresh();
+          setHasDoc(true);
+        })
+        .catch((error) => {
+          alert("Falha no envio do documento!");
+          setIsLoading(false);
+          router.refresh();
+          console.log(error);
+        });
     }
   };
 
@@ -127,7 +139,7 @@ export default function DocslistCard({
           >
             {hasDoc ? (
               <Button
-                href={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${candidato.docs[categoria]?.file}`}
+                href={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${fileLink}`}
                 target="_blank"
               >
                 <FindInPageIcon color="success" />
