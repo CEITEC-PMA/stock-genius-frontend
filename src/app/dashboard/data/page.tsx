@@ -51,13 +51,13 @@ export default function DataTable() {
           >
             <DeleteIcon />
           </IconButton>
-          <IconButton
+          {/* <IconButton
             color="primary"
             onClick={(event) => handleValidar(event, params.row._id)}
             title="Analisar"
           >
             <CheckCircleIcon />
-          </IconButton>
+          </IconButton> */}
         </div>
       ),
     },
