@@ -1,7 +1,6 @@
 'use client'
 import { Box, Typography, Paper, useMediaQuery, useTheme } from "@mui/material";
 
-import girl from "../../../public/girl.jpeg"
 import Image from 'next/image'
 
 export default function DashboardPage() {
@@ -10,17 +9,17 @@ export default function DashboardPage() {
   const mdDown = useMediaQuery(theme.breakpoints.down('md'))
   return (
     <>
-      <Box display='flex' flexDirection="column" justifyContent='space-around' height='100vh' >
-        <Box flex={1}>
+      <Box display='flex' flexDirection="column" justifyContent='space-around' height='100%' >
+        <Box marginY={2} >
           <Typography variant={smDown ? 'h6' : mdDown ? 'h5' : 'h4'} textAlign="center" marginTop={2} color=" #0f4c81" >
             ELEIÇÕES MUNICIPAIS DE DIRETORES BIÊNIO 2024/25
           </Typography>
         </Box>
 
-        <Box component={Paper} boxSizing="border-box" overflow="hidden" display='flex' justifyContent='center' marginX={2} >
+        <Box component={Paper} elevation={0} boxSizing="border-box" overflow="hidden" display='flex' justifyContent='center' marginX={2} borderRadius={2}  >
           <Image
             height={462.28}
-            src={girl}
+            src="https://api.anapolis.go.gov.br/apiupload/documentos/eleicao/girl.jpeg"
             width={693.85}
 
             style={{
@@ -30,8 +29,8 @@ export default function DashboardPage() {
             alt="Estudante" />
         </Box>
 
-        <Box marginX={2} paddingY={3} display="flex" alignItems='center' flex={1}>
-          <Typography textAlign='center' mt={3} variant="body1" color=" #0f4c81">
+        <Box marginX={1} paddingY={3} display="flex" alignItems='center'  >
+          <Typography textAlign='center' mt={mdDown ? '1' : '3'} variant="body1" color=" #0f4c81">
             Bem-vindo à nossa plataforma de eleição de diretores escolares, uma ferramenta crucial para moldar o futuro da educação em nossa comunidade. Aqui, reconhecemos a importância fundamental das eleições de diretores para aprimorar e fortalecer nossa comunidade escolar.
           </Typography>
         </Box>
