@@ -2,7 +2,9 @@ import { Divider, IconButton, List, Toolbar, styled } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { PersonAddAlt1, AccountBox } from "@mui/icons-material";
+import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import ListItems from "./listItems";
+import { useUserContext } from "@/userContext";
 
 //import { mainListItems } from "./ListItems";
 interface DrawerProps {
@@ -16,6 +18,7 @@ export default function DrawerComponent({
   toggleDrawer,
   drawerWidth,
 }: DrawerProps) {
+  const { user } = useUserContext();
   const Drawer = styled(MuiDrawer, {
     shouldForwardProp: (prop) => prop !== "open",
   })(({ theme, open }) => ({
@@ -41,6 +44,7 @@ export default function DrawerComponent({
       }),
     },
   }));
+  // const userRole =
 
   return (
     <Drawer variant="permanent" open={open}>
@@ -71,6 +75,15 @@ export default function DrawerComponent({
           icon={<AccountBox />}
           to="/dashboard/data"
         />
+        {user.role?.includes("super-adm") ? (
+          <ListItems
+            label="Lista de Candidatos"
+            icon={<RotateLeftIcon />}
+            to="/dashboard/settings"
+          />
+        ) : (
+          ""
+        )}
       </List>
     </Drawer>
   );
