@@ -1,6 +1,6 @@
 'use client'
-import { Box, Card, Typography, CardMedia, CardContent, CardActions, Button, Paper, useMediaQuery, useTheme } from "@mui/material";
-import { Sriracha } from "next/font/google";
+import { Box, Typography, Paper, useMediaQuery, useTheme } from "@mui/material";
+
 import girl from "../../../public/girl.jpeg"
 import Image from 'next/image'
 
