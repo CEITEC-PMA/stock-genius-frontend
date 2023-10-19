@@ -16,17 +16,19 @@ export default function DashboardPage() {
           </Typography>
         </Box>
 
-        <Box component={Paper} elevation={0} boxSizing="border-box" overflow="hidden" display='flex' justifyContent='center' marginX={2} borderRadius={2}  >
-          <Image
-            height={462.28}
-            src="https://api.anapolis.go.gov.br/apiupload/documentos/eleicao/girl.jpeg"
-            width={693.85}
+        <Box boxSizing="border-box" overflow="hidden" display='flex' justifyContent='center' marginX={2} borderRadius={2}  >
+          <Box boxSizing="border-box" overflow="hidden" borderRadius={5} display="flex" justifyContent="center" alignItems="center">
+            <Image
+              height={462.28}
+              src="https://api.anapolis.go.gov.br/apiupload/documentos/eleicao/girl.jpeg"
+              width={693.85}
 
-            style={{
-              maxWidth: '100%',
-              height: 'auto'
-            }}
-            alt="Estudante" />
+              style={{
+                maxWidth: '100%',
+                height: 'auto'
+              }}
+              alt="Estudante" />
+          </Box>
         </Box>
 
         <Box marginX={1} paddingY={3} display="flex" alignItems='center'  >
