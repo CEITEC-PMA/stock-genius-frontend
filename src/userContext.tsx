@@ -2,8 +2,11 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from "react";
 
 type User = {
-  nome: string;
   _id: string;
+  nome: string;
+  role?: string[];
+  acesso?: number;
+  token?: string;
 };
 
 type UserContextType = {
