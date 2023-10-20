@@ -11,9 +11,9 @@ import { CandidatoInputs } from "../register/CandidatoRegister";
 import { RegisterDTO } from "@/utils/dtos/registerDTOs";
 
 interface SelectInputProps {
-  control: Control<CandidatoInputs, any>;
-  errors: FieldErrors<CandidatoInputs>;
-  inputDTO: RegisterDTO;
+  control: Control<any>;
+  errors: FieldErrors<any>;
+  inputDTO: any;
 }
 
 export default function SelectInput({
@@ -35,7 +35,7 @@ export default function SelectInput({
             label={inputDTO.label}
             labelId={`label-${inputDTO.name}`}
           >
-            {inputDTO.selectFields?.map((field, i) => (
+            {inputDTO.selectFields?.map((field: any, i: number) => (
               <MenuItem key={i} value={field.value}>
                 {field.label}
               </MenuItem>
