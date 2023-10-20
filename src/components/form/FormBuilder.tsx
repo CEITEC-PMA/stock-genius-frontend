@@ -15,6 +15,7 @@ import CpfInput from "../inputs/CpfInput";
 import DateInput from "../inputs/DateInput";
 import FoneInput from "../inputs/FoneInput";
 import SelectInput from "../inputs/SelectInput";
+import { isOutOfDeadline } from "@/utils/deadline";
 
 interface FormBuilderDTO {
   formDTOs: any[];
@@ -62,6 +63,7 @@ export default function FormBuilder({
         <Grid container justifyContent="center" spacing={2}>
           <Grid item>
             <Button
+              disabled={isOutOfDeadline}
               type="submit"
               variant="contained"
               style={{ margin: "12px" }}

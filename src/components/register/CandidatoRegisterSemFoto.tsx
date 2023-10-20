@@ -80,7 +80,6 @@ export default function CandidatoRegisterSemFoto() {
     });
   };
 
-  console.log(candidato);
   let cpfSemTraco = candidato.cpf;
   if (cpfSemTraco) {
     cpfSemTraco = cpfSemTraco.replace(".", "");

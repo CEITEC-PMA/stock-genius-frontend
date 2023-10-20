@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { apiUrl } from "@/utils/api";
 import { RotatingLines } from "react-loader-spinner";
 import FindInPageIcon from "@mui/icons-material/FindInPage";
+import { isOutOfDeadline } from "@/utils/deadline";
 
 interface CandidatoClass {
   curso_gestor: string;
@@ -151,7 +152,7 @@ export default function DocslistCard({
             ) : (
               ""
             )}
-            {isLoading ? (
+            {isLoading && (
               <RotatingLines
                 strokeColor="grey"
                 strokeWidth="4"
@@ -159,22 +160,22 @@ export default function DocslistCard({
                 width="28"
                 visible={true}
               />
-            ) : (
-              ""
             )}
-            <Button
-              component="label"
-              color={buttonColor}
-              variant="contained"
-              startIcon={<CloudUploadIcon />}
-              sx={{ whiteSpace: "nowrap" }}
-            >
-              Escolher Arquivo
-              <VisuallyHiddenInput
-                onChange={(e) => handleOnChange(e)}
-                type="file"
-              />
-            </Button>
+            {!isOutOfDeadline && (
+              <Button
+                component="label"
+                color={buttonColor}
+                variant="contained"
+                startIcon={<CloudUploadIcon />}
+                sx={{ whiteSpace: "nowrap" }}
+              >
+                Escolher Arquivo
+                <VisuallyHiddenInput
+                  onChange={(e) => handleOnChange(e)}
+                  type="file"
+                />
+              </Button>
+            )}
           </Box>
         </Box>
       </Paper>
