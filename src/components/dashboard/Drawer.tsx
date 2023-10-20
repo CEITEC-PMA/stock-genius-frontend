@@ -5,7 +5,7 @@ import { PersonAddAlt1, AccountBox } from "@mui/icons-material";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import ListItems from "./listItems";
 import { useUserContext } from "@/userContext";
-import { isOutOfDeadline } from "@/utils/deadline";
+import useTimeCheck from "@/hooks/useTimeCheck";
 
 //import { mainListItems } from "./ListItems";
 interface DrawerProps {
@@ -46,6 +46,8 @@ export default function DrawerComponent({
     },
   }));
 
+  const isBeforeDeadline = useTimeCheck();
+
   return (
     <Drawer variant="permanent" open={open}>
       <Toolbar
@@ -64,7 +66,7 @@ export default function DrawerComponent({
       <Divider />
 
       <List component="nav">
-        {!isOutOfDeadline && (
+        {isBeforeDeadline && (
           <ListItems
             label="Registrar Candidato"
             icon={<PersonAddAlt1 />}
