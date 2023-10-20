@@ -15,7 +15,7 @@ import CpfInput from "../inputs/CpfInput";
 import DateInput from "../inputs/DateInput";
 import FoneInput from "../inputs/FoneInput";
 import SelectInput from "../inputs/SelectInput";
-import { isOutOfDeadline } from "@/utils/deadline";
+import useTimeCheck from "@/hooks/useTimeCheck";
 
 interface FormBuilderDTO {
   formDTOs: any[];
@@ -50,6 +50,8 @@ export default function FormBuilder({
     }
   };
 
+  const isBeforeDeadline = useTimeCheck();
+
   return (
     <Container>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -63,7 +65,7 @@ export default function FormBuilder({
         <Grid container justifyContent="center" spacing={2}>
           <Grid item>
             <Button
-              disabled={isOutOfDeadline}
+              disabled={!isBeforeDeadline}
               type="submit"
               variant="contained"
               style={{ margin: "12px" }}

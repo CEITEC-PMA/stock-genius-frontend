@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import { apiUrl } from "@/utils/api";
 import { RotatingLines } from "react-loader-spinner";
 import FindInPageIcon from "@mui/icons-material/FindInPage";
-import { isOutOfDeadline } from "@/utils/deadline";
+import useTimeCheck from "@/hooks/useTimeCheck";
 
 interface CandidatoClass {
   curso_gestor: string;
@@ -122,6 +122,8 @@ export default function DocslistCard({
     cpfSemTraco = cpfSemTraco.replace("-", "");
   }
 
+  const isBeforeDeadline = useTimeCheck();
+
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
       <Paper elevation={2} sx={{ padding: "6px", margin: "12px" }}>
@@ -161,7 +163,7 @@ export default function DocslistCard({
                 visible={true}
               />
             )}
-            {!isOutOfDeadline && (
+            {isBeforeDeadline && (
               <Button
                 component="label"
                 color={buttonColor}
