@@ -5,6 +5,7 @@ import { PersonAddAlt1, AccountBox } from "@mui/icons-material";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import ListItems from "./listItems";
 import { useUserContext } from "@/userContext";
+import { isOutOfDeadline } from "@/utils/deadline";
 
 //import { mainListItems } from "./ListItems";
 interface DrawerProps {
@@ -44,7 +45,6 @@ export default function DrawerComponent({
       }),
     },
   }));
-  // const userRole =
 
   return (
     <Drawer variant="permanent" open={open}>
@@ -64,11 +64,13 @@ export default function DrawerComponent({
       <Divider />
 
       <List component="nav">
-        <ListItems
-          label="Registrar Candidato"
-          icon={<PersonAddAlt1 />}
-          to="/dashboard/candidato"
-        />
+        {!isOutOfDeadline && (
+          <ListItems
+            label="Registrar Candidato"
+            icon={<PersonAddAlt1 />}
+            to="/dashboard/candidato"
+          />
+        )}
 
         <ListItems
           label="Lista de Candidatos"
