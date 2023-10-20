@@ -119,14 +119,14 @@ const obsCursoGestor: RegisterDTO = {
 
 const dataEntrada: RegisterDTO = {
   name: "data_entrada_inst",
-  label: "Data de Entrada",
+  label: "Data de Entrada Modulação",
   input: "date",
   rules: { required: "Data de Entra é Obrigatório" },
 };
 
 const dataInicioDocencia: RegisterDTO = {
   name: "data_entrada_docencia",
-  label: "Data Inicio Docencia",
+  label: "Data Início Docência",
   input: "date",
   rules: { required: "Data de Inicio Docencia é Obrigatorio" },
 };
