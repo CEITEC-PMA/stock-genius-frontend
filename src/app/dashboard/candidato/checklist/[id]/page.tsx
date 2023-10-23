@@ -52,7 +52,6 @@ export default function ChecklistCandidato({
   const { user, setUser } = useUserContext();
   const router = useRouter();
   const [candidato, setCandidato] = useState<CandidatoClass>();
-  const [document, setDocument] = useState("")
 
   const {
     control,
@@ -90,8 +89,6 @@ export default function ChecklistCandidato({
     cpfSemTraco = cpfSemTraco.replace(".", "");
     cpfSemTraco = cpfSemTraco.replace("-", "");
   }
-  const fileLink = candidato?.docs.doc_01.file
-  console.log(`${apiUrl}/fotosCandidato/${cpfSemTraco}/${fileLink}`)
 
   return (
     <Box margin="24px">
@@ -120,7 +117,9 @@ export default function ChecklistCandidato({
               <ChecklistCardWithController
                 name={document.name}
                 alt="Documento Enviado"
-                src={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${candidato?.docs[document.categoria]?.file}`}
+                src={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${
+                  candidato?.docs[document.categoria]?.file
+                }`}
                 control={control}
                 key={i}
               />
