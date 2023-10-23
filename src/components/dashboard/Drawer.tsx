@@ -6,6 +6,7 @@ import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import ListItems from "./listItems";
 import { useUserContext } from "@/userContext";
 import useTimeCheck from "@/hooks/useTimeCheck";
+import GroupIcon from "@mui/icons-material/Group";
 
 //import { mainListItems } from "./ListItems";
 interface DrawerProps {
@@ -79,14 +80,19 @@ export default function DrawerComponent({
           icon={<AccountBox />}
           to="/dashboard/data"
         />
-        {user.role?.includes("super-adm") ? (
+        {user.role?.includes("super-adm") && (
+          <ListItems
+            label="Lista Completa - ADM"
+            icon={<GroupIcon />}
+            to="/dashboard/dataAdm"
+          />
+        )}
+        {user.role?.includes("adm") && (
           <ListItems
             label="Lista de Candidatos"
             icon={<RotateLeftIcon />}
             to="/dashboard/settings"
           />
-        ) : (
-          ""
         )}
       </List>
     </Drawer>
