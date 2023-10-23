@@ -67,6 +67,7 @@ export default function DocslistCard({
   categoria: string;
   candidato: CandidatoClass;
 }) {
+  const isBeforeDeadline = useTimeCheck();
   const isSmallScreen = useMediaQuery("(max-width: 600px)");
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -121,8 +122,6 @@ export default function DocslistCard({
     cpfSemTraco = cpfSemTraco.replace(".", "");
     cpfSemTraco = cpfSemTraco.replace("-", "");
   }
-
-  const isBeforeDeadline = useTimeCheck();
 
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>

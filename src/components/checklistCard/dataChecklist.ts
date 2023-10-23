@@ -26,7 +26,7 @@ export const documents = [
   },
   {
     id: 6,
-    name: "Cópia do certificado do curso de Formação Continuada para Gestores, realizado no biênio 2022-2023, devidamente autenticado em cartório ou Declaração do CEFOPE comprovando a aprovação na formação",
+    name: "Cópia do certificado do curso de Formação Continuada para Gestores, realizado no biênio 2022-2023, ou Declaração do CEFOPE comprovando a aprovação na formação",
     categoria: "doc_06",
   },
   {
