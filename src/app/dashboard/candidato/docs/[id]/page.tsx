@@ -51,6 +51,32 @@ export default function DocsCandidato({ params }: { params: { id: string } }) {
   const { user, setUser } = useUserContext();
   const [candidato, setCandidato] = useState<CandidatoClass>();
   const router = useRouter();
+  const [documentsSubmitted, setDocumentsSubmitted] = useState(false);
+
+  const checkDocumentsSubmission = () => {
+    if (candidato && candidato.docs) {
+      const totalDocuments = Object.keys(candidato.docs).length;
+      const submittedDocuments = Object.values(candidato.docs).filter(
+        (doc) => doc.file && doc.file.length > 0
+      ).length;
+
+      if (submittedDocuments === totalDocuments && totalDocuments > 0) {
+        setDocumentsSubmitted(true);
+      } else {
+        setDocumentsSubmitted(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    checkDocumentsSubmission();
+  }, [candidato]);
+
+  useEffect(() => {
+    if (documentsSubmitted) {
+      alert("Todos os documentos foram enviados!");
+    }
+  }, [documentsSubmitted]);
 
   useEffect(() => {
     const getDadosCandidato = async (id: string, token: string) => {
