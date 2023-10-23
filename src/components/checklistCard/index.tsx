@@ -29,9 +29,9 @@ const ChecklistCard: React.FC<ChecklistCardProps> = ({
       <FormGroup>
         <Box display="flex" alignItems="center">
           <Box margin="8px">
-            <Link href={src}>
+            <Link href={src} target="_blank" style={{ textDecoration: "none" }}>
               <Avatar
-                sx={{ bgcolor: "#fcc" }}
+                sx={{ bgcolor: "#0F4C81" }}
                 variant="square"
                 alt={alt}
                 src={src}
