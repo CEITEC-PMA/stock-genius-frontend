@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { apiUrl } from "@/utils/api";
 import SelectInput from "@/components/inputs/SelectInput";
 import { analiseCandidaturaDTO } from "@/utils/dtos/analiseDTO";
+import Link from "next/link";
 
 interface Candidato {
   candidato: CandidatoClass;
@@ -51,6 +52,7 @@ export default function ChecklistCandidato({
   const { user, setUser } = useUserContext();
   const router = useRouter();
   const [candidato, setCandidato] = useState<CandidatoClass>();
+  const [document, setDocument] = useState("")
 
   const {
     control,
@@ -82,6 +84,15 @@ export default function ChecklistCandidato({
     console.log(data);
   };
 
+  let cpfSemTraco = candidato?.cpf;
+  if (cpfSemTraco) {
+    cpfSemTraco = cpfSemTraco.replace(".", "");
+    cpfSemTraco = cpfSemTraco.replace(".", "");
+    cpfSemTraco = cpfSemTraco.replace("-", "");
+  }
+  const fileLink = candidato?.docs.doc_01.file
+  console.log(`${apiUrl}/fotosCandidato/${cpfSemTraco}/${fileLink}`)
+
   return (
     <Box margin="24px">
       <Container>
@@ -108,17 +119,19 @@ export default function ChecklistCandidato({
             {documents.map((document, i) => (
               <ChecklistCardWithController
                 name={document.name}
-                alt={document.alt}
-                src={document.src}
+                alt="Documento Enviado"
+                src={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${candidato?.docs[document.categoria]?.file}`}
                 control={control}
                 key={i}
               />
             ))}
+
             <SelectInput
               control={control}
               errors={errors}
               inputDTO={analiseCandidaturaDTO}
             />
+
             <Box display="flex" justifyContent="center" alignItems="center">
               <Button
                 type="submit"
