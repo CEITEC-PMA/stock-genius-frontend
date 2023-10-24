@@ -58,7 +58,7 @@ export default function ChecklistCandidato({
   }, [params.id]);
 
   useEffect(() => {
-    if (candidato?.aprovado === "indeferido") {
+    if (candidato?.aprovado === "Indeferida") {
       setValue("analise_candidatura", candidato.aprovado);
       setValue("justificativa", candidato.justificativa);
     }
@@ -142,7 +142,7 @@ export default function ChecklistCandidato({
                 inputDTO={analiseCandidaturaDTO}
               />
 
-              {aprovado === "indeferido" && (
+              {aprovado === "Indeferida" && (
                 <Controller
                   name="justificativa"
                   control={control}

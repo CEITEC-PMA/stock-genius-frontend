@@ -44,13 +44,13 @@ export default function DataTable() {
           >
             <AttachFileIcon />
           </IconButton>
-          <IconButton
+          {/* <IconButton
             color="primary"
             onClick={(event) => handleDeletar(event, params.row._id)}
             title="Remover"
           >
             <DeleteIcon />
-          </IconButton>
+          </IconButton> */}
 
           {user.role?.includes("super-adm") && (
             <IconButton

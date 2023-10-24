@@ -20,7 +20,7 @@ export default function DataTable() {
 
   const columns: GridColDef[] = [
     { field: "cpf", headerName: "CPF", width: 130 },
-    { field: "nome", headerName: "Nome completo", width: 350 },
+    { field: "nome", headerName: "Nome completo", width: 325 },
     {
       field: "unidade",
       headerName: "Unidade",
@@ -28,7 +28,12 @@ export default function DataTable() {
       sortable: true,
       valueGetter: (params) => params.row.zona?.nome || "",
     },
-    { field: "telefone", headerName: "Telefone", width: 130, sortable: false },
+    {
+      field: "aprovado",
+      headerName: "Análise de candidatura",
+      width: 140,
+      sortable: false,
+    },
     {
       field: "acoes",
       headerName: "Ações",
@@ -43,20 +48,21 @@ export default function DataTable() {
           >
             <VisibilityIcon />
           </IconButton>
-          <IconButton
+          {/* <IconButton
             color="primary"
             onClick={(event) => handleEditar(event, params.row._id)}
             title="Inserir"
           >
             <AttachFileIcon />
-          </IconButton>
-          <IconButton
+          </IconButton> */}
+
+          {/* <IconButton
             color="primary"
             onClick={(event) => handleDeletar(event, params.row._id)}
             title="Remover"
           >
             <DeleteIcon />
-          </IconButton>
+          </IconButton> */}
 
           {user.role?.includes("super-adm") && (
             <IconButton
@@ -117,6 +123,7 @@ export default function DataTable() {
       console.error("Erro ao excluir candidato:", error);
     }
   };
+  console.log(candidatos);
 
   const handleValidar = (
     event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
