@@ -10,7 +10,7 @@ import Link from "next/link";
 import React from "react";
 
 interface ChecklistCardProps {
-  name: string;
+  label: string;
   alt: string;
   src: string;
   checked: boolean;
@@ -18,7 +18,7 @@ interface ChecklistCardProps {
 }
 
 const ChecklistCard: React.FC<ChecklistCardProps> = ({
-  name,
+  label,
   alt,
   src,
   checked,
@@ -48,7 +48,7 @@ const ChecklistCard: React.FC<ChecklistCardProps> = ({
                 onClick={() => onClick(!checked)}
               />
             }
-            label={name}
+            label={label}
           />
         </Box>
       </FormGroup>

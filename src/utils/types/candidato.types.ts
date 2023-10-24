@@ -20,6 +20,7 @@ export interface Candidato {
   zona: Zona;
   createdAt: Date;
   updatedAt: Date;
+  justificativa: string;
   __v: number;
 }
 
