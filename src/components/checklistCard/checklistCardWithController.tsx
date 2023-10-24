@@ -4,11 +4,13 @@ import ChecklistCard from "./";
 
 const ChecklistCardWithController = ({
   name,
+  label,
   alt,
   src,
   control,
 }: {
   name: string;
+  label: string;
   alt: string;
   src: string;
   control: Control<FieldValues, any>;
@@ -20,7 +22,7 @@ const ChecklistCardWithController = ({
       defaultValue={false}
       render={({ field }) => (
         <ChecklistCard
-          name={name}
+          label={label}
           alt={alt}
           src={src}
           checked={field.value}

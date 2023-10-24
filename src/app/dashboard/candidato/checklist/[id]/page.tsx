@@ -1,8 +1,15 @@
 "use client";
 import ChecklistCardWithController from "@/components/checklistCard/checklistCardWithController";
 import { documents } from "@/components/checklistCard/dataChecklist";
-import { Box, Button, Container, Paper, Typography } from "@mui/material";
-import { useForm } from "react-hook-form";
+import {
+  Box,
+  Button,
+  Container,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { Controller, useForm } from "react-hook-form";
 import { useUserContext } from "@/userContext";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -23,8 +30,12 @@ export default function ChecklistCandidato({
   const {
     control,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm();
+
+  const aprovado = watch("analise_candidatura");
 
   useEffect(() => {
     const getDadosCandidato = async (id: string, token: string) => {
@@ -46,27 +57,34 @@ export default function ChecklistCandidato({
     }
   }, [params.id]);
 
+  useEffect(() => {
+    if (candidato?.aprovado === "indeferido") {
+      setValue("analise_candidatura", candidato.aprovado);
+      setValue("justificativa", candidato.justificativa);
+    }
+  }, [candidato, setValue]);
+
   const onSubmit = async (data: any) => {
     try {
-      const apiUrl = "https://anapolis.go.gov.br/seu-endpoint-aqui"; // Substitua com o endpoint correto
-      const requestBody = JSON.stringify({ aprovado: "sim" });
+      const requestBody = {
+        aprovado: data.analise_candidatura,
+        justificativa: data.justificativa,
+      };
 
-      const token = localStorage.getItem("token");
-      if (!token) {
-        return;
-      }
-
-      const response = await fetch(apiUrl, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: requestBody,
-      });
+      const response = await fetch(
+        `${apiUrl}/api/v1/candidato/${candidato?._id}`,
+        {
+          method: "PUT",
+          body: JSON.stringify(requestBody),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
 
       if (response.ok) {
-        alert("Documentação de candidatura aprovada");
+        alert("Documentação de candidatura analisada!");
       } else {
         console.error("Erro ao fazer a solicitação");
       }
@@ -109,19 +127,42 @@ export default function ChecklistCandidato({
               <ChecklistCardWithController
                 name={document.name}
                 alt="Documento Enviado"
+                label={document.label}
                 src={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${
-                  candidato?.docs[document.categoria]?.file
+                  candidato?.docs[document.name]?.file
                 }`}
                 control={control}
                 key={i}
               />
             ))}
+            <div style={{ margin: "8px 16px" }}>
+              <SelectInput
+                control={control}
+                errors={errors}
+                inputDTO={analiseCandidaturaDTO}
+              />
 
-            <SelectInput
-              control={control}
-              errors={errors}
-              inputDTO={analiseCandidaturaDTO}
-            />
+              {aprovado === "indeferido" && (
+                <Controller
+                  name="justificativa"
+                  control={control}
+                  defaultValue=""
+                  rules={{ required: "Justificativa é obrigatória" }}
+                  render={({ field }) => (
+                    <div style={{ marginTop: "16px" }}>
+                      <TextField
+                        {...field}
+                        label="Justificativa do indeferimento da candidatura"
+                        variant="outlined"
+                        fullWidth
+                        multiline
+                        maxRows={4}
+                      />
+                    </div>
+                  )}
+                />
+              )}
+            </div>
 
             <Box display="flex" justifyContent="center" alignItems="center">
               <Button

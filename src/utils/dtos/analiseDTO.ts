@@ -5,12 +5,12 @@ export const analiseCandidaturaDTO = {
   rules: { required: "Campo Obrigatório" },
   selectFields: [
     {
-      value: "aprovado",
-      label: "Aprovado",
+      value: "deferido",
+      label: "Candidatura deferida",
     },
     {
-      value: "reprovado",
-      label: "Reprovado",
+      value: "indeferido",
+      label: "Candidatura indeferida",
     },
   ],
 };
