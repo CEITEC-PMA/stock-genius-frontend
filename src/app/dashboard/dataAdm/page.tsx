@@ -123,7 +123,6 @@ export default function DataTable() {
       console.error("Erro ao excluir candidato:", error);
     }
   };
-  console.log(candidatos);
 
   const handleValidar = (
     event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
