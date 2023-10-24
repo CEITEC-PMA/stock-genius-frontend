@@ -11,7 +11,7 @@ export interface Candidato {
   telefone: string;
   cargo: string;
   funcao: string;
-  matricula: number;
+  matricula: string;
   data_entrada_inst: Date;
   data_entrada_docencia: Date;
   tempo_modulacao: string;
