@@ -7,39 +7,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { apiUrl } from "@/utils/api";
-
-interface Candidato {
-  candidato: CandidatoClass;
-}
-
-interface CandidatoClass {
-  curso_gestor: string;
-  foto: any[];
-  docs: { [key: string]: Doc };
-  deletado: boolean;
-  _id: string;
-  cpf: string;
-  nome: string;
-  email: string;
-  telefone: string;
-  cargo: string;
-  funcao: string;
-  matricula: number;
-  data_entrada_inst: Date;
-  data_entrada_docencia: Date;
-  tempo_modulacao: string;
-  tempo_docencia: string;
-  protocolo: string;
-  zona: string;
-  createdAt: Date;
-  updatedAt: Date;
-  __v: number;
-}
-
-interface Doc {
-  file: string;
-  original_file: string;
-}
+import { Candidato } from "@/utils/types/candidato.types";
 
 const onSubmit = (data: any) => {
   console.log(data);
@@ -49,7 +17,7 @@ const onSubmit = (data: any) => {
 export default function DocsCandidato({ params }: { params: { id: string } }) {
   const { control, handleSubmit } = useForm();
   const { user, setUser } = useUserContext();
-  const [candidato, setCandidato] = useState<CandidatoClass>();
+  const [candidato, setCandidato] = useState<Candidato>();
   const router = useRouter();
   const [documentsSubmitted, setDocumentsSubmitted] = useState(false);
 

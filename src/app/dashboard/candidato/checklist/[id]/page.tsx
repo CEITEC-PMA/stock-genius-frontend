@@ -9,40 +9,7 @@ import { useRouter } from "next/navigation";
 import { apiUrl } from "@/utils/api";
 import SelectInput from "@/components/inputs/SelectInput";
 import { analiseCandidaturaDTO } from "@/utils/dtos/analiseDTO";
-import Link from "next/link";
-
-interface Candidato {
-  candidato: CandidatoClass;
-}
-
-interface CandidatoClass {
-  curso_gestor: string;
-  foto: any[];
-  docs: { [key: string]: Doc };
-  deletado: boolean;
-  _id: string;
-  cpf: string;
-  nome: string;
-  email: string;
-  telefone: string;
-  cargo: string;
-  funcao: string;
-  matricula: number;
-  data_entrada_inst: Date;
-  data_entrada_docencia: Date;
-  tempo_modulacao: string;
-  tempo_docencia: string;
-  protocolo: string;
-  zona: string;
-  createdAt: Date;
-  updatedAt: Date;
-  __v: number;
-}
-
-interface Doc {
-  file: string;
-  original_file: string;
-}
+import { Candidato } from "@/utils/types/candidato.types";
 
 export default function ChecklistCandidato({
   params,
@@ -51,7 +18,7 @@ export default function ChecklistCandidato({
 }) {
   const { user, setUser } = useUserContext();
   const router = useRouter();
-  const [candidato, setCandidato] = useState<CandidatoClass>();
+  const [candidato, setCandidato] = useState<Candidato>();
 
   const {
     control,

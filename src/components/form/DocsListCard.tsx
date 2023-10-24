@@ -14,30 +14,7 @@ import { apiUrl } from "@/utils/api";
 import { RotatingLines } from "react-loader-spinner";
 import FindInPageIcon from "@mui/icons-material/FindInPage";
 import useTimeCheck from "@/hooks/useTimeCheck";
-
-interface CandidatoClass {
-  curso_gestor: string;
-  foto: any[];
-  docs: { [key: string]: Doc };
-  deletado: boolean;
-  _id: string;
-  cpf: string;
-  nome: string;
-  email: string;
-  telefone: string;
-  cargo: string;
-  funcao: string;
-  matricula: number;
-  data_entrada_inst: Date;
-  data_entrada_docencia: Date;
-  tempo_modulacao: string;
-  tempo_docencia: string;
-  protocolo: string;
-  zona: string;
-  createdAt: Date;
-  updatedAt: Date;
-  __v: number;
-}
+import { Candidato } from "@/utils/types/candidato.types";
 
 interface Doc {
   file: string;
@@ -65,7 +42,7 @@ export default function DocslistCard({
 }: {
   name: string;
   categoria: string;
-  candidato: CandidatoClass;
+  candidato: Candidato;
 }) {
   const isBeforeDeadline = useTimeCheck();
   const isSmallScreen = useMediaQuery("(max-width: 600px)");
