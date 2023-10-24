@@ -25,7 +25,7 @@ export default function DataTable() {
       field: "unidade",
       headerName: "Unidade",
       width: 240,
-      sortable: false,
+      sortable: true,
       valueGetter: (params) => params.row.zona?.nome || "",
     },
     { field: "telefone", headerName: "Telefone", width: 130, sortable: false },

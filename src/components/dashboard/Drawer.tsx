@@ -89,7 +89,7 @@ export default function DrawerComponent({
         )}
         {user.role?.includes("adm") && (
           <ListItems
-            label="Lista de Candidatos"
+            label="Redefinição de senha"
             icon={<RotateLeftIcon />}
             to="/dashboard/settings"
           />
