@@ -109,7 +109,7 @@ export default function DocsCandidato({ params }: { params: { id: string } }) {
             <Typography variant="h6">
               Unidade de ensino:{" "}
               <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
-                {user?.nome}
+                {candidato?.zona?.nome}
               </span>
             </Typography>
             <Typography variant="h6">

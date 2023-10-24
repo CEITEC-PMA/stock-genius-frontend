@@ -79,8 +79,33 @@ export default function ChecklistCandidato({
     }
   }, [params.id]);
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = async (data: any) => {
+    try {
+      const apiUrl = "https://anapolis.go.gov.br/seu-endpoint-aqui"; // Substitua com o endpoint correto
+      const requestBody = JSON.stringify({ aprovado: "sim" });
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        return;
+      }
+
+      const response = await fetch(apiUrl, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: requestBody,
+      });
+
+      if (response.ok) {
+        alert("Documentação de candidatura aprovada");
+      } else {
+        console.error("Erro ao fazer a solicitação");
+      }
+    } catch (error) {
+      console.error("Erro ao fazer a solicitação PUT", error);
+    }
   };
 
   let cpfSemTraco = candidato?.cpf;
@@ -102,7 +127,7 @@ export default function ChecklistCandidato({
             <Typography variant="h6">
               Unidade de ensino:{" "}
               <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
-                {user?.nome}
+                {candidato?.zona?.nome}
               </span>
             </Typography>
             <Typography variant="h6">
