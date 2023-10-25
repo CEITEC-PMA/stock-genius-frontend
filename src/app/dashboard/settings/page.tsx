@@ -13,6 +13,7 @@ import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import { useRouter } from "next/navigation";
 import { Candidato } from "@/utils/types/candidato.types";
 import { apiUrl } from "@/utils/api";
+import CustomModal from "@/components/modal";
 
 export default function Settings() {
   const router = useRouter();
@@ -22,12 +23,22 @@ export default function Settings() {
     foto: [],
   } as unknown as Candidato);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   useEffect(() => {
     const localToken = localStorage.getItem("token");
     setToken(localToken);
   }, [token]);
 
-  const handleSubmit = async (inep: string) => {
+  const handleReset = async (inep: string) => {
     try {
       const response = await fetch(`${apiUrl}/api/v1/zona/inep`, {
         method: "PUT",
@@ -86,10 +97,20 @@ export default function Settings() {
             variant="contained"
             startIcon={<RotateLeftIcon />}
             size="large"
-            onClick={() => handleSubmit(textFieldValue)}
+            onClick={() => openModal()}
           >
             Resetar senha
           </Button>
+          <CustomModal
+            open={isModalOpen}
+            title="Atenção!"
+            description="Confirma o reset de senha?"
+            onClose={closeModal}
+            yesButtonLabel="Sim"
+            noButtonLabel="Não"
+            onYesButtonClick={() => handleReset(textFieldValue)}
+            onNoButtonClick={closeModal}
+          />
         </Grid>
       </Grid>
     </Box>
