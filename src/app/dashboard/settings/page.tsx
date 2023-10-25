@@ -28,14 +28,26 @@ export default function Settings() {
   }, [token]);
 
   const handleSubmit = async (inep: string) => {
-    const response = await fetch(`${apiUrl}/api/v1/zona/inep`, {
-      method: "PUT",
-      body: JSON.stringify({ inep }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    try {
+      const response = await fetch(`${apiUrl}/api/v1/zona/inep`, {
+        method: "PUT",
+        body: JSON.stringify({ inep }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        alert("Senha redefinida com sucesso!");
+        router.push("/");
+      } else {
+        alert("Não foi possível redefinir a senha!");
+      }
+    } catch (error) {
+      console.error("Ocorreu um erro na solicitação:", error);
+      alert("Ocorreu um erro na solicitação");
+    }
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {

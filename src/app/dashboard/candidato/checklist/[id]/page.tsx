@@ -61,6 +61,8 @@ export default function ChecklistCandidato({
     if (candidato?.aprovado === "Indeferida") {
       setValue("analise_candidatura", candidato.aprovado);
       setValue("justificativa", candidato.justificativa);
+    } else {
+      setValue("analise_candidatura", candidato?.aprovado);
     }
   }, [candidato, setValue]);
 
@@ -85,6 +87,7 @@ export default function ChecklistCandidato({
 
       if (response.ok) {
         alert("Documentação de candidatura analisada!");
+        router.push(`/dashboard/dataAdm`);
       } else {
         console.error("Erro ao fazer a solicitação");
       }
