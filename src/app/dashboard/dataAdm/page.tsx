@@ -18,6 +18,8 @@ export default function DataTable() {
   const router = useRouter();
   const [candidatos, setCandidatos] = useState<Candidato[]>([]);
 
+  console.log(candidatos);
+
   const columns: GridColDef[] = [
     { field: "cpf", headerName: "CPF", width: 130 },
     { field: "nome", headerName: "Nome completo", width: 325 },
@@ -66,7 +68,9 @@ export default function DataTable() {
 
           {user.role?.includes("super-adm") && (
             <IconButton
-              color="primary"
+              color={
+                params.row.aprovado !== "em analise" ? "success" : "primary"
+              }
               onClick={(event) => handleValidar(event, params.row._id)}
               title="Analisar"
             >
