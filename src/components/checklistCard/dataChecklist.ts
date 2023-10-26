@@ -11,8 +11,7 @@ export const documents = [
   },
   {
     id: 3,
-    label:
-      "Cópia do título de habilitação profissional autenticada em cartório",
+    label: "Cópia do título de habilitação profissional",
     name: "doc_03",
   },
   {
