@@ -160,6 +160,20 @@ export default function ChecklistCandidato({
                         fullWidth
                         multiline
                         maxRows={4}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          const capitalizedValue = value
+                            .toLowerCase()
+                            .split(". ")
+                            .map(
+                              (sentence) =>
+                                sentence.charAt(0).toUpperCase() +
+                                sentence.slice(1)
+                            )
+                            .join(". ");
+
+                          field.onChange(capitalizedValue);
+                        }}
                       />
                     </div>
                   )}

@@ -32,7 +32,7 @@ export default function DataTable() {
       field: "aprovado",
       headerName: "Análise de candidatura",
       width: 140,
-      sortable: false,
+      sortable: true,
     },
     {
       field: "acoes",
