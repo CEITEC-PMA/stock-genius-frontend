@@ -5,7 +5,7 @@ interface CustomModalProps {
   open: boolean;
   title: string;
   description: string;
-  onClose: () => void;
+  onClose?: () => void;
   yesButtonLabel?: string;
   noButtonLabel?: string;
   onYesButtonClick?: () => void;
@@ -17,8 +17,8 @@ const CustomModal: React.FC<CustomModalProps> = ({
   title,
   description,
   onClose,
-  yesButtonLabel = "SIM",
-  noButtonLabel = "NÃO",
+  yesButtonLabel,
+  noButtonLabel,
   onYesButtonClick,
   onNoButtonClick,
 }) => {
@@ -48,7 +48,6 @@ const CustomModal: React.FC<CustomModalProps> = ({
               color="success"
               onClick={() => {
                 onYesButtonClick && onYesButtonClick();
-                onClose();
               }}
             >
               {yesButtonLabel}
@@ -60,7 +59,6 @@ const CustomModal: React.FC<CustomModalProps> = ({
               color="error"
               onClick={() => {
                 onNoButtonClick && onNoButtonClick();
-                onClose();
               }}
             >
               {noButtonLabel}

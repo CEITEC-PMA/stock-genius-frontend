@@ -126,18 +126,25 @@ export default function ChecklistCandidato({
             </Typography>
           </Box>
           <form onSubmit={handleSubmit(onSubmit)}>
-            {documents.map((document, i) => (
-              <ChecklistCardWithController
-                name={document.name}
-                alt="Documento Enviado"
-                label={document.label}
-                src={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${
-                  candidato?.docs[document.name]?.file
-                }`}
-                control={control}
-                key={i}
-              />
-            ))}
+            {documents.map((document, i) => {
+              let src = `${apiUrl}/fotosCandidato/${cpfSemTraco}/${
+                candidato?.docs[document.name]?.file
+              }`;
+              if (src.includes("undefined")) {
+                src = "https://api.anapolis.go.gov.br/apiupload/sed/error.png";
+              }
+
+              return (
+                <ChecklistCardWithController
+                  name={document.name}
+                  alt="Documento Enviado"
+                  label={document.label}
+                  src={src}
+                  control={control}
+                  key={i}
+                />
+              );
+            })}
             <div style={{ margin: "8px 16px" }}>
               <SelectInput
                 control={control}
