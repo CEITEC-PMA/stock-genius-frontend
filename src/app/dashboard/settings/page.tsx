@@ -51,7 +51,7 @@ export default function Settings() {
 
       if (response.status === 200) {
         alert("Senha redefinida com sucesso!");
-        router.push("/");
+        router.push("/dashboard");
       } else {
         alert("Não foi possível redefinir a senha!");
       }
