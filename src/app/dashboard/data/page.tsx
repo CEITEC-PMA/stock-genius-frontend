@@ -47,6 +47,7 @@ export default function DataTable() {
             >
               <AttachFileIcon />
             </IconButton>
+
             {/* <IconButton
               color="primary"
               onClick={(event) => handleDeletar(event, params.row._id)}
@@ -54,7 +55,8 @@ export default function DataTable() {
             >
               <DeleteIcon />
             </IconButton> */}
-            {aprovado === "Indeferida" && (
+
+            {/* {aprovado === "Indeferida" && (
               <IconButton
                 color="primary"
                 onClick={(event) => handleRecorrer(event, params.row._id)}
@@ -62,7 +64,7 @@ export default function DataTable() {
               >
                 <ThreePIcon />
               </IconButton>
-            )}
+            )} */}
 
             {user.role?.includes("super-adm") && (
               <IconButton
