@@ -130,7 +130,10 @@ export default function ChecklistCandidato({
               let src = `${apiUrl}/fotosCandidato/${cpfSemTraco}/${
                 candidato?.docs[document.name]?.file
               }`;
-              if (src.includes("undefined")) {
+              if (
+                src.includes("undefined") ||
+                src.endsWith(`${cpfSemTraco}/`)
+              ) {
                 src = "https://api.anapolis.go.gov.br/apiupload/sed/error.png";
               }
 
