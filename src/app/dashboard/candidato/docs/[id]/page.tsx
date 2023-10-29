@@ -2,7 +2,7 @@
 import DocslistCard from "@/components/form/DocsListCard";
 import { documentsList } from "@/components/form/formsDocsList";
 import { useUserContext } from "@/userContext";
-import { Box, Container, Paper, Typography } from "@mui/material";
+import { Avatar, Box, Container, Paper, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -20,6 +20,7 @@ export default function DocsCandidato({ params }: { params: { id: string } }) {
   const [candidato, setCandidato] = useState<Candidato>();
   const router = useRouter();
   const [documentsSubmitted, setDocumentsSubmitted] = useState(false);
+  const [fotoCandidato, setFotoCandidato] = useState("");
 
   // const checkDocumentsSubmission = () => {
   //   if (candidato && candidato.docs) {
@@ -66,6 +67,19 @@ export default function DocsCandidato({ params }: { params: { id: string } }) {
     }
   }, [params.id]);
 
+  useEffect(() => {
+    if (candidato) {
+      setFotoCandidato(candidato.foto[0]);
+    }
+  }, [candidato?.foto]);
+
+  let cpfSemTraco = candidato?.cpf;
+  if (cpfSemTraco) {
+    cpfSemTraco = cpfSemTraco.replace(".", "");
+    cpfSemTraco = cpfSemTraco.replace(".", "");
+    cpfSemTraco = cpfSemTraco.replace("-", "");
+  }
+
   return (
     <Box margin="24px">
       <Container>
@@ -86,6 +100,20 @@ export default function DocsCandidato({ params }: { params: { id: string } }) {
                 {candidato?.nome}
               </span>
             </Typography>
+            <Box display="flex" justifyContent="center" alignContent="center">
+              <Avatar
+                alt="User"
+                src={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${fotoCandidato}`}
+                sx={{
+                  width: { xs: 85, sm: 130, md: 150, lg: 175 },
+                  height: { xs: 85, sm: 130, md: 150, lg: 175 },
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginBottom: "10px",
+                }}
+              />
+            </Box>
           </Box>
           <form onSubmit={handleSubmit(onSubmit)}>
             {candidato ? (
