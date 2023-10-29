@@ -2,6 +2,7 @@
 import ChecklistCardWithController from "@/components/checklistCard/checklistCardWithController";
 import { documents } from "@/components/checklistCard/dataChecklist";
 import {
+  Avatar,
   Box,
   Button,
   Container,
@@ -26,6 +27,7 @@ export default function ChecklistCandidato({
   const { user, setUser } = useUserContext();
   const router = useRouter();
   const [candidato, setCandidato] = useState<Candidato>();
+  const [fotoCandidato, setFotoCandidato] = useState("");
 
   const {
     control,
@@ -65,6 +67,12 @@ export default function ChecklistCandidato({
       setValue("analise_candidatura", candidato?.aprovado);
     }
   }, [candidato, setValue]);
+
+  useEffect(() => {
+    if (candidato) {
+      setFotoCandidato(candidato.foto[0]);
+    }
+  }, [candidato?.foto]);
 
   const onSubmit = async (data: any) => {
     try {
@@ -124,6 +132,20 @@ export default function ChecklistCandidato({
                 {candidato?.nome}
               </span>
             </Typography>
+            <Box display="flex" justifyContent="center" alignContent="center">
+              <Avatar
+                alt="User"
+                src={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${fotoCandidato}`}
+                sx={{
+                  width: { xs: 85, sm: 130, md: 150, lg: 175 },
+                  height: { xs: 85, sm: 130, md: 150, lg: 175 },
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginBottom: "10px",
+                }}
+              />
+            </Box>
           </Box>
           <form onSubmit={handleSubmit(onSubmit)}>
             {documents.map((document, i) => {
