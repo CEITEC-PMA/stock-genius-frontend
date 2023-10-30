@@ -20,11 +20,11 @@ export default function DataTable() {
 
   const columns: GridColDef[] = [
     { field: "cpf", headerName: "CPF", width: 130 },
-    { field: "nome", headerName: "Nome completo", width: 325 },
+    { field: "nome", headerName: "Nome completo", width: 300, flex: 1 },
     {
       field: "unidade",
       headerName: "Unidade",
-      width: 240,
+      width: 380,
       sortable: true,
       valueGetter: (params) => params.row.zona?.nome || "",
     },
@@ -37,7 +37,7 @@ export default function DataTable() {
     {
       field: "acoes",
       headerName: "Ações",
-      width: 180,
+      width: 100,
       sortable: false,
       renderCell: (params: GridRenderCellParams) => (
         <div>

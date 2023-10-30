@@ -22,12 +22,12 @@ export default function DataTable() {
 
   const columns: GridColDef[] = [
     { field: "cpf", headerName: "CPF", width: 130 },
-    { field: "nome", headerName: "Nome completo", width: 575 },
+    { field: "nome", headerName: "Nome completo", width: 575, flex: 1 },
     { field: "telefone", headerName: "Telefone", width: 130, sortable: false },
     {
       field: "acoes",
       headerName: "Ações",
-      width: 180,
+      width: 200,
       sortable: false,
       renderCell: (params: GridRenderCellParams) => {
         const aprovado = params.row.aprovado;
@@ -48,13 +48,13 @@ export default function DataTable() {
               <AttachFileIcon />
             </IconButton>
 
-            {/* <IconButton
+            <IconButton
               color="primary"
               onClick={(event) => handleDeletar(event, params.row._id)}
               title="Remover"
             >
               <DeleteIcon />
-            </IconButton> */}
+            </IconButton>
 
             {/* {aprovado === "Indeferida" && (
               <IconButton
@@ -66,7 +66,7 @@ export default function DataTable() {
               </IconButton>
             )} */}
 
-            {user.role?.includes("super-adm") && (
+            {/* {user.role?.includes("super-adm") && (
               <IconButton
                 color="primary"
                 onClick={(event) => handleValidar(event, params.row._id)}
@@ -74,7 +74,7 @@ export default function DataTable() {
               >
                 <CheckCircleIcon />
               </IconButton>
-            )}
+            )} */}
           </div>
         );
       },
