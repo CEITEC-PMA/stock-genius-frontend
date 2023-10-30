@@ -94,6 +94,7 @@ export default function DocsCandidato({ params }: { params: { id: string } }) {
                   candidato={candidato}
                   name={document.name}
                   categoria={document.categoria}
+                  linkDoc={document.linkDoc}
                   key={i}
                 />
               ))
