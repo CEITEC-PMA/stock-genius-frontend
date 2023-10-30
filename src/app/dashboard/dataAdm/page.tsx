@@ -159,12 +159,59 @@ export default function DataTable() {
       getDadosCandidatos();
     }
   }, [user._id]);
+
+  let contadorDeferidas = 0;
+  let contadorIndeferidas = 0;
+
+  for (const candidato of candidatos) {
+    if (candidato.aprovado === "Deferida") {
+      contadorDeferidas++;
+    }
+  }
+
+  for (const candidato of candidatos) {
+    if (candidato.aprovado === "Indeferida") {
+      contadorIndeferidas++;
+    }
+  }
+
+  let contadorEmAnalise =
+    candidatos.length - contadorDeferidas - contadorIndeferidas;
+
   return (
     <Box margin="24px">
       <Container>
         <Typography variant="h3" marginBottom="12x" textAlign="center">
           Lista de Candidatos
         </Typography>
+
+        <Box
+          display="flex"
+          alignContent="space-evenly"
+          gap="48px"
+          justifyContent="center"
+          marginTop="16px"
+          marginBottom="8px"
+        >
+          <Typography variant="h6">
+            Candidaturas em análise:{" "}
+            <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
+              {contadorEmAnalise}
+            </span>
+          </Typography>
+          <Typography variant="h6">
+            Candidaturas deferidas:{" "}
+            <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
+              {contadorDeferidas}
+            </span>
+          </Typography>
+          <Typography variant="h6">
+            Candidaturas indeferidas:{" "}
+            <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
+              {contadorIndeferidas}
+            </span>
+          </Typography>
+        </Box>
         <div
           style={{
             height: "645px",
