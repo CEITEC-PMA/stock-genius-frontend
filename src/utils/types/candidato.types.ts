@@ -21,6 +21,7 @@ export interface Candidato {
   createdAt: Date;
   updatedAt: Date;
   justificativa: string;
+  textoRecurso: string;
   __v: number;
 }
 

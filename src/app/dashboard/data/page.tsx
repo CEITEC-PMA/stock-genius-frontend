@@ -43,7 +43,7 @@ export default function DataTable() {
             <IconButton
               color="primary"
               onClick={(event) => handleEditar(event, params.row._id)}
-              title="Inserir"
+              title="Documentação do candidato"
             >
               <AttachFileIcon />
             </IconButton>
