@@ -6,12 +6,15 @@ import {
   Button,
   Container,
   TextField,
+  Tooltip,
   Typography,
   styled,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import React, { SyntheticEvent, ChangeEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { RotatingLines } from "react-loader-spinner";
+import FindInPageIcon from "@mui/icons-material/FindInPage";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -29,7 +32,18 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
   const [candidato, setCandidato] = useState<Candidato>();
   const [candidatoDigitou, setCandidatoDigitou] = useState(false);
   const [textoRecurso, setTextoRecurso] = useState("");
-  const [docRecurso, setDocRecurso] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [buttonColor, setButtonColor] = useState<"success" | "primary">(
+    candidato?.docs.doc_recurso?.file ? "success" : "primary"
+  );
+  useEffect(() => {
+    if (candidato) {
+      setFileLink(candidato.docs.doc_recurso?.file);
+    }
+  }, [candidato, candidato?.docs]);
+
+  const [fileLink, setFileLink] = useState("");
+
   const router = useRouter();
 
   useEffect(() => {
@@ -44,6 +58,7 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
       );
       const responseJson = await response.json();
       setCandidato(responseJson.candidato);
+      setHasDoc(!!responseJson.candidato?.docs.doc_recurso?.file);
       return;
     };
     const token = localStorage.getItem("token");
@@ -51,6 +66,8 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
       getDadosCandidato(params.id, token);
     }
   }, [params.id]);
+
+  const [hasDoc, setHasDoc] = useState(false);
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -60,7 +77,7 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
 
       //fetch
       fetch(
-        `${apiUrl}/api/v1/candidato/images/${candidato?._id}?cpf=${candidato?.cpf}`,
+        `${apiUrl}/api/v1/candidato/docs/${candidato?._id}?cpf=${candidato?.cpf}&categoria=doc_recurso`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -68,30 +85,69 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
           method: "PUT",
           body: formData,
         }
-      ).then(async (res) => {
-        const resJSON = await res.json();
-        setDocRecurso(resJSON.candidato.recurso[0]);
-        router.refresh();
-      });
+      )
+        .then(async (res) => {
+          const resJSON = await res.json();
+          setFileLink(resJSON.candidato.docs.doc_recurso.file);
+          setIsLoading(false);
+          alert("Envio concluído");
+          setButtonColor("success");
+          router.refresh();
+          setHasDoc(true);
+        })
+        .catch((error) => {
+          alert("Falha no envio do documento!");
+          setIsLoading(false);
+          router.refresh();
+          console.log(error);
+        });
     }
   };
 
   const handleSubmit = async (data: any) => {
     const token = localStorage.getItem("token");
     data.preventDefault();
-    console.log(JSON.stringify(textoRecurso));
-    const response = await fetch(`${apiUrl}/api/v1/candidato/`, {
-      method: "POST",
-      body: JSON.stringify({ textoRecurso }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }).then((response) => {
-      alert("candidato cadastrado com sucesso");
-      router.push("/dashboard/data");
-    });
+
+    try {
+      const response = await fetch(
+        `${apiUrl}/api/v1/candidato/${candidato?._id}`,
+        {
+          method: "PUT",
+          body: JSON.stringify({ textoRecurso }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        alert("Recurso enviado com sucesso");
+        router.refresh();
+      } else {
+        alert("Não foi possível concluir o envio do recurso, tente novamente");
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      alert("Ocorreu um erro na solicitação, tente novamente");
+      console.log(error);
+    }
   };
+
+  useEffect(() => {
+    if (candidato) {
+      if (candidato.textoRecurso !== "") {
+        setTextoRecurso(candidato.textoRecurso);
+      }
+    }
+  }, [candidato]);
+
+  let cpfSemTraco = candidato?.cpf;
+  if (cpfSemTraco) {
+    cpfSemTraco = cpfSemTraco.replace(".", "");
+    cpfSemTraco = cpfSemTraco.replace(".", "");
+    cpfSemTraco = cpfSemTraco.replace("-", "");
+  }
 
   return (
     <Box margin="24px">
@@ -164,10 +220,37 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
               alignItems="center"
               flexDirection="column"
             >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {hasDoc && (
+                  <Tooltip title="Documento enviado">
+                    <Button
+                      href={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${fileLink}`}
+                      target="_blank"
+                    >
+                      <FindInPageIcon color="success" />
+                    </Button>
+                  </Tooltip>
+                )}
+              </div>
               {candidatoDigitou && (
-                <div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
                   <Button
                     component="label"
+                    color={buttonColor}
                     variant="contained"
                     startIcon={<CloudUploadIcon />}
                   >
@@ -186,10 +269,24 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
                   >
                     O upload de arquivo é opcional.
                   </Typography>
+                  {isLoading && (
+                    <RotatingLines
+                      strokeColor="grey"
+                      strokeWidth="4"
+                      animationDuration="0.75"
+                      width="28"
+                      visible={true}
+                    />
+                  )}
                 </div>
               )}
               <Box marginTop="16px">
-                <Button type="submit" variant="contained" color="success">
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  disabled={!candidatoDigitou}
+                >
                   Enviar recurso
                 </Button>
               </Box>
