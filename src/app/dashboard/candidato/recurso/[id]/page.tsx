@@ -123,14 +123,15 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
 
       if (response.status === 200) {
         alert("Recurso enviado com sucesso");
-        router.refresh();
+        router.push("/dashboard");
       } else {
         alert("Não foi possível concluir o envio do recurso, tente novamente");
-        router.push("/dashboard");
+        router.refresh();
       }
     } catch (error) {
       alert("Ocorreu um erro na solicitação, tente novamente");
       console.log(error);
+      router.refresh();
     }
   };
 
