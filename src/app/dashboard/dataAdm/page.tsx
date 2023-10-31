@@ -4,6 +4,7 @@ import AttachFileIcon from "@mui/icons-material/AttachFile";
 import IconButton from "@mui/material/IconButton";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import DetailsIcon from "@mui/icons-material/Details";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Box, Container, Typography } from "@mui/material";
 import { MouseEvent, useEffect, useState } from "react";
@@ -11,16 +12,19 @@ import { useUserContext } from "@/userContext";
 import { apiUrl } from "@/utils/api";
 import { useRouter } from "next/navigation";
 import { Candidato } from "@/utils/types/candidato.types";
+import CustomModal from "@/components/modal";
 
 export default function DataTable() {
   const { user } = useUserContext();
 
   const router = useRouter();
   const [candidatos, setCandidatos] = useState<Candidato[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [justificativa, setJustificativa] = useState("");
 
   const columns: GridColDef[] = [
     { field: "cpf", headerName: "CPF", width: 130 },
-    { field: "nome", headerName: "Nome completo", width: 300, flex: 1 },
+    { field: "nome", headerName: "Nome completo", width: 280, flex: 1 },
     {
       field: "unidade",
       headerName: "Unidade",
@@ -37,7 +41,7 @@ export default function DataTable() {
     {
       field: "acoes",
       headerName: "Ações",
-      width: 100,
+      width: 150,
       sortable: false,
       renderCell: (params: GridRenderCellParams) => (
         <div>
@@ -48,6 +52,7 @@ export default function DataTable() {
           >
             <VisibilityIcon />
           </IconButton>
+
           {/* <IconButton
             color="primary"
             onClick={(event) => handleEditar(event, params.row._id)}
@@ -79,6 +84,18 @@ export default function DataTable() {
               title="Analisar"
             >
               <CheckCircleIcon />
+            </IconButton>
+          )}
+
+          {params.row.aprovado === "Indeferida" && (
+            <IconButton
+              color="warning"
+              onClick={(event) => {
+                handleDetalharIndeferimento(event, params.row.justificativa);
+              }}
+              title="Detalhar indeferimento"
+            >
+              <DetailsIcon />
             </IconButton>
           )}
         </div>
@@ -138,6 +155,22 @@ export default function DataTable() {
   ) => {
     event.stopPropagation();
     router.push(`/dashboard/candidato/checklist/${id}`);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleDetalharIndeferimento = (
+    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+    justificativa: string
+  ) => {
+    setJustificativa(justificativa);
+    openModal();
   };
 
   useEffect(() => {
@@ -230,6 +263,14 @@ export default function DataTable() {
             }}
             pageSizeOptions={[5, 10]}
             disableRowSelectionOnClick
+          />
+          <CustomModal
+            open={isModalOpen}
+            title="Motivo do indeferimento:"
+            description={justificativa}
+            onClose={closeModal}
+            yesButtonLabel="Ok"
+            onYesButtonClick={closeModal}
           />
         </div>
       </Container>
