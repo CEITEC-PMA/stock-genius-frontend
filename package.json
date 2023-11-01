@@ -23,6 +23,9 @@
     "cpf-cnpj-validator": "^1.0.3",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
+    "html2pdf.js": "^0.10.1",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.7.0",
     "next": "13.5.4",
     "next-auth": "^4.23.2",
     "react": "18.2.0",
@@ -36,5 +39,8 @@
     "sass": "^1.66.1",
     "sharp": "^0.32.6",
     "typescript": "5.2.2"
+  },
+  "devDependencies": {
+    "@types/pdfmake": "^0.2.7"
   }
 }
