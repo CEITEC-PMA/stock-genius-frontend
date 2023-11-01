@@ -48,23 +48,23 @@ export default function DataTable() {
               <AttachFileIcon />
             </IconButton>
 
-            <IconButton
+            {/* <IconButton
               color="primary"
               onClick={(event) => handleDeletar(event, params.row._id)}
               title="Remover"
             >
               <DeleteIcon />
-            </IconButton>
+            </IconButton> */}
 
-            {/* {aprovado === "Indeferida" && (
+            {aprovado === "Indeferida" && (
               <IconButton
-                color="primary"
+                color="error"
                 onClick={(event) => handleRecorrer(event, params.row._id)}
-                title="Recurso"
+                title="Recurso do candidato"
               >
                 <ThreePIcon />
               </IconButton>
-            )} */}
+            )}
 
             {/* {user.role?.includes("super-adm") && (
               <IconButton
