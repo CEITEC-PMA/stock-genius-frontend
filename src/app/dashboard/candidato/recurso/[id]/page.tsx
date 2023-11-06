@@ -240,7 +240,7 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
                   </Tooltip>
                 )}
               </div>
-              {candidatoDigitou && (
+              {/* {candidatoDigitou && (
                 <div
                   style={{
                     display: "flex",
@@ -249,7 +249,7 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
                     justifyContent: "center",
                   }}
                 >
-                  {/* <Button
+                  <Button
                     component="label"
                     color={buttonColor}
                     variant="contained"
@@ -260,7 +260,7 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
                       type="file"
                       onChange={(e) => handleOnChange(e)}
                     />
-                  </Button> */}
+                  </Button>
                   <Typography
                     variant="caption"
                     display="block"
@@ -280,7 +280,7 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
                     />
                   )}
                 </div>
-              )}
+              )} */}
               <Box marginTop="16px">
                 <Button
                   type="submit"
