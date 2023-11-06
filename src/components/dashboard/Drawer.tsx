@@ -87,7 +87,7 @@ export default function DrawerComponent({
             to="/dashboard/dataAdm"
           />
         )}
-        {user.role?.includes("adm") && (
+        {user.role?.includes("super-adm") && (
           <ListItems
             label="Redefinição de senha"
             icon={<RotateLeftIcon />}
