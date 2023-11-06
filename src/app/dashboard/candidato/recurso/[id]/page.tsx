@@ -249,7 +249,7 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
                     justifyContent: "center",
                   }}
                 >
-                  <Button
+                  {/* <Button
                     component="label"
                     color={buttonColor}
                     variant="contained"
@@ -260,7 +260,7 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
                       type="file"
                       onChange={(e) => handleOnChange(e)}
                     />
-                  </Button>
+                  </Button> */}
                   <Typography
                     variant="caption"
                     display="block"
