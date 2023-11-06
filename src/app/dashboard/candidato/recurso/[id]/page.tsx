@@ -240,7 +240,7 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
                   </Tooltip>
                 )}
               </div>
-              {candidatoDigitou && (
+              {/* {candidatoDigitou && (
                 <div
                   style={{
                     display: "flex",
@@ -280,7 +280,7 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
                     />
                   )}
                 </div>
-              )}
+              )} */}
               <Box marginTop="16px">
                 <Button
                   type="submit"
