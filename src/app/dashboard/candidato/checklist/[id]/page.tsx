@@ -8,6 +8,7 @@ import {
   Container,
   Paper,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
@@ -18,6 +19,7 @@ import { apiUrl } from "@/utils/api";
 import SelectInput from "@/components/inputs/SelectInput";
 import { analiseCandidaturaDTO } from "@/utils/dtos/analiseDTO";
 import { Candidato } from "@/utils/types/candidato.types";
+import FindInPageIcon from "@mui/icons-material/FindInPage";
 
 export default function ChecklistCandidato({
   params,
@@ -28,6 +30,8 @@ export default function ChecklistCandidato({
   const router = useRouter();
   const [candidato, setCandidato] = useState<Candidato>();
   const [fotoCandidato, setFotoCandidato] = useState("");
+  const [fileLink, setFileLink] = useState("");
+  const [hasDoc, setHasDoc] = useState(false);
 
   const {
     control,
@@ -38,6 +42,13 @@ export default function ChecklistCandidato({
   } = useForm();
 
   const aprovado = watch("analise_candidatura");
+  const textoRecurso = watch("textoRecurso");
+
+  useEffect(() => {
+    if (candidato) {
+      setFileLink(candidato.docs.doc_recurso?.file);
+    }
+  }, [candidato, candidato?.docs]);
 
   useEffect(() => {
     const getDadosCandidato = async (id: string, token: string) => {
@@ -51,6 +62,7 @@ export default function ChecklistCandidato({
       );
       const responseJson = await response.json();
       setCandidato(responseJson.candidato);
+      setHasDoc(!!responseJson.candidato?.docs.doc_recurso?.file);
       return;
     };
     const token = localStorage.getItem("token");
@@ -63,6 +75,7 @@ export default function ChecklistCandidato({
     if (candidato?.aprovado === "Indeferida") {
       setValue("analise_candidatura", candidato.aprovado);
       setValue("justificativa", candidato.justificativa);
+      setValue("textoRecurso", candidato.textoRecurso);
     } else {
       setValue("analise_candidatura", candidato?.aprovado);
     }
@@ -211,6 +224,61 @@ export default function ChecklistCandidato({
                   )}
                 />
               )}
+
+              {textoRecurso !== "" && (
+                <Controller
+                  name="textoRecurso"
+                  control={control}
+                  defaultValue=""
+                  // rules={{ required: "Justificativa é obrigatória" }}
+                  render={({ field }) => (
+                    <div style={{ marginTop: "16px" }}>
+                      <TextField
+                        {...field}
+                        label="Texto do recurso"
+                        variant="outlined"
+                        fullWidth
+                        multiline
+                        maxRows={4}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          const capitalizedValue = value
+                            .toLowerCase()
+                            .split(". ")
+                            .map(
+                              (sentence) =>
+                                sentence.charAt(0).toUpperCase() +
+                                sentence.slice(1)
+                            )
+                            .join(". ");
+
+                          field.onChange(capitalizedValue);
+                        }}
+                      />
+                    </div>
+                  )}
+                />
+              )}
+
+              <div
+                style={{
+                  margin: "8px 0",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {hasDoc && (
+                  <Tooltip title="Documento enviado">
+                    <Button
+                      href={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${fileLink}`}
+                      target="_blank"
+                    >
+                      <FindInPageIcon color="success" />
+                    </Button>
+                  </Tooltip>
+                )}
+              </div>
             </div>
 
             <Box display="flex" justifyContent="center" alignItems="center">
