@@ -43,6 +43,7 @@ export default function ChecklistCandidato({
 
   const aprovado = watch("analise_candidatura");
   const textoRecurso = watch("textoRecurso");
+  const respostaComissao = watch("respostaComissao");
 
   useEffect(() => {
     if (candidato) {
@@ -76,6 +77,7 @@ export default function ChecklistCandidato({
       setValue("analise_candidatura", candidato.aprovado);
       setValue("justificativa", candidato.justificativa);
       setValue("textoRecurso", candidato.textoRecurso);
+      setValue("respostaComissao", candidato.respostaComissao);
     } else {
       setValue("analise_candidatura", candidato?.aprovado);
     }
@@ -92,6 +94,7 @@ export default function ChecklistCandidato({
       const requestBody = {
         aprovado: data.analise_candidatura,
         justificativa: data.justificativa,
+        respostaComissao: data.respostaComissao,
       };
 
       const response = await fetch(
@@ -259,7 +262,6 @@ export default function ChecklistCandidato({
                   )}
                 />
               )}
-
               <div
                 style={{
                   margin: "8px 0",
@@ -279,6 +281,26 @@ export default function ChecklistCandidato({
                   </Tooltip>
                 )}
               </div>
+              {aprovado === "Indeferida" && (
+                <Controller
+                  name="respostaComissao"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <div style={{ marginTop: "16px" }}>
+                      <TextField
+                        {...field}
+                        label="Resposta da Comissão Eleitoral Municipal sobre o recurso"
+                        variant="outlined"
+                        fullWidth
+                        multiline
+                        maxRows={6}
+                        onChange={(e) => field.onChange(e.target.value)}
+                      />
+                    </div>
+                  )}
+                />
+              )}
             </div>
 
             <Box display="flex" justifyContent="center" alignItems="center">
