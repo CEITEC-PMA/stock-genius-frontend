@@ -17,7 +17,10 @@ import "jspdf-autotable";
 interface jsPDFWithAutoTable extends jsPDF {
   autoTable: (options: any) => jsPDFWithAutoTable;
 }
-const doc: jsPDFWithAutoTable = new jsPDF();
+const doc: jsPDFWithAutoTable = new jsPDF({
+  orientation: "landscape",
+
+});
 
 export default function Alunos() {
   const { user } = useUserContext();
@@ -25,12 +28,11 @@ export default function Alunos() {
   const [isLoading, setIsloading] = useState(true)
 
   const columns: GridColDef[] = [
-    { field: "nome", renderHeader: () => <strong>{'NOME DO ALUNO'}</strong>, width: 220, align: "center", headerAlign: 'center' },
-    { field: "mae", renderHeader: () => <strong>{'NOME DA MÃE'}</strong>, width: 220, align: "center", headerAlign: 'center' },
-    { field: "pai", renderHeader: () => <strong>{'NOME DO PAI'}</strong>, width: 220, align: "center", headerAlign: 'center' },
-    { field: "responsavel", renderHeader: () => <strong>{'RESPONSÁVEL'}</strong>, width: 220, align: "center", headerAlign: 'center' },
-    { field: "serie", renderHeader: () => <strong>{'SÉRIE'}</strong>, width: 100, align: "center", headerAlign: 'center' },
-    { field: "turma", renderHeader: () => <strong>{'TURMA'}</strong>, width: 100, align: "center", headerAlign: 'center' },
+    { field: "nome", renderHeader: () => <strong>{'NOME DO ALUNO'}</strong>, width: 220, align: "center", headerAlign: 'center', flex: 1 },
+    { field: "responsavel1", renderHeader: () => <strong>{'RESPONSAVEL 1'}</strong>, width: 220, align: "center", headerAlign: 'center', flex: 1 },
+    { field: "responsavel2", renderHeader: () => <strong>{'RESPONSAVEL 2'}</strong>, width: 220, align: "center", headerAlign: 'center', flex: 1 },
+    { field: "serie", renderHeader: () => <strong>{'SÉRIE'}</strong>, width: 100, align: "center", headerAlign: 'center', flex: 1 },
+
   ];
   useEffect(() => {
     //fetch
@@ -60,38 +62,22 @@ export default function Alunos() {
     }
   }, [user._id]);
 
-  // Ordenando array alunos
 
-  if (alunos.length > 1) {
-    alunos.sort(function (a, b) {
-      if (a.nome < b.nome) {
-        return -1
-      } else if (a.nome > b.nome) {
-        return 1;
-      } else {
-        return 0;
-      }
-    })
-  }
   const downloadPdf = () => {
     console.log(alunos)
     doc.text("Tabela de Alunos", 20, 10);
     const columns = [
       { title: "NOME DO ALUNO", dataKey: "nome" },
-      { title: "NOME DA MÃE", dataKey: "mae" },
-      { title: "NOME DO PAI", dataKey: "pai" },
-      { title: "RESPONSÁVEL", dataKey: "responsavel" },
-      { title: "SÉRIE", dataKey: "serie" },
-      { title: "TURMA", dataKey: "turma" },
-    ];
+      { title: "RESPONSAVEL 1", dataKey: "responsavel1" },
+      { title: "RESPONSAVEL 2", dataKey: "responsavel2" },
+      { title: "SERIE", dataKey: "serie" },
 
+    ];
     const data = alunos.map((aluno) => ({
       nome: aluno.nome,
-      mae: aluno.mae,
-      pai: aluno.pai,
-      responsavel: aluno.responsavel,
+      responsavel1: aluno.responsavel1,
+      responsavel2: aluno.responsavel2,
       serie: aluno.serie,
-      turma: aluno.turma,
     }));
 
     doc.autoTable({
@@ -103,7 +89,6 @@ export default function Alunos() {
 
     doc.save("table.pdf");
   };
-
   return (
     <Box margin="24px" >
       <Container>
