@@ -136,8 +136,8 @@ export default function Alunos() {
 
     doc.autoTable({
       head: [columns.map((col) => col.title)],
-      //@ts-ignore
       body: data.map((row) =>
+        //@ts-ignore
         columns.map((col) => row[col.dataKey as keyof Aluno])
       ),
       startY: 20,
