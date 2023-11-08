@@ -1,4 +1,3 @@
-"use client";
 import CandidatoCard from "@/components/candidatoCard";
 import { useUserContext } from "@/userContext";
 import { apiUrl } from "@/utils/api";
@@ -13,7 +12,13 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
-export default function ConfirmaCandidato({ avancarEtapa, voltarEtapa }) {
+export default function ConfirmaCandidato({
+  avancarEtapa,
+  voltarEtapa,
+}: {
+  avancarEtapa: () => void;
+  voltarEtapa: () => void;
+}) {
   const theme = useTheme();
   const [candidatos, setCandidatos] = useState<Candidato[]>([]);
   const { user } = useUserContext();
@@ -41,12 +46,12 @@ export default function ConfirmaCandidato({ avancarEtapa, voltarEtapa }) {
 
   console.log(candidatos);
 
-  const digitou = new Audio(
-    "https://api.anapolis.go.gov.br/apiupload/sed/digito.mp3"
-  );
-
   useEffect(() => {
-    const handleKeyDown = (event) => {
+    const digitou = new Audio(
+      "https://api.anapolis.go.gov.br/apiupload/sed/digito.mp3"
+    );
+
+    const handleKeyDown = (event: KeyboardEvent) => {
       switch (event.key) {
         case "1":
           digitou.play();

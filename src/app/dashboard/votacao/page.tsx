@@ -32,12 +32,7 @@ export default function VotacaoT() {
           />
         );
       case 2:
-        return (
-          <FinalizarVotacao
-            avancarEtapa={avancarEtapa}
-            voltarEtapa={voltarEtapa}
-          />
-        );
+        return <FinalizarVotacao />;
       default:
         return "Etapa desconhecida";
     }
