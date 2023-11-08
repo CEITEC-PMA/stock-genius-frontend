@@ -4,6 +4,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { PersonAddAlt1, AccountBox } from "@mui/icons-material";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import ListItems from "./listItems";
+import Face6Icon from '@mui/icons-material/Face6';
 import { useUserContext } from "@/userContext";
 import { isOutOfDeadline } from "@/utils/deadline";
 
@@ -76,6 +77,11 @@ export default function DrawerComponent({
           label="Lista de Candidatos"
           icon={<AccountBox />}
           to="/dashboard/data"
+        />
+        <ListItems
+          label="Lista de Alunos"
+          icon={<Face6Icon />}
+          to="/dashboard/alunos"
         />
         {user.role?.includes("super-adm") ? (
           <ListItems
