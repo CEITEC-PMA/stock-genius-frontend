@@ -3,6 +3,7 @@ import {
   Button,
   Grid,
   Paper,
+  Tooltip,
   Typography,
   useMediaQuery,
 } from "@mui/material";
@@ -13,31 +14,9 @@ import { useRouter } from "next/navigation";
 import { apiUrl } from "@/utils/api";
 import { RotatingLines } from "react-loader-spinner";
 import FindInPageIcon from "@mui/icons-material/FindInPage";
-import { isOutOfDeadline } from "@/utils/deadline";
-
-interface CandidatoClass {
-  curso_gestor: string;
-  foto: any[];
-  docs: { [key: string]: Doc };
-  deletado: boolean;
-  _id: string;
-  cpf: string;
-  nome: string;
-  email: string;
-  telefone: string;
-  cargo: string;
-  funcao: string;
-  matricula: number;
-  data_entrada_inst: Date;
-  data_entrada_docencia: Date;
-  tempo_modulacao: string;
-  tempo_docencia: string;
-  protocolo: string;
-  zona: string;
-  createdAt: Date;
-  updatedAt: Date;
-  __v: number;
-}
+import AttachFileIcon from "@mui/icons-material/AttachFile";
+import useTimeCheck from "@/hooks/useTimeCheck";
+import { Candidato } from "@/utils/types/candidato.types";
 
 interface Doc {
   file: string;
@@ -61,12 +40,15 @@ interface ButtonColor {}
 export default function DocslistCard({
   name,
   categoria,
+  linkDoc,
   candidato,
 }: {
   name: string;
   categoria: string;
-  candidato: CandidatoClass;
+  linkDoc: string;
+  candidato: Candidato;
 }) {
+  const isBeforeDeadline = useTimeCheck();
   const isSmallScreen = useMediaQuery("(max-width: 600px)");
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -142,13 +124,20 @@ export default function DocslistCard({
             marginLeft="12px"
             gap="12px"
           >
-            {hasDoc ? (
-              <Button
-                href={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${fileLink}`}
-                target="_blank"
-              >
-                <FindInPageIcon color="success" />
+            <Tooltip title="Link/modelo do documento solicitado">
+              <Button href={linkDoc} target="_blank">
+                <AttachFileIcon color="primary" />
               </Button>
+            </Tooltip>
+            {hasDoc ? (
+              <Tooltip title="Documento enviado">
+                <Button
+                  href={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${fileLink}`}
+                  target="_blank"
+                >
+                  <FindInPageIcon color="success" />
+                </Button>
+              </Tooltip>
             ) : (
               ""
             )}
@@ -161,7 +150,7 @@ export default function DocslistCard({
                 visible={true}
               />
             )}
-            {!isOutOfDeadline && (
+            {isBeforeDeadline && (
               <Button
                 component="label"
                 color={buttonColor}

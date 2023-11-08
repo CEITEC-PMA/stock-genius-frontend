@@ -2,44 +2,12 @@
 import DocslistCard from "@/components/form/DocsListCard";
 import { documentsList } from "@/components/form/formsDocsList";
 import { useUserContext } from "@/userContext";
-import { Box, Container, Paper, Typography } from "@mui/material";
+import { Avatar, Box, Container, Paper, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { apiUrl } from "@/utils/api";
-
-interface Candidato {
-  candidato: CandidatoClass;
-}
-
-interface CandidatoClass {
-  curso_gestor: string;
-  foto: any[];
-  docs: { [key: string]: Doc };
-  deletado: boolean;
-  _id: string;
-  cpf: string;
-  nome: string;
-  email: string;
-  telefone: string;
-  cargo: string;
-  funcao: string;
-  matricula: number;
-  data_entrada_inst: Date;
-  data_entrada_docencia: Date;
-  tempo_modulacao: string;
-  tempo_docencia: string;
-  protocolo: string;
-  zona: string;
-  createdAt: Date;
-  updatedAt: Date;
-  __v: number;
-}
-
-interface Doc {
-  file: string;
-  original_file: string;
-}
+import { Candidato } from "@/utils/types/candidato.types";
 
 const onSubmit = (data: any) => {
   console.log(data);
@@ -49,8 +17,35 @@ const onSubmit = (data: any) => {
 export default function DocsCandidato({ params }: { params: { id: string } }) {
   const { control, handleSubmit } = useForm();
   const { user, setUser } = useUserContext();
-  const [candidato, setCandidato] = useState<CandidatoClass>();
+  const [candidato, setCandidato] = useState<Candidato>();
   const router = useRouter();
+  const [documentsSubmitted, setDocumentsSubmitted] = useState(false);
+  const [fotoCandidato, setFotoCandidato] = useState("");
+
+  // const checkDocumentsSubmission = () => {
+  //   if (candidato && candidato.docs) {
+  //     const totalDocuments = Object.keys(candidato.docs).length;
+  //     const submittedDocuments = Object.values(candidato.docs).filter(
+  //       (doc) => doc.file && doc.file.length > 0
+  //     ).length;
+
+  //     if (submittedDocuments === totalDocuments && totalDocuments > 0) {
+  //       setDocumentsSubmitted(true);
+  //     } else {
+  //       setDocumentsSubmitted(false);
+  //     }
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   checkDocumentsSubmission();
+  // }, [candidato]);
+
+  // useEffect(() => {
+  //   if (documentsSubmitted) {
+  //     alert("Todos os documentos foram enviados!");
+  //   }
+  // }, [documentsSubmitted]);
 
   useEffect(() => {
     const getDadosCandidato = async (id: string, token: string) => {
@@ -72,6 +67,19 @@ export default function DocsCandidato({ params }: { params: { id: string } }) {
     }
   }, [params.id]);
 
+  useEffect(() => {
+    if (candidato) {
+      setFotoCandidato(candidato.foto[0]);
+    }
+  }, [candidato?.foto]);
+
+  let cpfSemTraco = candidato?.cpf;
+  if (cpfSemTraco) {
+    cpfSemTraco = cpfSemTraco.replace(".", "");
+    cpfSemTraco = cpfSemTraco.replace(".", "");
+    cpfSemTraco = cpfSemTraco.replace("-", "");
+  }
+
   return (
     <Box margin="24px">
       <Container>
@@ -83,7 +91,7 @@ export default function DocsCandidato({ params }: { params: { id: string } }) {
             <Typography variant="h6">
               Unidade de ensino:{" "}
               <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
-                {user?.nome}
+                {candidato?.zona?.nome}
               </span>
             </Typography>
             <Typography variant="h6">
@@ -92,6 +100,20 @@ export default function DocsCandidato({ params }: { params: { id: string } }) {
                 {candidato?.nome}
               </span>
             </Typography>
+            <Box display="flex" justifyContent="center" alignContent="center">
+              <Avatar
+                alt="User"
+                src={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${fotoCandidato}`}
+                sx={{
+                  width: { xs: 85, sm: 130, md: 150, lg: 175 },
+                  height: { xs: 85, sm: 130, md: 150, lg: 175 },
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginBottom: "10px",
+                }}
+              />
+            </Box>
           </Box>
           <form onSubmit={handleSubmit(onSubmit)}>
             {candidato ? (
@@ -100,6 +122,7 @@ export default function DocsCandidato({ params }: { params: { id: string } }) {
                   candidato={candidato}
                   name={document.name}
                   categoria={document.categoria}
+                  linkDoc={document.linkDoc}
                   key={i}
                 />
               ))

@@ -42,7 +42,7 @@ export default function AppBarComponent({
           },
         });
         const resJson = await response.json();
-        console.log(resJson);
+        // console.log(resJson);
         setUser(resJson.usuario);
         return response;
       };
@@ -72,7 +72,7 @@ export default function AppBarComponent({
       }),
     }),
   }));
-  console.log(user);
+  // console.log(user);
 
   return (
     <AppBar position="absolute" open={open}>

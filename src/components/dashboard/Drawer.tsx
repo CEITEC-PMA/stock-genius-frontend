@@ -6,7 +6,9 @@ import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import ListItems from "./listItems";
 import Face6Icon from '@mui/icons-material/Face6';
 import { useUserContext } from "@/userContext";
-import { isOutOfDeadline } from "@/utils/deadline";
+import useTimeCheck from "@/hooks/useTimeCheck";
+import GroupIcon from "@mui/icons-material/Group";
+import HowToVoteIcon from "@mui/icons-material/HowToVote";
 
 //import { mainListItems } from "./ListItems";
 interface DrawerProps {
@@ -47,6 +49,8 @@ export default function DrawerComponent({
     },
   }));
 
+  const isBeforeDeadline = useTimeCheck();
+
   return (
     <Drawer variant="permanent" open={open}>
       <Toolbar
@@ -65,7 +69,7 @@ export default function DrawerComponent({
       <Divider />
 
       <List component="nav">
-        {!isOutOfDeadline && (
+        {isBeforeDeadline && (
           <ListItems
             label="Registrar Candidato"
             icon={<PersonAddAlt1 />}
@@ -73,24 +77,40 @@ export default function DrawerComponent({
           />
         )}
 
+        {user.role?.includes("super-adm") && (
+          <ListItems
+            label="Votação"
+            icon={<HowToVoteIcon />}
+            to="/dashboard/votacao"
+          />
+        )}
+        
         <ListItems
           label="Lista de Candidatos"
           icon={<AccountBox />}
           to="/dashboard/data"
         />
+
         <ListItems
           label="Lista de Alunos"
           icon={<Face6Icon />}
           to="/dashboard/alunos"
         />
-        {user.role?.includes("super-adm") ? (
+
+        {user.role?.includes("super-adm") && (
           <ListItems
-            label="Lista de Candidatos"
+            label="Lista Completa - ADM"
+            icon={<GroupIcon />}
+            to="/dashboard/dataAdm"
+          />
+        )}
+        
+        {user.role?.includes("super-adm") && (
+          <ListItems
+            label="Redefinição de senha"
             icon={<RotateLeftIcon />}
             to="/dashboard/settings"
           />
-        ) : (
-          ""
         )}
       </List>
     </Drawer>

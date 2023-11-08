@@ -11,6 +11,7 @@ import { useUserContext } from "@/userContext";
 import { apiUrl } from "@/utils/api";
 import { useRouter } from "next/navigation";
 import { Candidato } from "@/utils/types/candidato.types";
+import ThreePIcon from "@mui/icons-material/ThreeP";
 import Link from "next/link";
 
 export default function DataTable() {
@@ -21,48 +22,62 @@ export default function DataTable() {
 
   const columns: GridColDef[] = [
     { field: "cpf", headerName: "CPF", width: 130 },
-    { field: "nome", headerName: "Nome completo", width: 575 },
+    { field: "nome", headerName: "Nome completo", width: 575, flex: 1 },
     { field: "telefone", headerName: "Telefone", width: 130, sortable: false },
     {
       field: "acoes",
       headerName: "Ações",
-      width: 180,
+      width: 200,
       sortable: false,
-      renderCell: (params: GridRenderCellParams) => (
-        <div>
-          <IconButton
-            color="primary"
-            onClick={(event) => handleDetalhar(event, params.row._id)}
-            title="Detalhar"
-          >
-            <VisibilityIcon />
-          </IconButton>
-          <IconButton
-            color="primary"
-            onClick={(event) => handleEditar(event, params.row._id)}
-            title="Inserir"
-          >
-            <AttachFileIcon />
-          </IconButton>
-          <IconButton
-            color="primary"
-            onClick={(event) => handleDeletar(event, params.row._id)}
-            title="Remover"
-          >
-            <DeleteIcon />
-          </IconButton>
-
-          {user.role?.includes("super-adm") && (
+      renderCell: (params: GridRenderCellParams) => {
+        const aprovado = params.row.aprovado;
+        return (
+          <div>
             <IconButton
               color="primary"
-              onClick={(event) => handleValidar(event, params.row._id)}
-              title="Analisar"
+              onClick={(event) => handleDetalhar(event, params.row._id)}
+              title="Detalhar"
             >
-              <CheckCircleIcon />
+              <VisibilityIcon />
             </IconButton>
-          )}
-        </div>
-      ),
+            <IconButton
+              color="primary"
+              onClick={(event) => handleEditar(event, params.row._id)}
+              title="Documentação do candidato"
+            >
+              <AttachFileIcon />
+            </IconButton>
+
+            {/* <IconButton
+              color="primary"
+              onClick={(event) => handleDeletar(event, params.row._id)}
+              title="Remover"
+            >
+              <DeleteIcon />
+            </IconButton> */}
+
+            {aprovado === "Indeferida" && (
+              <IconButton
+                color="error"
+                onClick={(event) => handleRecorrer(event, params.row._id)}
+                title="Recurso do candidato"
+              >
+                <ThreePIcon />
+              </IconButton>
+            )}
+
+            {/* {user.role?.includes("super-adm") && (
+              <IconButton
+                color="primary"
+                onClick={(event) => handleValidar(event, params.row._id)}
+                title="Analisar"
+              >
+                <CheckCircleIcon />
+              </IconButton>
+            )} */}
+          </div>
+        );
+      },
     },
   ];
 
@@ -81,6 +96,15 @@ export default function DataTable() {
     event.stopPropagation();
     console.log(id);
     router.push(`/dashboard/candidato/docs/${id}`);
+  };
+
+  const handleRecorrer = (
+    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+    id: string
+  ) => {
+    event.stopPropagation();
+    console.log(id);
+    router.push(`/dashboard/candidato/recurso/${id}`);
   };
 
   const handleDeletar = async (
@@ -139,6 +163,7 @@ export default function DataTable() {
       getDadosCandidatos();
     }
   }, [user._id]);
+
   return (
     <Box margin="24px">
       <Container>

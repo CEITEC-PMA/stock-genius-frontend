@@ -1,4 +1,5 @@
 export interface Candidato {
+  aprovado: string;
   curso_gestor: string;
   foto: string[];
   docs: { [key: string]: Doc };
@@ -11,18 +12,35 @@ export interface Candidato {
   cargo: string;
   funcao: string;
   matricula: string;
-  data_entrada_inst: string;
-  data_entrada_docencia: string;
+  data_entrada_inst: Date;
+  data_entrada_docencia: Date;
   tempo_modulacao: string;
   tempo_docencia: string;
   protocolo: string;
-  zona: string;
+  zona: Zona;
   createdAt: Date;
   updatedAt: Date;
+  justificativa: string;
+  textoRecurso: string;
+  respostaComissao: string;
   __v: number;
 }
 
 export interface Doc {
   file: string;
   original_file: string;
+}
+
+export interface Zona {
+  role: string[];
+  acesso: number;
+  hash: string;
+  salt: string;
+  deletado: boolean;
+  _id: string;
+  nome: string;
+  inep: string;
+  createdAt: Date;
+  updatedAt: Date;
+  __v: number;
 }
