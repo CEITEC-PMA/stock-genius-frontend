@@ -7,7 +7,6 @@ import ListItems from "./listItems";
 import { useUserContext } from "@/userContext";
 import useTimeCheck from "@/hooks/useTimeCheck";
 import GroupIcon from "@mui/icons-material/Group";
-import HowToVoteIcon from "@mui/icons-material/HowToVote";
 
 //import { mainListItems } from "./ListItems";
 interface DrawerProps {
@@ -76,13 +75,6 @@ export default function DrawerComponent({
           />
         )}
 
-        {user.role?.includes("super-adm") && (
-          <ListItems
-            label="Votação"
-            icon={<HowToVoteIcon />}
-            to="/dashboard/votacao"
-          />
-        )}
         <ListItems
           label="Lista de Candidatos"
           icon={<AccountBox />}
