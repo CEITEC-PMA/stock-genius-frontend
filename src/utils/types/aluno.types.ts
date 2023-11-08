@@ -7,12 +7,14 @@ export interface Aluno {
   resp_votou: boolean;
   responsavel1: string;
   responsavel2: string;
+  responsavel3: string;
   serie: string;
   updatedAt: Date;
   votante: boolean;
   zona: string;
   __v: number;
   _id: string;
+  permissaoVoto: string;
 
 }
 

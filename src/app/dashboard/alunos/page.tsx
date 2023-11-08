@@ -28,10 +28,12 @@ export default function Alunos() {
   const [isLoading, setIsloading] = useState(true)
 
   const columns: GridColDef[] = [
-    { field: "nome", renderHeader: () => <strong>{'NOME DO ALUNO'}</strong>, width: 220, align: "center", headerAlign: 'center', flex: 1 },
-    { field: "responsavel1", renderHeader: () => <strong>{'RESPONSAVEL 1'}</strong>, width: 220, align: "center", headerAlign: 'center', flex: 1 },
-    { field: "responsavel2", renderHeader: () => <strong>{'RESPONSAVEL 2'}</strong>, width: 220, align: "center", headerAlign: 'center', flex: 1 },
-    { field: "serie", renderHeader: () => <strong>{'SÉRIE'}</strong>, width: 100, align: "center", headerAlign: 'center', flex: 1 },
+    { field: "nome", renderHeader: () => <strong>{'NOME DO ALUNO'}</strong>, align: "center", headerAlign: 'center', flex: 2 },
+    { field: "responsavel1", renderHeader: () => <strong>{'RESPONSAVEL 1'}</strong>, align: "center", headerAlign: 'center', flex: 2 },
+    { field: "responsavel2", renderHeader: () => <strong>{'RESPONSAVEL 2'}</strong>, align: "center", headerAlign: 'center', flex: 2 },
+    { field: "responsavel3", renderHeader: () => <strong>{'RESPONSAVEL 3'}</strong>, align: "center", headerAlign: 'center', flex: 2 },
+    { field: "serie", renderHeader: () => <strong>{'SÉRIE'}</strong>, align: "center", headerAlign: 'center' },
+    { field: "permissaoVoto", renderHeader: () => <strong>{'VOTA'}</strong>, align: "center", headerAlign: 'center' },
 
   ];
   useEffect(() => {
@@ -53,7 +55,7 @@ export default function Alunos() {
         }
 
         const responseJson = await response.json();
-        console.log(responseJson.alunos)
+
         setAlunos(responseJson.alunos);
         return response
       };
@@ -62,22 +64,43 @@ export default function Alunos() {
     }
   }, [user._id]);
 
+  let indexAlunos = 0
+  let permissaoVoto = ""
+  alunos.forEach(aluno => {
+    if (aluno.votante === false) {
+      permissaoVoto = "NÃO"
+    } else {
+      permissaoVoto = "SIM"
+    }
+    indexAlunos++
+
+    console.log("permissão de voto: " + permissaoVoto)
+
+    alunos[indexAlunos - 1].permissaoVoto = permissaoVoto
+  });
+
+  console.log(alunos)
 
   const downloadPdf = () => {
-    console.log(alunos)
+
     doc.text("Tabela de Alunos", 20, 10);
     const columns = [
       { title: "NOME DO ALUNO", dataKey: "nome" },
       { title: "RESPONSAVEL 1", dataKey: "responsavel1" },
       { title: "RESPONSAVEL 2", dataKey: "responsavel2" },
+      { title: "RESPONSAVEL 3", dataKey: "responsavel3" },
       { title: "SERIE", dataKey: "serie" },
+      { title: "VOTA", dataKey: "permissaoVoto" },
 
     ];
     const data = alunos.map((aluno) => ({
       nome: aluno.nome,
       responsavel1: aluno.responsavel1,
       responsavel2: aluno.responsavel2,
+      responsavel3: aluno.responsavel3,
       serie: aluno.serie,
+      aluno_votou: aluno.aluno_votou,
+      permissaoVoto: aluno.permissaoVoto
     }));
 
     doc.autoTable({
