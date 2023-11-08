@@ -19,10 +19,11 @@ export default function ConfirmaCandidato({
   avancarEtapa: () => void;
   voltarEtapa: () => void;
 }) {
-  const theme = useTheme();
   const [candidatos, setCandidatos] = useState<Candidato[]>([]);
   const { user } = useUserContext();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
+  const mdDown = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(() => {
     //fetch
@@ -84,8 +85,13 @@ export default function ConfirmaCandidato({
       height="calc(100vh - <AppBar_Height>px)"
       overflow="hidden"
     >
-      <Typography align="center" variant="h4" marginTop="8px" color="#0F4C81">
-        Eleição de Diretores 2023 - {user.nome}
+      <Typography
+        variant={smDown ? "h6" : mdDown ? "h5" : "h4"}
+        textAlign="center"
+        marginTop={2}
+        color=" #0f4c81"
+      >
+        ELEIÇÕES MUNICIPAIS DE DIRETORES BIÊNIO 2024/25 - {user.nome}
       </Typography>
       <Grid container spacing={1} style={{ padding: 16 }}>
         <Grid
@@ -118,7 +124,7 @@ export default function ConfirmaCandidato({
             <Button
               variant="contained"
               color="success"
-              fullWidth={!isMobile}
+              fullWidth={!smDown}
               onClick={avancarEtapa}
               sx={{ padding: 2.5 }}
             >
@@ -129,7 +135,7 @@ export default function ConfirmaCandidato({
             <Button
               variant="contained"
               color="error"
-              fullWidth={!isMobile}
+              fullWidth={!smDown}
               onClick={voltarEtapa}
               sx={{ padding: 2.5 }}
             >

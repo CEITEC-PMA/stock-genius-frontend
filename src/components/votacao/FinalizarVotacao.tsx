@@ -1,4 +1,11 @@
-import { Box, Grid, Typography, LinearProgress } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Typography,
+  LinearProgress,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import React, { useEffect, useState, useRef } from "react";
 import { useUserContext } from "@/userContext";
 import Image from "next/image";
@@ -9,6 +16,9 @@ export default function FinalizarVotacao() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [progress, setProgress] = useState(0);
   const router = useRouter();
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
+  const mdDown = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(() => {
     if (audioRef.current) {
@@ -53,8 +63,13 @@ export default function FinalizarVotacao() {
       margin="0"
       overflow="hidden"
     >
-      <Typography align="center" variant="h4" color="#0F4C81">
-        Eleição de Diretores 2023 - {user.nome}
+      <Typography
+        variant={smDown ? "h6" : mdDown ? "h5" : "h4"}
+        textAlign="center"
+        marginTop={2}
+        color=" #0f4c81"
+      >
+        ELEIÇÕES MUNICIPAIS DE DIRETORES BIÊNIO 2024/25 - {user.nome}
       </Typography>
       <Grid container spacing={1}>
         <Grid
