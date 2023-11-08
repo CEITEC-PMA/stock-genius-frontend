@@ -1,12 +1,18 @@
 import { Button } from "@mui/material";
 import React, { useEffect } from "react";
 
-export default function EscolhaCandidato({ avancarEtapa, voltarEtapa }) {
-  const digitou = new Audio(
-    "https://api.anapolis.go.gov.br/apiupload/sed/digito.mp3"
-  );
-
+export default function EscolhaCandidato({
+  avancarEtapa,
+  voltarEtapa,
+}: {
+  avancarEtapa: () => void;
+  voltarEtapa: () => void;
+}) {
   useEffect(() => {
+    const digitou = new Audio(
+      "https://api.anapolis.go.gov.br/apiupload/sed/digito.mp3"
+    );
+
     const tecla1 = () => {
       digitou.play();
     };
@@ -20,7 +26,7 @@ export default function EscolhaCandidato({ avancarEtapa, voltarEtapa }) {
       digitou.play();
     };
 
-    const handleKeyDown = (event) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
       switch (event.key) {
         case "1":
           tecla1();

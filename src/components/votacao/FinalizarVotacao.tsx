@@ -1,13 +1,12 @@
-import { Box, Grid, Typography, useTheme, LinearProgress } from "@mui/material";
+import { Box, Grid, Typography, LinearProgress } from "@mui/material";
 import React, { useEffect, useState, useRef } from "react";
 import { useUserContext } from "@/userContext";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export default function FinalizarVotacao() {
-  const theme = useTheme();
   const { user } = useUserContext();
-  const audioRef = useRef(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [progress, setProgress] = useState(0);
   const router = useRouter();
 
@@ -15,7 +14,7 @@ export default function FinalizarVotacao() {
     if (audioRef.current) {
       audioRef.current
         .play()
-        .catch((error) => console.log("Erro ao tocar áudio:", error));
+        .catch((error: Error) => console.log("Erro ao tocar áudio:", error));
     }
   }, []);
 
