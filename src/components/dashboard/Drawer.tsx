@@ -2,6 +2,7 @@ import { Divider, IconButton, List, Toolbar, styled } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { PersonAddAlt1, AccountBox } from "@mui/icons-material";
+import PersonIcon from '@mui/icons-material/Person';
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import ListItems from "./listItems";
 import Face6Icon from '@mui/icons-material/Face6';
@@ -73,7 +74,7 @@ export default function DrawerComponent({
           <ListItems
             label="Registrar Candidato"
             icon={<PersonAddAlt1 />}
-            to="/dashboard/candidato"
+            to="/dashboard/funcionarios"
           />
         )}
 
@@ -84,7 +85,7 @@ export default function DrawerComponent({
             to="/dashboard/votacao"
           />
         )}
-        
+
         <ListItems
           label="Lista de Candidatos"
           icon={<AccountBox />}
@@ -97,6 +98,12 @@ export default function DrawerComponent({
           to="/dashboard/alunos"
         />
 
+        <ListItems
+          label="Lista de Funcionários"
+          icon={<PersonIcon />}
+          to="/dashboard/funcionarios"
+        />
+
         {user.role?.includes("super-adm") && (
           <ListItems
             label="Lista Completa - ADM"
@@ -104,7 +111,7 @@ export default function DrawerComponent({
             to="/dashboard/dataAdm"
           />
         )}
-        
+
         {user.role?.includes("super-adm") && (
           <ListItems
             label="Redefinição de senha"
