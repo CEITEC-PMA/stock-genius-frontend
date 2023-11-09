@@ -110,7 +110,7 @@ export default function FinalizarVotacao() {
             />
             <audio
               ref={audioRef}
-              src="https://www.myinstants.com/media/sounds/confirma-urna.mp3"
+              src="https://api.anapolis.go.gov.br/apiupload/sed/confirma.mp3"
               autoPlay
               muted={false}
             />
