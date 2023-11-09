@@ -34,6 +34,11 @@ export default function CandidatoCard({
             cursor: "default",
           }}
         >
+          {numero && (
+            <Typography gutterBottom align="center" variant="h2" component="h2">
+              {numero}
+            </Typography>
+          )}
           <Typography gutterBottom align="center" variant="h5" component="h2">
             {nome}
           </Typography>
