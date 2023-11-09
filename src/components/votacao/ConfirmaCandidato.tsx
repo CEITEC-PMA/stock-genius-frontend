@@ -15,9 +15,17 @@ import React, { useEffect, useState } from "react";
 export default function ConfirmaCandidato({
   avancarEtapa,
   voltarEtapa,
+  handleSubmit,
+  id,
+  tipo,
+  votoCandidato,
 }: {
   avancarEtapa: () => void;
   voltarEtapa: () => void;
+  handleSubmit: () => void;
+  id: string;
+  tipo: string;
+  votoCandidato: string;
 }) {
   const [candidatos, setCandidatos] = useState<Candidato[]>([]);
   const { user } = useUserContext();
@@ -45,8 +53,6 @@ export default function ConfirmaCandidato({
     }
   }, [user._id]);
 
-  console.log(candidatos);
-
   useEffect(() => {
     const digitou = new Audio(
       "https://api.anapolis.go.gov.br/apiupload/sed/digito.mp3"
@@ -57,7 +63,7 @@ export default function ConfirmaCandidato({
         case "1":
           digitou.play();
           setTimeout(() => {
-            avancarEtapa();
+            handleSubmit();
           }, 800);
           break;
         case "2":
@@ -107,7 +113,8 @@ export default function ConfirmaCandidato({
                 "https://api.anapolis.go.gov.br/apieleicao/fotosCandidato/35341089065/file-1697650092544.webp"
               }
               nome={"Nome do Candidato teste"}
-              numero={"numero aqui"}
+              numero={""}
+              cardColor={"#0f4c81"}
             />
           </Grid>
         </Grid>

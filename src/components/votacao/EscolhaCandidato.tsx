@@ -1,7 +1,18 @@
-import { Box, Button } from "@mui/material";
-import React, { useEffect } from "react";
+import {
+  Box,
+  Button,
+  Grid,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import React, { useState, useEffect } from "react";
 import BadgeIcon from "@mui/icons-material/Badge";
 import EscalatorWarningIcon from "@mui/icons-material/EscalatorWarning";
+import CandidatoCard from "../candidatoCard";
+import { useUserContext } from "@/userContext";
+import { Candidato } from "@/utils/types/candidato.types";
+import { apiUrl } from "@/utils/api";
 
 export default function EscolhaCandidato({
   avancarEtapa,
@@ -10,6 +21,12 @@ export default function EscolhaCandidato({
   avancarEtapa: () => void;
   voltarEtapa: () => void;
 }) {
+  const { user } = useUserContext();
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
+  const mdDown = useMediaQuery(theme.breakpoints.down("md"));
+  const [candidatos, setCandidatos] = useState<Candidato[]>([]);
+
   useEffect(() => {
     const digitou = new Audio(
       "https://api.anapolis.go.gov.br/apiupload/sed/digito.mp3"
@@ -72,33 +89,78 @@ export default function EscolhaCandidato({
     console.log("clicou funcionario");
   };
 
+  useEffect(() => {
+    //fetch
+    const token = localStorage.getItem("token");
+    if (user._id) {
+      const getDadosCandidatos = async () => {
+        const response = await fetch(
+          `${apiUrl}/api/v1/candidato/candidatoZona/${user._id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const responseJson = await response.json();
+        setCandidatos(responseJson.candidatos);
+      };
+      getDadosCandidatos();
+    }
+  }, [user._id]);
+
+  console.log(candidatos);
+
   return (
     <Box margin="0" padding="0" height={`calc(100vh - 66px)`} overflow="hidden">
+      <Typography
+        variant={smDown ? "h6" : mdDown ? "h5" : "h4"}
+        textAlign="center"
+        marginTop={2}
+        color=" #0f4c81"
+      >
+        ELEIÇÕES MUNICIPAIS DE DIRETORES BIÊNIO 2024/25 - {user.nome}
+      </Typography>
       <Box
         display="flex"
         flexDirection="column"
-        gap={12}
+        gap={6}
         alignItems="center"
-        justifyContent="center"
+        justifyContent="flex-start"
         height="100%"
       >
-        <Box display="flex" gap={12}>
-          <Button
-            size="large"
-            variant="contained"
-            startIcon={<EscalatorWarningIcon style={{ fontSize: 48 }} />}
-            onClick={handleAlunoResp}
-          >
-            Liberar voto de aluno/responsável
-          </Button>
-          <Button
-            size="large"
-            variant="outlined"
-            startIcon={<BadgeIcon style={{ fontSize: 48 }} />}
-            onClick={handleFuncionario}
-          >
-            Liberar voto de funcionário
-          </Button>
+        <Typography
+          variant={smDown ? "h3" : mdDown ? "h3" : "h4"}
+          textAlign="center"
+          marginTop={10}
+          color=" #000"
+        >
+          Digite o número correspondente e depois tecle ENTER
+        </Typography>
+        <Box>
+          <Grid container spacing={2} justifyContent="center">
+            {candidatos.map((candidato, i) => {
+              let cpfSemTraco = candidato?.cpf;
+              if (cpfSemTraco) {
+                cpfSemTraco = cpfSemTraco.replace(".", "");
+                cpfSemTraco = cpfSemTraco.replace(".", "");
+                cpfSemTraco = cpfSemTraco.replace("-", "");
+              }
+
+              const nomes = candidato?.nome?.toUpperCase()?.trim()?.split(" ");
+              const nomeCortado = nomes.slice(0, 2).join(" ");
+
+              return (
+                <Grid item lg={2.5} key={i}>
+                  <CandidatoCard
+                    image={`https://api.anapolis.go.gov.br/apieleicao/fotosCandidato/${cpfSemTraco}/${candidato.foto}`}
+                    numero="1"
+                    nome={nomeCortado}
+                  />
+                </Grid>
+              );
+            })}
+          </Grid>
         </Box>
         <Box>
           EscolhaCandidato
