@@ -97,7 +97,6 @@ export default function DrawerComponent({
           icon={<Face6Icon />}
           to="/dashboard/alunos"
         />
-
         <ListItems
           label="Lista de Funcionários"
           icon={<PersonIcon />}
