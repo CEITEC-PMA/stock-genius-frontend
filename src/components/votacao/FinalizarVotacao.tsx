@@ -53,16 +53,7 @@ export default function FinalizarVotacao() {
   }, [progress, router]);
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-      height="100vh"
-      padding="0"
-      margin="0"
-      overflow="hidden"
-    >
+    <Box margin="0" padding="0" height={`calc(100vh - 66px)`} overflow="hidden">
       <Typography
         variant={smDown ? "h6" : mdDown ? "h5" : "h4"}
         textAlign="center"
