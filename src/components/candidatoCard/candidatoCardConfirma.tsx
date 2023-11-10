@@ -13,7 +13,7 @@ type CandidatoCardProps = {
   numero: string;
 };
 
-export default function CandidatoCard({
+export default function CandidatoCardConfirma({
   image,
   nome,
   numero,
@@ -22,12 +22,19 @@ export default function CandidatoCard({
     <Card>
       <CardActionArea>
         <CardMedia
+          height="550px"
+          style={{
+            aspectRatio: "1 / 1",
+            maxWidth: "100%",
+            objectFit: "contain",
+          }}
           component="img"
           image={image}
           title={nome}
           sx={{
             cursor: "default",
           }}
+          alt={nome}
         />
         <CardContent
           sx={{
