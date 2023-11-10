@@ -1,6 +1,6 @@
 import { Box, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import CandidatoCard from "../candidatoCard";
+import CandidatoCardEscolha from "../candidatoCard/candidatoCardEscolha";
 import { useUserContext } from "@/userContext";
 import { Candidato } from "@/utils/types/candidato.types";
 import { apiUrl } from "@/utils/api";
@@ -99,12 +99,17 @@ export default function EscolhaCandidato({
       <Box
         display="flex"
         flexDirection="column"
-        gap={6}
+        gap={2}
         alignItems="center"
         justifyContent="flex-start"
         height="100%"
       >
-        <Typography variant="h4" textAlign="center" marginTop={5} color=" #000">
+        <Typography
+          variant="h4"
+          textAlign="center"
+          marginTop={1.2}
+          color=" #000"
+        >
           Digite o número correspondente:
         </Typography>
         <Box>
@@ -122,7 +127,7 @@ export default function EscolhaCandidato({
 
               return (
                 <Grid item xs={2.5} md={2.5} lg={2.5} key={i}>
-                  <CandidatoCard
+                  <CandidatoCardEscolha
                     image={`https://api.anapolis.go.gov.br/apieleicao/fotosCandidato/${cpfSemTraco}/${candidato.foto}`}
                     numero="1"
                     nome={nomeCortado}
@@ -138,7 +143,7 @@ export default function EscolhaCandidato({
               backgroundColor: "#2e7d32",
               padding: 2,
               borderRadius: 4,
-              marginTop: 5,
+              marginTop: 1.2,
               textAlign: "center",
             }}
           >

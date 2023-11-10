@@ -1,4 +1,4 @@
-import CandidatoCard from "@/components/candidatoCard";
+import CandidatoCardConfirma from "@/components/candidatoCard/candidatoCardConfirma";
 import { useUserContext } from "@/userContext";
 import { apiUrl } from "@/utils/api";
 import { Candidato } from "@/utils/types/candidato.types";
@@ -92,7 +92,15 @@ export default function ConfirmaCandidato({
   }
 
   return (
-    <Box margin="0" padding="0" height={`calc(100vh - 66px)`} overflow="hidden">
+    <Box
+      margin="0"
+      padding="0"
+      height={`calc(100vh - 66px)`}
+      overflow="hidden"
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+    >
       <Typography
         variant={smDown ? "h6" : mdDown ? "h5" : "h4"}
         textAlign="center"
@@ -110,44 +118,43 @@ export default function ConfirmaCandidato({
           justifyContent="center"
         >
           <Grid item xs={12} sm={6} md={6} lg={5}>
-            <CandidatoCard
+            <CandidatoCardConfirma
               image={`https://api.anapolis.go.gov.br/apieleicao/fotosCandidato/${cpfSemTraco}/${candidatoEscolhido?.foto}`}
               nome={candidatoEscolhido?.nome.toUpperCase()}
               numero={""}
             />
           </Grid>
         </Grid>
-        <Grid
-          item
-          xs={12}
-          display="flex"
-          spacing={2}
-          gap={2}
-          justifyItems="center"
-          justifyContent="center"
-        >
-          <Grid item xs={3}>
-            <Button
-              variant="contained"
-              color="success"
-              fullWidth={!smDown}
-              onClick={avancarEtapa}
-              sx={{ padding: 2.5 }}
-            >
-              Confirma (1)
-            </Button>
-          </Grid>
-          <Grid item xs={3}>
-            <Button
-              variant="contained"
-              color="error"
-              fullWidth={!smDown}
-              onClick={voltarEtapa}
-              sx={{ padding: 2.5 }}
-            >
-              Corrige (2)
-            </Button>
-          </Grid>
+      </Grid>
+      <Grid
+        item
+        xs={12}
+        display="flex"
+        gap={2}
+        justifyItems="center"
+        justifyContent="center"
+      >
+        <Grid item xs={3} marginBottom={5}>
+          <Button
+            variant="contained"
+            color="success"
+            fullWidth={!smDown}
+            onClick={avancarEtapa}
+            sx={{ paddingX: 12, paddingY: 3.5 }}
+          >
+            Confirma (1)
+          </Button>
+        </Grid>
+        <Grid item xs={3}>
+          <Button
+            variant="contained"
+            color="error"
+            fullWidth={!smDown}
+            onClick={voltarEtapa}
+            sx={{ paddingX: 12, paddingY: 3.5 }}
+          >
+            Corrige (2)
+          </Button>
         </Grid>
       </Grid>
     </Box>
