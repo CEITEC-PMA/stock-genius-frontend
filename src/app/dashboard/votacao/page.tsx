@@ -24,9 +24,9 @@ export default function Votacao() {
   };
 
   const handleSubmit = () => {
-    console.log(tipoVoto);
-    console.log(idVotante);
-    console.log(candidato);
+    // console.log(tipoVoto);
+    // console.log(idVotante);
+    // console.log(candidato);
 
     //se o status da resposta for 200, executa o avancarEtapa()
     avancarEtapa();

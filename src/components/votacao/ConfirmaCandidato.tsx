@@ -85,12 +85,7 @@ export default function ConfirmaCandidato({
   }, [avancarEtapa, voltarEtapa]);
 
   return (
-    <Box
-      margin="0"
-      padding="0"
-      height="calc(100vh - <AppBar_Height>px)"
-      overflow="hidden"
-    >
+    <Box margin="0" padding="0" height={`calc(100vh - 66px)`} overflow="hidden">
       <Typography
         variant={smDown ? "h6" : mdDown ? "h5" : "h4"}
         textAlign="center"
@@ -107,14 +102,13 @@ export default function ConfirmaCandidato({
           justifyItems="center"
           justifyContent="center"
         >
-          <Grid item xs={12} sm={6} md={6} lg={6}>
+          <Grid item xs={12} sm={6} md={6} lg={5}>
             <CandidatoCard
               image={
                 "https://api.anapolis.go.gov.br/apieleicao/fotosCandidato/35341089065/file-1697650092544.webp"
               }
               nome={"Nome do Candidato teste"}
               numero={""}
-              cardColor={"#0f4c81"}
             />
           </Grid>
         </Grid>

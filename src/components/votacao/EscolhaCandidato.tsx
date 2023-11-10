@@ -7,8 +7,6 @@ import {
   useTheme,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import BadgeIcon from "@mui/icons-material/Badge";
-import EscalatorWarningIcon from "@mui/icons-material/EscalatorWarning";
 import CandidatoCard from "../candidatoCard";
 import { useUserContext } from "@/userContext";
 import { Candidato } from "@/utils/types/candidato.types";
@@ -26,6 +24,7 @@ export default function EscolhaCandidato({
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
   const mdDown = useMediaQuery(theme.breakpoints.down("md"));
   const [candidatos, setCandidatos] = useState<Candidato[]>([]);
+  const [candidatoEscolhido, setCandidatoEscolhido] = useState("");
 
   useEffect(() => {
     const digitou = new Audio(
@@ -34,15 +33,19 @@ export default function EscolhaCandidato({
 
     const tecla1 = () => {
       digitou.play();
+      setCandidatoEscolhido("1");
     };
     const tecla2 = () => {
       digitou.play();
+      setCandidatoEscolhido("2");
     };
     const tecla3 = () => {
       digitou.play();
+      setCandidatoEscolhido("3");
     };
     const tecla4 = () => {
       digitou.play();
+      setCandidatoEscolhido("4");
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -80,14 +83,6 @@ export default function EscolhaCandidato({
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [avancarEtapa]);
-
-  const handleAlunoResp = () => {
-    console.log("clicou aluno responsavel");
-  };
-
-  const handleFuncionario = () => {
-    console.log("clicou funcionario");
-  };
 
   useEffect(() => {
     //fetch
@@ -129,13 +124,8 @@ export default function EscolhaCandidato({
         justifyContent="flex-start"
         height="100%"
       >
-        <Typography
-          variant={smDown ? "h3" : mdDown ? "h3" : "h4"}
-          textAlign="center"
-          marginTop={10}
-          color=" #000"
-        >
-          Digite o número correspondente e depois tecle ENTER
+        <Typography variant="h4" textAlign="center" marginTop={5} color=" #000">
+          Digite o número correspondente e depois tecle ENTER para prosseguir
         </Typography>
         <Box>
           <Grid container spacing={2} justifyContent="center">
@@ -151,7 +141,7 @@ export default function EscolhaCandidato({
               const nomeCortado = nomes.slice(0, 2).join(" ");
 
               return (
-                <Grid item lg={2.5} key={i}>
+                <Grid item xs={2.5} md={2.5} lg={2.5} key={i}>
                   <CandidatoCard
                     image={`https://api.anapolis.go.gov.br/apieleicao/fotosCandidato/${cpfSemTraco}/${candidato.foto}`}
                     numero="1"
