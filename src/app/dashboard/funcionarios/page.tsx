@@ -71,7 +71,11 @@ export default function Funcionarios() {
 
   const downloadPdf = () => {
     // console.log(funcionarios)
-    doc.text("Tabela de Funcionarios", 20, 10);
+    doc.text(
+      `ELEIÇÕES MUNICIPAIS DE DIRETORES BIÊNIO 2024/25\nLista de Funcionários - ${user.nome}`,
+      20,
+      10
+    );
     const columns = [
       { title: "NOME ", dataKey: "nome" },
       { title: "CARGO", dataKey: "cargo" },
@@ -97,7 +101,7 @@ export default function Funcionarios() {
     <Box margin="24px">
       <Container>
         <Typography variant="h3" marginBottom="12x" textAlign="center">
-          Lista de Funcionarios
+          Lista de Funcionários - {user.nome}
         </Typography>
 
         {!isLoading && (
