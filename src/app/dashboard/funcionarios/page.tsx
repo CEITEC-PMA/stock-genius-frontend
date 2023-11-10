@@ -40,7 +40,7 @@ export default function Funcionarios() {
       setIsloading(true);
       const getDadosFuncionarios = async () => {
         const response = await fetch(
-          `${apiUrl}/api/v1/funcionario/funcionariozona`,
+          `${apiUrl}/api/v1/funcionario`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -61,7 +61,7 @@ export default function Funcionarios() {
     }
   }, [user._id]);
 
-
+  console.log(funcionarios)
   const downloadPdf = () => {
     // console.log(funcionarios)
     doc.text("Tabela de Funcionarios", 20, 10);
