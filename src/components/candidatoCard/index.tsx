@@ -9,7 +9,7 @@ import { CardActionArea } from "@mui/material";
 
 type CandidatoCardProps = {
   image: string;
-  nome: string;
+  nome: string | undefined;
   numero: string;
 };
 

@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Grid,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Box, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import CandidatoCard from "../candidatoCard";
 import { useUserContext } from "@/userContext";
@@ -14,75 +7,18 @@ import { apiUrl } from "@/utils/api";
 
 export default function EscolhaCandidato({
   avancarEtapa,
-  voltarEtapa,
+  setCandidatoEscolhido,
 }: {
   avancarEtapa: () => void;
   voltarEtapa: () => void;
+  setCandidatoEscolhido: (candidato: Candidato) => void;
 }) {
   const { user } = useUserContext();
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
   const mdDown = useMediaQuery(theme.breakpoints.down("md"));
   const [candidatos, setCandidatos] = useState<Candidato[]>([]);
-  const [candidatoEscolhido, setCandidatoEscolhido] = useState("");
-
-  useEffect(() => {
-    const digitou = new Audio(
-      "https://api.anapolis.go.gov.br/apiupload/sed/digito.mp3"
-    );
-
-    const tecla1 = () => {
-      digitou.play();
-      setCandidatoEscolhido("1");
-    };
-    const tecla2 = () => {
-      digitou.play();
-      setCandidatoEscolhido("2");
-    };
-    const tecla3 = () => {
-      digitou.play();
-      setCandidatoEscolhido("3");
-    };
-    const tecla4 = () => {
-      digitou.play();
-      setCandidatoEscolhido("4");
-    };
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      switch (event.key) {
-        case "1":
-          tecla1();
-          break;
-        case "2":
-          tecla2();
-          break;
-        case "3":
-          tecla3();
-          break;
-        case "4":
-          tecla4();
-          break;
-        case "Enter":
-          digitou.play();
-          setTimeout(() => {
-            avancarEtapa();
-          }, 500);
-          break;
-        // Add additional cases if needed
-        default:
-          // If another key is pressed, do nothing
-          break;
-      }
-    };
-
-    // Attach the event listener to the window object
-    window.addEventListener("keydown", handleKeyDown);
-
-    // Clean up the event listener on component unmount
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [avancarEtapa]);
+  const [digitou, setDigitou] = useState(false);
 
   useEffect(() => {
     //fetch
@@ -104,7 +40,51 @@ export default function EscolhaCandidato({
     }
   }, [user._id]);
 
-  console.log(candidatos);
+  useEffect(() => {
+    const digitou = new Audio(
+      "https://api.anapolis.go.gov.br/apiupload/sed/digito.mp3"
+    );
+
+    const teclaPressionada = (numero: number) => {
+      digitou.play();
+      setDigitou(true);
+
+      if (candidatos[numero - 1]) {
+        setCandidatoEscolhido(candidatos[numero - 1]);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      switch (event.key) {
+        case "1":
+          teclaPressionada(1);
+          break;
+        case "2":
+          teclaPressionada(2);
+          break;
+        case "3":
+          teclaPressionada(3);
+          break;
+        case "4":
+          teclaPressionada(4);
+          break;
+        case "Enter":
+          digitou.play();
+          setTimeout(() => {
+            avancarEtapa();
+          }, 500);
+          break;
+        default:
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [avancarEtapa, candidatos]);
 
   return (
     <Box margin="0" padding="0" height={`calc(100vh - 66px)`} overflow="hidden">
@@ -125,7 +105,7 @@ export default function EscolhaCandidato({
         height="100%"
       >
         <Typography variant="h4" textAlign="center" marginTop={5} color=" #000">
-          Digite o número correspondente e depois tecle ENTER para prosseguir
+          Digite o número correspondente:
         </Typography>
         <Box>
           <Grid container spacing={2} justifyContent="center">
@@ -152,7 +132,22 @@ export default function EscolhaCandidato({
             })}
           </Grid>
         </Box>
-        <Box>
+        {digitou && (
+          <Box
+            sx={{
+              backgroundColor: "#2e7d32",
+              padding: 2,
+              borderRadius: 4,
+              marginTop: 5,
+              textAlign: "center",
+            }}
+          >
+            <Typography variant="h4" color="white">
+              Tecle ENTER para prosseguir
+            </Typography>
+          </Box>
+        )}
+        {/* <Box>
           EscolhaCandidato
           <Button
             style={{ whiteSpace: "nowrap" }}
@@ -168,7 +163,7 @@ export default function EscolhaCandidato({
           >
             Avançar
           </Button>
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   );
