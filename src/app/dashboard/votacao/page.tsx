@@ -2,18 +2,21 @@
 import ConfirmaCandidato from "@/components/votacao/ConfirmaCandidato";
 import EscolhaCandidato from "@/components/votacao/EscolhaCandidato";
 import FinalizarVotacao from "@/components/votacao/FinalizarVotacao";
+import { Candidato } from "@/utils/types/candidato.types";
 import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 
 export default function Votacao() {
   const [etapa, setEtapa] = useState(0);
   const searchParams = useSearchParams();
+  const [candidatoEscolhido, setCandidatoEscolhido] =
+    useState<Candidato | null>(null);
 
-  const tipo = searchParams.get("tipo");
-  const id = searchParams.get("id");
+  const tipo = searchParams.get("tipo") ?? "";
+  const id = searchParams.get("id") ?? "";
 
-  console.log("O tipo do voto é", tipo);
-  console.log(id);
+  // console.log("O tipo do voto é", tipo);
+  // console.log(id);
 
   const avancarEtapa = () => {
     setEtapa((prev) => prev + 1);
@@ -24,9 +27,9 @@ export default function Votacao() {
   };
 
   const handleSubmit = () => {
-    console.log(tipoVoto);
-    console.log(idVotante);
-    console.log(candidato);
+    // console.log(tipoVoto);
+    // console.log(idVotante);
+    console.log("O candidato escolhido foi:", candidatoEscolhido);
 
     //se o status da resposta for 200, executa o avancarEtapa()
     avancarEtapa();
@@ -39,6 +42,7 @@ export default function Votacao() {
           <EscolhaCandidato
             avancarEtapa={avancarEtapa}
             voltarEtapa={voltarEtapa}
+            setCandidatoEscolhido={setCandidatoEscolhido}
           />
         );
       case 1:
@@ -46,9 +50,10 @@ export default function Votacao() {
           <ConfirmaCandidato
             avancarEtapa={handleSubmit}
             voltarEtapa={voltarEtapa}
-            tipo={tipo}
-            id={id}
+            candidatoEscolhido={candidatoEscolhido}
             handleSubmit={handleSubmit}
+            id={id}
+            tipo={tipo}
           />
         );
       case 2:
