@@ -80,9 +80,9 @@ export default function DrawerComponent({
 
         {user.role?.includes("super-adm") && (
           <ListItems
-            label="Votação"
+            label="Liberar voto"
             icon={<HowToVoteIcon />}
-            to="/dashboard/votacao"
+            to="/dashboard/liberavoto"
           />
         )}
 

@@ -184,7 +184,7 @@ export default function LiberaVoto() {
               <Box>
                 {dadosAlunos.votante && (
                   <Button
-                    variant="outlined"
+                    variant="contained"
                     onClick={() =>
                       router.push(
                         `${apiUrl}/aluno/api/v1/id/${dadosAlunos._id}`
@@ -209,7 +209,7 @@ export default function LiberaVoto() {
               </Typography>
 
               <Button
-                variant="outlined"
+                variant="contained"
                 onClick={() =>
                   router.push(
                     `/dashboard/votacao/tipo=${dadosAlunos.responsavel1}&id=${dadosAlunos._id}`
@@ -226,7 +226,7 @@ export default function LiberaVoto() {
               </Typography>
 
               <Button
-                variant="outlined"
+                variant="contained"
                 onClick={() =>
                   router.push(
                     `/dashboard/votacao/tipo=${dadosAlunos.responsavel2}&id=${dadosAlunos._id}`
@@ -244,7 +244,7 @@ export default function LiberaVoto() {
                 </Typography>
 
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   onClick={() =>
                     router.push(
                       `/dashboard/votacao/tipo=${dadosAlunos.responsavel3}&id=${dadosAlunos._id}`
@@ -269,7 +269,7 @@ export default function LiberaVoto() {
           </Box>
 
           <Button
-            variant="outlined"
+            variant="contained"
             onClick={() =>
               router.push(
                 `/dashboard/votacao?tipo=funcionario&&id=${dadosFuncionarios._id}`
