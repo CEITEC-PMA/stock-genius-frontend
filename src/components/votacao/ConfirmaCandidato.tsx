@@ -91,6 +91,11 @@ export default function ConfirmaCandidato({
     cpfSemTraco = cpfSemTraco.replace("-", "");
   }
 
+  const textStyle = {
+    fontWeight: "bold",
+    fontSize: "25.9px",
+  };
+
   return (
     <Box
       margin="0"
@@ -136,6 +141,7 @@ export default function ConfirmaCandidato({
       >
         <Grid item xs={3} marginBottom={5}>
           <Button
+            style={textStyle}
             variant="contained"
             color="success"
             fullWidth={!smDown}
@@ -147,6 +153,7 @@ export default function ConfirmaCandidato({
         </Grid>
         <Grid item xs={3}>
           <Button
+            style={textStyle}
             variant="contained"
             color="error"
             fullWidth={!smDown}
