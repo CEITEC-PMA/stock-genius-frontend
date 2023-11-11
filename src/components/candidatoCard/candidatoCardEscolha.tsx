@@ -41,11 +41,11 @@ export default function CandidatoCardEscolha({
           }}
         >
           {numero && (
-            <Typography align="center" variant="h2" component="h2">
+            <Typography gutterBottom align="center" variant="h2" component="h2">
               {numero}
             </Typography>
           )}
-          <Typography align="center" variant="h5" component="h2">
+          <Typography gutterBottom align="center" variant="h5" component="h2">
             {nome}
           </Typography>
         </CardContent>

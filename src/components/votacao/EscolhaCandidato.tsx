@@ -55,27 +55,49 @@ export default function EscolhaCandidato({
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      switch (event.key) {
-        case "1":
-          teclaPressionada(1);
-          break;
-        case "2":
-          teclaPressionada(2);
-          break;
-        case "3":
-          teclaPressionada(3);
-          break;
-        case "4":
-          teclaPressionada(4);
-          break;
-        case "Enter":
-          digitou.play();
-          setTimeout(() => {
-            avancarEtapa();
-          }, 500);
-          break;
-        default:
-          break;
+      if (candidatos.length === 3) {
+        switch (event.key) {
+          case "1":
+            teclaPressionada(1);
+            break;
+          case "3":
+            teclaPressionada(3);
+            break;
+          case "4":
+            teclaPressionada(4);
+            break;
+          case "Enter":
+            digitou.play();
+            setTimeout(() => {
+              avancarEtapa();
+            }, 500);
+            break;
+          default:
+            break;
+        }
+      } else {
+        switch (event.key) {
+          case "1":
+            teclaPressionada(1);
+            break;
+          case "2":
+            teclaPressionada(2);
+            break;
+          case "3":
+            teclaPressionada(3);
+            break;
+          case "4":
+            teclaPressionada(4);
+            break;
+          case "Enter":
+            digitou.play();
+            setTimeout(() => {
+              avancarEtapa();
+            }, 500);
+            break;
+          default:
+            break;
+        }
       }
     };
 
@@ -124,12 +146,15 @@ export default function EscolhaCandidato({
 
               const nomes = candidato?.nome?.toUpperCase()?.trim()?.split(" ");
               const nomeCortado = nomes.slice(0, 2).join(" ");
+              const numeroCandidato = candidato.numero;
 
               return (
                 <Grid item xs={2.5} md={2.5} lg={2.5} key={i}>
                   <CandidatoCardEscolha
                     image={`https://api.anapolis.go.gov.br/apieleicao/fotosCandidato/${cpfSemTraco}/${candidato.foto}`}
-                    numero="1"
+                    numero={
+                      numeroCandidato === undefined ? "S/ nº" : numeroCandidato
+                    }
                     nome={nomeCortado}
                   />
                 </Grid>
