@@ -16,15 +16,11 @@ export default function ConfirmaCandidato({
   avancarEtapa,
   voltarEtapa,
   handleSubmit,
-  id,
-  tipo,
   candidatoEscolhido,
 }: {
   avancarEtapa: () => void;
   voltarEtapa: () => void;
   handleSubmit: () => void;
-  id: string;
-  tipo: string;
   candidatoEscolhido: Candidato | null;
 }) {
   const [candidatos, setCandidatos] = useState<Candidato[]>([]);
@@ -32,12 +28,6 @@ export default function ConfirmaCandidato({
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
   const mdDown = useMediaQuery(theme.breakpoints.down("md"));
-
-  const idVotante = id;
-  const tipoVoto = tipo;
-
-  console.log("O id do votante é", idVotante);
-  console.log("O tipo de voto é", tipoVoto);
 
   useEffect(() => {
     //fetch
@@ -77,6 +67,7 @@ export default function ConfirmaCandidato({
           setTimeout(() => {
             voltarEtapa();
           }, 500);
+
           break;
         default:
           break;

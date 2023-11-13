@@ -60,8 +60,6 @@ export default function EscolhaCandidato({
       "https://api.anapolis.go.gov.br/apiupload/sed/digito.mp3"
     );
 
-    console.log(candidatos.length);
-
     const pressKey = (event: KeyboardEvent) => {
       const candidatoSelecionado = candidatos.find(
         (candidato) => candidato.numero_candidato == event.key

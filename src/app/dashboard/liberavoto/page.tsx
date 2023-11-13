@@ -64,7 +64,6 @@ export default function LiberaVoto() {
   }, [liberaAluno, liberafuncionario]);
 
   const handleAluno = () => {
-    console.log("clicou");
     setLiberaAluno(true);
     setLiberaFuncionario(false);
   };
@@ -171,7 +170,7 @@ export default function LiberaVoto() {
                     variant="outlined"
                     onClick={() =>
                       router.push(
-                        `${apiUrl}/aluno/api/v1/id/${dadosAlunos._id}`
+                        `/dashboard/votacao?tipo=aluno&id=${dadosAlunos._id}`
                       )
                     }
                   >
