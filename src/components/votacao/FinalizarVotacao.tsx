@@ -46,7 +46,7 @@ export default function FinalizarVotacao() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.push("/dashboard");
+      router.push("/dashboard/liberavoto");
     }, 500);
 
     return () => clearTimeout(timer);
@@ -105,11 +105,6 @@ export default function FinalizarVotacao() {
               autoPlay
               muted={false}
             />
-            {/* <div>
-              FinalizarVotacao
-              <Button onClick={voltarEtapa}>Voltar</Button>
-              <Button onClick={avancarEtapa}>Avançar</Button>
-            </div> */}
           </Box>
         </Grid>
       </Grid>

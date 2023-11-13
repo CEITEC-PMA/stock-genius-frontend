@@ -33,6 +33,12 @@ export default function ConfirmaCandidato({
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
   const mdDown = useMediaQuery(theme.breakpoints.down("md"));
 
+  const idVotante = id;
+  const tipoVoto = tipo;
+
+  console.log("O id do votante é", idVotante);
+  console.log("O tipo de voto é", tipoVoto);
+
   useEffect(() => {
     //fetch
     const token = localStorage.getItem("token");
@@ -91,6 +97,23 @@ export default function ConfirmaCandidato({
     cpfSemTraco = cpfSemTraco.replace("-", "");
   }
 
+  const textStyle = {
+    fontWeight: "bold",
+    fontSize: "25.9px",
+  };
+
+  const obterCaminhoFoto = (candidato: Candidato) => {
+    const nomeCandidato = candidato?.nome?.toUpperCase()?.trim();
+
+    if (nomeCandidato === "BRANCO") {
+      return "https://api.anapolis.go.gov.br/apiupload/sed/branco.jpg";
+    } else if (nomeCandidato === "NULO") {
+      return "https://api.anapolis.go.gov.br/apiupload/sed/nulo.jpg";
+    } else {
+      return `https://api.anapolis.go.gov.br/apieleicao/fotosCandidato/${cpfSemTraco}/${candidato.foto}`;
+    }
+  };
+
   return (
     <Box
       margin="0"
@@ -118,11 +141,13 @@ export default function ConfirmaCandidato({
           justifyContent="center"
         >
           <Grid item xs={12} sm={6} md={6} lg={5}>
-            <CandidatoCardConfirma
-              image={`https://api.anapolis.go.gov.br/apieleicao/fotosCandidato/${cpfSemTraco}/${candidatoEscolhido?.foto}`}
-              nome={candidatoEscolhido?.nome.toUpperCase()}
-              numero={""}
-            />
+            {candidatoEscolhido && (
+              <CandidatoCardConfirma
+                image={obterCaminhoFoto(candidatoEscolhido)}
+                nome={candidatoEscolhido?.nome.toUpperCase()}
+                numero={""}
+              />
+            )}
           </Grid>
         </Grid>
       </Grid>
@@ -136,6 +161,7 @@ export default function ConfirmaCandidato({
       >
         <Grid item xs={3} marginBottom={5}>
           <Button
+            style={textStyle}
             variant="contained"
             color="success"
             fullWidth={!smDown}
@@ -147,6 +173,7 @@ export default function ConfirmaCandidato({
         </Grid>
         <Grid item xs={3}>
           <Button
+            style={textStyle}
             variant="contained"
             color="error"
             fullWidth={!smDown}
