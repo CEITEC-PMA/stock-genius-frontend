@@ -2,6 +2,7 @@
 import ConfirmaCandidato from "@/components/votacao/ConfirmaCandidato";
 import EscolhaCandidato from "@/components/votacao/EscolhaCandidato";
 import FinalizarVotacao from "@/components/votacao/FinalizarVotacao";
+import { apiUrl } from "@/utils/api";
 import { Candidato } from "@/utils/types/candidato.types";
 import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
@@ -15,9 +16,6 @@ export default function Votacao() {
   const tipo = searchParams.get("tipo") ?? "";
   const id = searchParams.get("id") ?? "";
 
-  // console.log("O tipo do voto é", tipo);
-  // console.log(id);
-
   const avancarEtapa = () => {
     setEtapa((prev) => prev + 1);
   };
@@ -26,12 +24,22 @@ export default function Votacao() {
     setEtapa((prev) => prev - 1);
   };
 
-  const handleSubmit = () => {
-    // console.log(tipoVoto);
-    // console.log(idVotante);
-    console.log("O candidato escolhido foi:", candidatoEscolhido);
-
-    //se o status da resposta for 200, executa o avancarEtapa()
+  const handleSubmit = async () => {
+    const dadosParaEnviar = {
+      candidato: candidatoEscolhido?._id,
+      idVotante: id,
+      tipoVoto: tipo,
+    };
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${apiUrl}/api/v1/voto/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(dadosParaEnviar),
+    });
+    console.log(response);
     avancarEtapa();
   };
 
@@ -52,8 +60,6 @@ export default function Votacao() {
             voltarEtapa={voltarEtapa}
             candidatoEscolhido={candidatoEscolhido}
             handleSubmit={handleSubmit}
-            id={id}
-            tipo={tipo}
           />
         );
       case 2:
