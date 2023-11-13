@@ -7,7 +7,6 @@ import {
   Autocomplete,
   Box,
   Button,
-  Paper,
   TextField,
   Typography,
 } from "@mui/material";
@@ -15,16 +14,10 @@ import EscalatorWarningIcon from "@mui/icons-material/EscalatorWarning";
 import { Aluno } from "@/utils/types/aluno.types";
 import BadgeIcon from "@mui/icons-material/Badge";
 import { Funcionario } from "@/utils/types/funcionario.types";
-import { ContentPasteSearchOutlined } from "@mui/icons-material";
 
 export default function LiberaVoto() {
-  // interface IalunosResponsaveis {
-  //     nome: string;
-  // }
-
   const [alunos, setAlunos] = useState<Aluno[]>([]);
   const [funcionarios, setFuncionarios] = useState<Funcionario[]>([]);
-  const alunosResponsaveis = [];
   const [liberaAluno, setLiberaAluno] = useState(false);
   const [liberafuncionario, setLiberaFuncionario] = useState(false);
   const [busca, setBusca] = useState("");
@@ -272,7 +265,7 @@ export default function LiberaVoto() {
             variant="contained"
             onClick={() =>
               router.push(
-                `/dashboard/votacao?tipo=funcionario&&id=${dadosFuncionarios._id}`
+                `/dashboard/votacao?tipo=funcionario&id=${dadosFuncionarios._id}`
               )
             }
           >
