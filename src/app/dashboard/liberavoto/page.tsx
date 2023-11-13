@@ -62,6 +62,8 @@ export default function LiberaVoto() {
         }
     }, [liberaAluno, liberafuncionario]);
 
+    console.log(alunos)
+    console.log(funcionarios)
 
     const handleAluno = () => {
         console.log("clicou")
@@ -84,6 +86,8 @@ export default function LiberaVoto() {
     const dadosFuncionarios = funcionarios.find((funcionario) => funcionario.nome === busca)
     // console.log(busca)
     console.log(dadosFuncionarios);
+
+    console.log(!!dadosAlunos?.aluno_votou)
 
 
     return (
@@ -124,7 +128,7 @@ export default function LiberaVoto() {
                             // inputValue={busca}
                             onInputChange={(e, newValue) => setBusca(newValue)}
                             sx={{ width: 300 }}
-                            renderInput={(params) => <TextField {...params} label="Alunos/Responsaveis" />}
+                            renderInput={(params) => <TextField {...params} label="Alunos" />}
                         />
                     </Box>)}
 
@@ -142,27 +146,27 @@ export default function LiberaVoto() {
                 </Box>
             </Box>
 
-            {dadosAlunos && (<Box display='flex' flexDirection='column' alignItems='center' >
+            {dadosAlunos && (<Box display='flex' flexDirection='column' alignItems='center' justifyContent='center'  >
 
                 {/* <Box m={1} width='100%'> */}
 
-                <Box display='flex' m={1} flexDirection='column' alignItems='flex-end'>
+                <Box display='flex' m={1} flexDirection='column' alignItems='center'  >
 
                     <Box display='flex' alignItems='center'   >
-                        <Box marginRight={4}  >
+                        <Box marginRight={3}  >
                             <Typography padding={2}>
                                 NOME: {dadosAlunos?.nome}
                             </Typography>
                         </Box>
                         <Box>
-                            {dadosAlunos.votante && (<Button variant='outlined' onClick={() => router.push(`${apiUrl}/aluno/api/v1/id/${dadosAlunos._id}`)} >
+                            {dadosAlunos.votante && !dadosAlunos.aluno_votou && (<Button variant='outlined' onClick={() => router.push(`${apiUrl}/aluno/api/v1/id/${dadosAlunos._id}`)} >
                                 <Typography>Liberar</Typography>
                             </Button>)}
                         </Box>
 
-                        <Box>
+                        <Box bgcolor='yellow'>
                             <Typography color='red'>
-                                {!dadosAlunos.votante && ("(O Aluno não pode votar)")}
+                                {!dadosAlunos.votante ? "ALUNO(A) NÃO PODE VOTAR!" : dadosAlunos.aluno_votou ? "ALUNO(A) JÁ VOTOU!" : undefined}
                             </Typography>
                         </Box>
 
@@ -173,33 +177,34 @@ export default function LiberaVoto() {
                             RESPONSAVEL 1: {dadosAlunos?.responsavel1}
                         </Typography>
 
-                        <Button variant='outlined' onClick={() => router.push(`${apiUrl}/aluno/api/v1/tipo=${dadosAlunos.responsavel1}&id=${dadosAlunos._id}`)} >
+                        {!dadosAlunos.resp_votou && (<Button variant='outlined' onClick={() => router.push(`${apiUrl}/aluno/api/v1/tipo=${dadosAlunos.responsavel1}&id=${dadosAlunos._id}`)} >
                             <Typography>Liberar</Typography>
-                        </Button>
+                        </Button>)}
                     </Box>
 
                     <Box m={1} display='flex' alignItems='center'>
-                        <Typography marginRight={4}>
+                        {<Typography marginRight={4}>
                             RESPONSAVEL 2: {dadosAlunos?.responsavel2}
                         </Typography>
-
-                        <Button variant='outlined' onClick={() => router.push(`${apiUrl}/aluno/api/v1/tipo=${dadosAlunos.responsavel2}&id=${dadosAlunos._id}`)} >
+                        }
+                        {!dadosAlunos.resp_votou && (<Button variant='outlined' onClick={() => router.push(`${apiUrl}/aluno/api/v1/tipo=${dadosAlunos.responsavel2}&id=${dadosAlunos._id}`)} >
                             <Typography>Liberar</Typography>
-                        </Button>
+                        </Button>)}
                     </Box>
 
-                    {dadosAlunos.responsavel3 && (<Box m={1} display='flex' alignItems='center'>
+                    {dadosAlunos.responsavel3 && (<Box m={1} display='flex' alignItems='flex-end'>
                         <Typography marginRight={4}>
                             RESPONSAVEL 3: {dadosAlunos?.responsavel3}
                         </Typography>
 
-                        <Button variant='outlined' onClick={() => router.push(`${apiUrl}/aluno/api/v1/tipo=${dadosAlunos.responsavel3}&id=${dadosAlunos._id}`)} >
+                        {!dadosAlunos.resp_votou && (<Button variant='outlined' onClick={() => router.push(`${apiUrl}/aluno/api/v1/tipo=${dadosAlunos.responsavel3}&id=${dadosAlunos._id}`)} >
                             <Typography>Liberar</Typography>
-                        </Button>
+                        </Button>)}
                     </Box>)}
 
-
-
+                    {dadosAlunos.resp_votou && (<Box bgcolor='yellow'>
+                        <Typography color='red'> UM DOS RESPONSÁVEIS JÁ VOTOU </Typography>
+                    </Box>)}
                 </Box>
                 {/* </Box> */}
             </Box>)}
@@ -216,9 +221,13 @@ export default function LiberaVoto() {
                     </Typography>
                 </Box>
 
-                <Button variant='outlined' onClick={() => router.push(`${apiUrl}/funcionario/id=${dadosFuncionarios._id}`)} >
+                {!dadosFuncionarios.votou && (<Button variant='outlined' onClick={() => router.push(`${apiUrl}/funcionario/id=${dadosFuncionarios._id}`)} >
                     <Typography>Liberar</Typography>
-                </Button>
+                </Button>)}
+
+                {dadosFuncionarios.votou && (<Box bgcolor='yellow'>
+                    <Typography color='red'>FUNCIONÁRIO(A) JÁ VOTOU </Typography>
+                </Box>)}
 
             </Box>)}
         </>
