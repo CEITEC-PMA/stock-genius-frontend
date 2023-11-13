@@ -60,95 +60,42 @@ export default function EscolhaCandidato({
       "https://api.anapolis.go.gov.br/apiupload/sed/digito.mp3"
     );
 
-    const teclaPressionada = (numero: number) => {
-      digitou.play();
-      setDigitou(true);
-      setOpcaoInvalida(false);
+    console.log(candidatos.length);
 
-      if (candidatos[numero - 1]) {
-        setCandidatoEscolhido(candidatos[numero - 1]);
-      }
-    };
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (candidatos.length === 3) {
-        switch (event.key) {
-          case "1":
-            teclaPressionada(1);
-            break;
-          case "3":
-            teclaPressionada(3);
-            break;
-          case "4":
-            teclaPressionada(4);
-            break;
-          case "Enter":
-            if (!enterPressionado) {
-              setEnterPressionado(true);
-              digitou.play();
-              setTimeout(() => {
-                avancarEtapa();
-                setEnterPressionado(false);
-              }, 500);
-            }
-            break;
-          default:
-            digitou.play();
-            setOpcaoInvalida(true);
-            setDigitou(false);
-            break;
+    const pressKey = (event: KeyboardEvent) => {
+      const candidatoSelecionado = candidatos.find(
+        (candidato) => candidato.numero_candidato == event.key
+      );
+      if (candidatoSelecionado) {
+        digitou.play();
+        setDigitou(true);
+        setOpcaoInvalida(false);
+        setCandidatoEscolhido(candidatoSelecionado);
+      } else if (event.key === "Enter") {
+        if (!enterPressionado) {
+          digitou.play();
+          setDigitou(true);
+          setOpcaoInvalida(false);
+          setEnterPressionado(true);
+          digitou.play();
+          setTimeout(() => {
+            avancarEtapa();
+            setEnterPressionado(false);
+          }, 500);
         }
       } else {
-        switch (event.key) {
-          case "1":
-            teclaPressionada(1);
-            break;
-          case "2":
-            teclaPressionada(2);
-            break;
-          case "3":
-            teclaPressionada(3);
-            break;
-          case "4":
-            teclaPressionada(4);
-            break;
-          case "Enter":
-            if (!enterPressionado) {
-              setEnterPressionado(true);
-              digitou.play();
-              setTimeout(() => {
-                avancarEtapa();
-                setEnterPressionado(false);
-              }, 500);
-            }
-            break;
-          default:
-            digitou.play();
-            setOpcaoInvalida(true);
-            setDigitou(false);
-            break;
-        }
+        digitou.play();
+        setOpcaoInvalida(true);
+        setDigitou(false);
       }
     };
 
-    const handleKeyUp = (event: KeyboardEvent) => {
-      switch (event.key) {
-        case "Enter":
-          setEnterPressionado(false);
-          break;
-        default:
-          break;
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
+    window.addEventListener("keyup", pressKey);
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
+      window.removeEventListener("keyup", pressKey);
     };
-  }, [avancarEtapa, candidatos]);
+  }, [avancarEtapa, candidatos, enterPressionado, setCandidatoEscolhido]);
 
   return (
     <Box margin="0" padding="0" height={`calc(100vh - 66px)`} overflow="hidden">

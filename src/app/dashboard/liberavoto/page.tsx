@@ -58,7 +58,7 @@ export default function LiberaVoto() {
           return response;
         }
       };
-      //setIsloading(false);
+
       getDados();
     }
   }, [liberaAluno, liberafuncionario]);
@@ -69,24 +69,18 @@ export default function LiberaVoto() {
     setLiberaFuncionario(false);
   };
 
+  const dadosAlunos = alunos.find((aluno) => aluno.nome === busca);
+
   const handleFuncionario = () => {
-    console.log("clicou");
     setLiberaFuncionario(true);
     setLiberaAluno(false);
   };
 
-  const dadosAlunos = alunos.find((aluno) => aluno.nome === busca);
-  // console.log(busca)
-  console.log(dadosAlunos);
-
   const dadosFuncionarios = funcionarios.find(
     (funcionario) => funcionario.nome === busca
   );
-  // console.log(busca)
-  console.log(dadosFuncionarios);
 
   return (
-    //<div>teste</div>
     <>
       <Box
         marginTop={8}
@@ -132,11 +126,10 @@ export default function LiberaVoto() {
                 id="combo-box-demo"
                 options={alunos}
                 getOptionLabel={(aluno: Aluno) => aluno.nome}
-                // inputValue={busca}
                 onInputChange={(e, newValue) => setBusca(newValue)}
                 sx={{ width: 300 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Alunos/Responsaveis" />
+                  <TextField {...params} label="Alunos" />
                 )}
               />
             </Box>
@@ -161,23 +154,21 @@ export default function LiberaVoto() {
       </Box>
 
       {dadosAlunos && (
-        <Box display="flex" flexDirection="column" alignItems="center">
-          {/* <Box m={1} width='100%'> */}
-
-          <Box
-            display="flex"
-            m={1}
-            flexDirection="column"
-            alignItems="flex-end"
-          >
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Box display="flex" m={1} flexDirection="column" alignItems="center">
             <Box display="flex" alignItems="center">
-              <Box marginRight={4}>
+              <Box marginRight={3}>
                 <Typography padding={2}>NOME: {dadosAlunos?.nome}</Typography>
               </Box>
               <Box>
-                {dadosAlunos.votante && (
+                {dadosAlunos.votante && !dadosAlunos.aluno_votou && (
                   <Button
-                    variant="contained"
+                    variant="outlined"
                     onClick={() =>
                       router.push(
                         `${apiUrl}/aluno/api/v1/id/${dadosAlunos._id}`
@@ -189,9 +180,13 @@ export default function LiberaVoto() {
                 )}
               </Box>
 
-              <Box>
+              <Box bgcolor="yellow">
                 <Typography color="red">
-                  {!dadosAlunos.votante && "(O Aluno não pode votar)"}
+                  {!dadosAlunos.votante
+                    ? "ALUNO(A) NÃO PODE VOTAR!"
+                    : dadosAlunos.aluno_votou
+                    ? "ALUNO(A) JÁ VOTOU!"
+                    : undefined}
                 </Typography>
               </Box>
             </Box>
@@ -201,55 +196,70 @@ export default function LiberaVoto() {
                 RESPONSAVEL 1: {dadosAlunos?.responsavel1}
               </Typography>
 
-              <Button
-                variant="contained"
-                onClick={() =>
-                  router.push(
-                    `/dashboard/votacao/tipo=${dadosAlunos.responsavel1}&id=${dadosAlunos._id}`
-                  )
-                }
-              >
-                <Typography>Liberar</Typography>
-              </Button>
-            </Box>
-
-            <Box m={1} display="flex" alignItems="center">
-              <Typography marginRight={4}>
-                RESPONSAVEL 2: {dadosAlunos?.responsavel2}
-              </Typography>
-
-              <Button
-                variant="contained"
-                onClick={() =>
-                  router.push(
-                    `/dashboard/votacao/tipo=${dadosAlunos.responsavel2}&id=${dadosAlunos._id}`
-                  )
-                }
-              >
-                <Typography>Liberar</Typography>
-              </Button>
-            </Box>
-
-            {dadosAlunos.responsavel3 && (
-              <Box m={1} display="flex" alignItems="center">
-                <Typography marginRight={4}>
-                  RESPONSAVEL 3: {dadosAlunos?.responsavel3}
-                </Typography>
-
+              {!dadosAlunos.resp_votou && (
                 <Button
-                  variant="contained"
+                  variant="outlined"
                   onClick={() =>
                     router.push(
-                      `/dashboard/votacao/tipo=${dadosAlunos.responsavel3}&id=${dadosAlunos._id}`
+                      `/dashboard/votacao?tipo=responsavel&id=${dadosAlunos._id}`
                     )
                   }
                 >
                   <Typography>Liberar</Typography>
                 </Button>
+              )}
+            </Box>
+
+            <Box m={1} display="flex" alignItems="center">
+              {
+                <Typography marginRight={4}>
+                  RESPONSAVEL 2: {dadosAlunos?.responsavel2}
+                </Typography>
+              }
+              {!dadosAlunos.resp_votou && (
+                <Button
+                  variant="outlined"
+                  onClick={() =>
+                    router.push(
+                      `/dashboard/votacao?tipo=responsavel&id=${dadosAlunos._id}`
+                    )
+                  }
+                >
+                  <Typography>Liberar</Typography>
+                </Button>
+              )}
+            </Box>
+
+            {dadosAlunos.responsavel3 && (
+              <Box m={1} display="flex" alignItems="flex-end">
+                <Typography marginRight={4}>
+                  RESPONSAVEL 3: {dadosAlunos?.responsavel3}
+                </Typography>
+
+                {!dadosAlunos.resp_votou && (
+                  <Button
+                    variant="outlined"
+                    onClick={() =>
+                      router.push(
+                        `/dashboard/votacao?tipo=responsavel&id=${dadosAlunos._id}`
+                      )
+                    }
+                  >
+                    <Typography>Liberar</Typography>
+                  </Button>
+                )}
+              </Box>
+            )}
+
+            {dadosAlunos.resp_votou && (
+              <Box bgcolor="yellow">
+                <Typography color="red">
+                  {" "}
+                  UM DOS RESPONSÁVEIS JÁ VOTOU{" "}
+                </Typography>
               </Box>
             )}
           </Box>
-          {/* </Box> */}
         </Box>
       )}
 
@@ -261,16 +271,24 @@ export default function LiberaVoto() {
             <Typography>CARGO: {dadosFuncionarios?.cargo}</Typography>
           </Box>
 
-          <Button
-            variant="contained"
-            onClick={() =>
-              router.push(
-                `/dashboard/votacao?tipo=funcionario&id=${dadosFuncionarios._id}`
-              )
-            }
-          >
-            <Typography>Liberar</Typography>
-          </Button>
+          {!dadosFuncionarios.votou && (
+            <Button
+              variant="contained"
+              onClick={() =>
+                router.push(
+                  `/dashboard/votacao?tipo=funcionario&id=${dadosFuncionarios._id}`
+                )
+              }
+            >
+              <Typography>Liberar</Typography>
+            </Button>
+          )}
+
+          {dadosFuncionarios.votou && (
+            <Box bgcolor="yellow">
+              <Typography color="red">FUNCIONÁRIO(A) JÁ VOTOU </Typography>
+            </Box>
+          )}
         </Box>
       )}
     </>
