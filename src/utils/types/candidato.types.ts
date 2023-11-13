@@ -23,7 +23,7 @@ export interface Candidato {
   justificativa: string;
   textoRecurso: string;
   respostaComissao: string;
-  numero: string;
+  numero_candidato: string;
   __v: number;
 }
 

@@ -19,6 +19,8 @@ export default function EscolhaCandidato({
   const mdDown = useMediaQuery(theme.breakpoints.down("md"));
   const [candidatos, setCandidatos] = useState<Candidato[]>([]);
   const [digitou, setDigitou] = useState(false);
+  const [opcaoInvalida, setOpcaoInvalida] = useState(false);
+  const [enterPressionado, setEnterPressionado] = useState(false);
 
   useEffect(() => {
     //fetch
@@ -34,7 +36,20 @@ export default function EscolhaCandidato({
           }
         );
         const responseJson = await response.json();
-        setCandidatos(responseJson.candidatos);
+
+        const candidatosAprovados: Candidato[] = responseJson.candidatos.filter(
+          (candidato: Candidato) =>
+            candidato.aprovado === "Deferida" ||
+            candidato.nome === "Branco" ||
+            candidato.nome === "Nulo"
+        );
+
+        const candidatosOrdenados: Candidato[] = candidatosAprovados.sort(
+          (a: Candidato, b: Candidato) =>
+            parseInt(a.numero_candidato) - parseInt(b.numero_candidato)
+        );
+
+        setCandidatos(candidatosOrdenados);
       };
       getDadosCandidatos();
     }
@@ -48,6 +63,7 @@ export default function EscolhaCandidato({
     const teclaPressionada = (numero: number) => {
       digitou.play();
       setDigitou(true);
+      setOpcaoInvalida(false);
 
       if (candidatos[numero - 1]) {
         setCandidatoEscolhido(candidatos[numero - 1]);
@@ -67,12 +83,19 @@ export default function EscolhaCandidato({
             teclaPressionada(4);
             break;
           case "Enter":
-            digitou.play();
-            setTimeout(() => {
-              avancarEtapa();
-            }, 500);
+            if (!enterPressionado) {
+              setEnterPressionado(true);
+              digitou.play();
+              setTimeout(() => {
+                avancarEtapa();
+                setEnterPressionado(false);
+              }, 500);
+            }
             break;
           default:
+            digitou.play();
+            setOpcaoInvalida(true);
+            setDigitou(false);
             break;
         }
       } else {
@@ -90,21 +113,40 @@ export default function EscolhaCandidato({
             teclaPressionada(4);
             break;
           case "Enter":
-            digitou.play();
-            setTimeout(() => {
-              avancarEtapa();
-            }, 500);
+            if (!enterPressionado) {
+              setEnterPressionado(true);
+              digitou.play();
+              setTimeout(() => {
+                avancarEtapa();
+                setEnterPressionado(false);
+              }, 500);
+            }
             break;
           default:
+            digitou.play();
+            setOpcaoInvalida(true);
+            setDigitou(false);
             break;
         }
       }
     };
 
+    const handleKeyUp = (event: KeyboardEvent) => {
+      switch (event.key) {
+        case "Enter":
+          setEnterPressionado(false);
+          break;
+        default:
+          break;
+      }
+    };
+
     window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
     };
   }, [avancarEtapa, candidatos]);
 
@@ -146,12 +188,24 @@ export default function EscolhaCandidato({
 
               const nomes = candidato?.nome?.toUpperCase()?.trim()?.split(" ");
               const nomeCortado = nomes.slice(0, 2).join(" ");
-              const numeroCandidato = candidato.numero;
+              const numeroCandidato = candidato.numero_candidato;
+
+              const obterCaminhoFoto = (candidato: Candidato) => {
+                const nomeCandidato = candidato?.nome?.toUpperCase()?.trim();
+
+                if (nomeCandidato === "BRANCO") {
+                  return "https://api.anapolis.go.gov.br/apiupload/sed/branco.jpg";
+                } else if (nomeCandidato === "NULO") {
+                  return "https://api.anapolis.go.gov.br/apiupload/sed/nulo.jpg";
+                } else {
+                  return `https://api.anapolis.go.gov.br/apieleicao/fotosCandidato/${cpfSemTraco}/${candidato.foto}`;
+                }
+              };
 
               return (
                 <Grid item xs={2.5} md={2.5} lg={2.5} key={i}>
                   <CandidatoCardEscolha
-                    image={`https://api.anapolis.go.gov.br/apieleicao/fotosCandidato/${cpfSemTraco}/${candidato.foto}`}
+                    image={obterCaminhoFoto(candidato)}
                     numero={
                       numeroCandidato === undefined ? "S/ nº" : numeroCandidato
                     }
@@ -174,6 +228,21 @@ export default function EscolhaCandidato({
           >
             <Typography variant="h4" color="white">
               Tecle ENTER para prosseguir
+            </Typography>
+          </Box>
+        )}
+        {opcaoInvalida && (
+          <Box
+            sx={{
+              backgroundColor: "#d32f2f",
+              padding: 2,
+              borderRadius: 4,
+              marginTop: 1.2,
+              textAlign: "center",
+            }}
+          >
+            <Typography variant="h4" color="white">
+              Opção inválida, digite novamente
             </Typography>
           </Box>
         )}
