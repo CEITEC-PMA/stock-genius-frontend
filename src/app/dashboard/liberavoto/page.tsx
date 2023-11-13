@@ -8,13 +8,10 @@ import EscalatorWarningIcon from "@mui/icons-material/EscalatorWarning";
 import { Aluno } from '@/utils/types/aluno.types';
 import BadgeIcon from "@mui/icons-material/Badge";
 import { Funcionario } from '@/utils/types/funcionario.types';
-import { ContentPasteSearchOutlined } from '@mui/icons-material';
+
 
 export default function LiberaVoto() {
 
-    // interface IalunosResponsaveis {
-    //     nome: string;
-    // }
 
     const [alunos, setAlunos] = useState<Aluno[]>([])
     const [funcionarios, setFuncionarios] = useState<Funcionario[]>([])
@@ -57,7 +54,7 @@ export default function LiberaVoto() {
                 }
 
             };
-            //setIsloading(false);
+
             getDados();
         }
     }, [liberaAluno, liberafuncionario]);
@@ -80,18 +77,18 @@ export default function LiberaVoto() {
 
 
     const dadosAlunos = alunos.find((aluno) => aluno.nome === busca)
-    // console.log(busca)
+
     console.log(dadosAlunos);
 
     const dadosFuncionarios = funcionarios.find((funcionario) => funcionario.nome === busca)
-    // console.log(busca)
+
     console.log(dadosFuncionarios);
 
     console.log(!!dadosAlunos?.aluno_votou)
 
 
     return (
-        //<div>teste</div>
+
         <>
             <Box marginTop={8} padding={8} overflow="hidden" display='flex' justifyContent='center' >
                 <Box
@@ -125,7 +122,7 @@ export default function LiberaVoto() {
                             id="combo-box-demo"
                             options={alunos}
                             getOptionLabel={(aluno: Aluno) => aluno.nome}
-                            // inputValue={busca}
+
                             onInputChange={(e, newValue) => setBusca(newValue)}
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label="Alunos" />}
