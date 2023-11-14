@@ -12,13 +12,24 @@ import { apiUrl } from "@/utils/api";
 import { useRouter } from "next/navigation";
 import { Candidato } from "@/utils/types/candidato.types";
 import ThreePIcon from "@mui/icons-material/ThreeP";
-import Link from "next/link";
+import ArticleIcon from "@mui/icons-material/Article";
+import CustomModal from "@/components/modal";
 
 export default function DataTable() {
   const { user } = useUserContext();
 
   const router = useRouter();
   const [candidatos, setCandidatos] = useState<Candidato[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [respostaComissao, setRespostaComissao] = useState("");
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const columns: GridColDef[] = [
     { field: "cpf", headerName: "CPF", width: 130 },
@@ -63,6 +74,18 @@ export default function DataTable() {
                 title="Recurso do candidato"
               >
                 <ThreePIcon />
+              </IconButton>
+            )}
+
+            {aprovado === "Indeferida" && (
+              <IconButton
+                color="warning"
+                onClick={(event) =>
+                  handleRespostaComissao(event, params.row.respostaComissao)
+                }
+                title="Resposta da Comissão Eleitoral Municipal ao recurso"
+              >
+                <ArticleIcon />
               </IconButton>
             )}
 
@@ -144,6 +167,14 @@ export default function DataTable() {
     router.push(`/dashboard/candidato/checklist/${id}`);
   };
 
+  const handleRespostaComissao = (
+    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+    respostaComissao: string
+  ) => {
+    setRespostaComissao(respostaComissao);
+    openModal();
+  };
+
   useEffect(() => {
     //fetch
     const token = localStorage.getItem("token");
@@ -188,6 +219,14 @@ export default function DataTable() {
             }}
             pageSizeOptions={[5, 10]}
             disableRowSelectionOnClick
+          />
+          <CustomModal
+            open={isModalOpen}
+            title="Resposta da Comissão Eleitoral Municipal ao recurso:"
+            description={respostaComissao}
+            onClose={closeModal}
+            yesButtonLabel="Ok"
+            onYesButtonClick={closeModal}
           />
         </div>
       </Container>

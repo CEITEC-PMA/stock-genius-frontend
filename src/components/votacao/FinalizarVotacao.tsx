@@ -46,23 +46,14 @@ export default function FinalizarVotacao() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.push("/dashboard");
+      router.push("/dashboard/liberavoto");
     }, 500);
 
     return () => clearTimeout(timer);
   }, [progress, router]);
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-      height="100vh"
-      padding="0"
-      margin="0"
-      overflow="hidden"
-    >
+    <Box margin="0" padding="0" height={`calc(100vh - 66px)`} overflow="hidden">
       <Typography
         variant={smDown ? "h6" : mdDown ? "h5" : "h4"}
         textAlign="center"
@@ -114,11 +105,6 @@ export default function FinalizarVotacao() {
               autoPlay
               muted={false}
             />
-            {/* <div>
-              FinalizarVotacao
-              <Button onClick={voltarEtapa}>Voltar</Button>
-              <Button onClick={avancarEtapa}>Avançar</Button>
-            </div> */}
           </Box>
         </Grid>
       </Grid>

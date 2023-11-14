@@ -5,7 +5,8 @@ import { PersonAddAlt1, AccountBox } from "@mui/icons-material";
 import PersonIcon from '@mui/icons-material/Person';
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import ListItems from "./listItems";
-import Face6Icon from '@mui/icons-material/Face6';
+import Face6Icon from "@mui/icons-material/Face6";
+import PersonIcon from "@mui/icons-material/Person";
 import { useUserContext } from "@/userContext";
 import useTimeCheck from "@/hooks/useTimeCheck";
 import GroupIcon from "@mui/icons-material/Group";
@@ -80,9 +81,9 @@ export default function DrawerComponent({
 
         {user.role?.includes("super-adm") && (
           <ListItems
-            label="Votação"
+            label="Liberar voto"
             icon={<HowToVoteIcon />}
-            to="/dashboard/votacao"
+            to="/dashboard/liberavoto"
           />
         )}
 
