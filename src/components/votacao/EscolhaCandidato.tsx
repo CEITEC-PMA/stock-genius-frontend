@@ -8,10 +8,12 @@ import { apiUrl } from "@/utils/api";
 export default function EscolhaCandidato({
   avancarEtapa,
   setCandidatoEscolhido,
+  alturaTela,
 }: {
   avancarEtapa: () => void;
   voltarEtapa: () => void;
   setCandidatoEscolhido: (candidato: Candidato) => void;
+  alturaTela: number;
 }) {
   const { user } = useUserContext();
   const theme = useTheme();
@@ -155,6 +157,7 @@ export default function EscolhaCandidato({
                       numeroCandidato === undefined ? "S/ nº" : numeroCandidato
                     }
                     nome={nomeCortado}
+                    alturaTela={alturaTela}
                   />
                 </Grid>
               );

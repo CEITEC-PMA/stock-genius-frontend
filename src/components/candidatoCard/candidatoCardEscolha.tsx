@@ -9,22 +9,25 @@ type CandidatoCardProps = {
   image: string;
   nome: string | undefined;
   numero: string;
+  alturaTela: number;
 };
 
 export default function CandidatoCardEscolha({
   image,
   nome,
   numero,
+  alturaTela,
 }: CandidatoCardProps) {
   return (
     <Card>
       <CardActionArea>
         <CardMedia
-          height="400px"
+          // height="400px"
+          height={alturaTela > 800 ? "400px" : "280px"}
           style={{
             aspectRatio: "16 / 9",
             maxWidth: "100%",
-            objectFit: "cover",
+            objectFit: alturaTela > 800 ? "cover" : "contain",
           }}
           component="img"
           image={image}
