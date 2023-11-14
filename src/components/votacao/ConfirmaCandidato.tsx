@@ -17,11 +17,13 @@ export default function ConfirmaCandidato({
   voltarEtapa,
   handleSubmit,
   candidatoEscolhido,
+  alturaTela,
 }: {
   avancarEtapa: () => void;
   voltarEtapa: () => void;
   handleSubmit: () => void;
   candidatoEscolhido: Candidato | null;
+  alturaTela: number;
 }) {
   const [candidatos, setCandidatos] = useState<Candidato[]>([]);
   const { user } = useUserContext();
@@ -137,6 +139,7 @@ export default function ConfirmaCandidato({
                 image={obterCaminhoFoto(candidatoEscolhido)}
                 nome={candidatoEscolhido?.nome.toUpperCase()}
                 numero={""}
+                alturaTela={alturaTela}
               />
             )}
           </Grid>

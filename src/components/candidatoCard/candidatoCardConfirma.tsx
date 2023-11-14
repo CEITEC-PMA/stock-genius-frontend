@@ -1,31 +1,30 @@
 import * as React from "react";
-import { useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { apiUrl } from "@/utils/api";
 import { CardActionArea } from "@mui/material";
 
 type CandidatoCardProps = {
   image: string;
   nome: string | undefined;
   numero: string;
+  alturaTela: number;
 };
 
 export default function CandidatoCardConfirma({
   image,
   nome,
   numero,
+  alturaTela,
 }: CandidatoCardProps) {
   return (
     <Card>
       <CardActionArea>
         <CardMedia
-          height="550px"
+          height={alturaTela > 800 ? "500px" : "350px"}
           style={{
             aspectRatio: "1 / 1",
-            maxWidth: "100%",
             objectFit: "contain",
           }}
           component="img"
@@ -39,6 +38,7 @@ export default function CandidatoCardConfirma({
         <CardContent
           sx={{
             cursor: "default",
+            margin: "auto",
           }}
         >
           {numero && (

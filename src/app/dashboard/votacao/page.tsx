@@ -5,16 +5,29 @@ import FinalizarVotacao from "@/components/votacao/FinalizarVotacao";
 import { apiUrl } from "@/utils/api";
 import { Candidato } from "@/utils/types/candidato.types";
 import { useSearchParams } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Votacao() {
   const [etapa, setEtapa] = useState(0);
+  const [alturaTela, setAlturaTela] = useState(window.innerHeight);
   const searchParams = useSearchParams();
   const [candidatoEscolhido, setCandidatoEscolhido] =
     useState<Candidato | null>(null);
 
   const tipo = searchParams.get("tipo") ?? "";
   const id = searchParams.get("id") ?? "";
+
+  useEffect(() => {
+    const handleResize = () => {
+      setAlturaTela(window.innerHeight);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const avancarEtapa = () => {
     setEtapa((prev) => prev + 1);
@@ -51,6 +64,7 @@ export default function Votacao() {
             avancarEtapa={avancarEtapa}
             voltarEtapa={voltarEtapa}
             setCandidatoEscolhido={setCandidatoEscolhido}
+            alturaTela={alturaTela}
           />
         );
       case 1:
@@ -60,6 +74,7 @@ export default function Votacao() {
             voltarEtapa={voltarEtapa}
             candidatoEscolhido={candidatoEscolhido}
             handleSubmit={handleSubmit}
+            alturaTela={alturaTela}
           />
         );
       case 2:
