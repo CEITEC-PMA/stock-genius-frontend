@@ -2,10 +2,10 @@ import { Divider, IconButton, List, Toolbar, styled } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { PersonAddAlt1, AccountBox } from "@mui/icons-material";
+import PersonIcon from '@mui/icons-material/Person';
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import ListItems from "./listItems";
 import Face6Icon from "@mui/icons-material/Face6";
-import PersonIcon from "@mui/icons-material/Person";
 import { useUserContext } from "@/userContext";
 import useTimeCheck from "@/hooks/useTimeCheck";
 import GroupIcon from "@mui/icons-material/Group";
@@ -74,7 +74,7 @@ export default function DrawerComponent({
           <ListItems
             label="Registrar Candidato"
             icon={<PersonAddAlt1 />}
-            to="/dashboard/candidato"
+            to="/dashboard/funcionarios"
           />
         )}
 

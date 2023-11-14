@@ -85,6 +85,20 @@ export default function LiberaVoto() {
     (funcionario) => funcionario.nome === busca
   );
 
+  const handleClickAluno = (vota: boolean, id: string) => {
+
+    if (vota) {
+      router.push(
+        `/dashboard/votacao?tipo=respAlunoVotante=&id=${id}`
+      )
+    } else {
+      router.push(
+        `/dashboard/votacao?tipoo=respAlunoNaoVotante=&id=${id}`
+      )
+    }
+  }
+
+
   return (
     <>
       <Box
@@ -168,7 +182,7 @@ export default function LiberaVoto() {
           <Box display="flex" m={1} flexDirection="column" alignItems="center">
             <Box display="flex" alignItems="center">
               <Box marginRight={3}>
-                <Typography padding={2}>NOME: {dadosAlunos?.nome}</Typography>
+                <Typography padding={2}> <strong>NOME:</strong>  {dadosAlunos?.nome}</Typography>
               </Box>
               <Box>
                 {dadosAlunos.votante && !dadosAlunos.aluno_votou && (
@@ -198,17 +212,13 @@ export default function LiberaVoto() {
 
             <Box m={1} display="flex" alignItems="center">
               <Typography marginRight={4}>
-                RESPONSAVEL 1: {dadosAlunos?.responsavel1}
+                <strong>RESPONSAVEL 1:</strong> {dadosAlunos?.responsavel1}
               </Typography>
 
               {!dadosAlunos.resp_votou && (
                 <Button
                   variant="outlined"
-                  onClick={() =>
-                    router.push(
-                      `/dashboard/votacao?tipo=responsavel&id=${dadosAlunos._id}`
-                    )
-                  }
+                  onClick={() => handleClickAluno(dadosAlunos.votante, dadosAlunos._id)}
                 >
                   <Typography>Liberar</Typography>
                 </Button>
@@ -218,17 +228,13 @@ export default function LiberaVoto() {
             <Box m={1} display="flex" alignItems="center">
               {
                 <Typography marginRight={4}>
-                  RESPONSAVEL 2: {dadosAlunos?.responsavel2}
+                  <strong>RESPONSAVEL 2:</strong>  {dadosAlunos?.responsavel2}
                 </Typography>
               }
               {!dadosAlunos.resp_votou && (
                 <Button
                   variant="outlined"
-                  onClick={() =>
-                    router.push(
-                      `/dashboard/votacao?tipo=responsavel&id=${dadosAlunos._id}`
-                    )
-                  }
+                  onClick={() => handleClickAluno(dadosAlunos.votante, dadosAlunos._id)}
                 >
                   <Typography>Liberar</Typography>
                 </Button>
@@ -238,17 +244,13 @@ export default function LiberaVoto() {
             {dadosAlunos.responsavel3 && (
               <Box m={1} display="flex" alignItems="flex-end">
                 <Typography marginRight={4}>
-                  RESPONSAVEL 3: {dadosAlunos?.responsavel3}
+                  <strong>RESPONSAVEL 3:</strong>   {dadosAlunos?.responsavel3}
                 </Typography>
 
                 {!dadosAlunos.resp_votou && (
                   <Button
                     variant="outlined"
-                    onClick={() =>
-                      router.push(
-                        `/dashboard/votacao?tipo=responsavel&id=${dadosAlunos._id}`
-                      )
-                    }
+                    onClick={() => handleClickAluno(dadosAlunos.votante, dadosAlunos._id)}
                   >
                     <Typography>Liberar</Typography>
                   </Button>
@@ -270,10 +272,10 @@ export default function LiberaVoto() {
 
       {dadosFuncionarios && showEmployee && (
         <Box display="flex" flexDirection="column" alignItems="center">
-          <Typography>NOME: {dadosFuncionarios?.nome}</Typography>
+          <Typography> <strong>NOME: </strong> {dadosFuncionarios?.nome}</Typography>
 
           <Box m={1}>
-            <Typography>CARGO: {dadosFuncionarios?.cargo}</Typography>
+            <Typography><strong>CARGO:</strong>  {dadosFuncionarios?.cargo}</Typography>
           </Box>
 
           {!dadosFuncionarios.votou && (
