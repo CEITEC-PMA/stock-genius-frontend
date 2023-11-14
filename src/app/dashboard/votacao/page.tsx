@@ -74,6 +74,7 @@ export default function Votacao() {
             voltarEtapa={voltarEtapa}
             candidatoEscolhido={candidatoEscolhido}
             handleSubmit={handleSubmit}
+            alturaTela={alturaTela}
           />
         );
       case 2:
