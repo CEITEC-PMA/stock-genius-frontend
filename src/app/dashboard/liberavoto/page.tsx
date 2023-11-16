@@ -87,9 +87,9 @@ export default function LiberaVoto() {
 
   const handleClickAluno = (vota: boolean, id: string) => {
     if (vota) {
-      router.push(`/dashboard/votacao?tipo=respAlunoVotante=&id=${id}`);
+      router.push(`/dashboard/votacao?tipo=respAlunoVotante&id=${id}`);
     } else {
-      router.push(`/dashboard/votacao?tipoo=respAlunoNaoVotante=&id=${id}`);
+      router.push(`/dashboard/votacao?tipo=respAlunoNaoVotante&id=${id}`);
     }
   };
 
