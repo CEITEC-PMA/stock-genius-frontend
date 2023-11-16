@@ -9,13 +9,13 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import BadgeIcon from "@mui/icons-material/Badge";
-import VotacaoFuncionarios from "@/components/acompanhamento/VotacaoFuncionarios";
+import VotacaoFuncionarios from "@/components/apuracao/VotacaoFuncionarios";
 import { apiUrl } from "@/utils/api";
 import { Candidato } from "@/utils/types/candidato.types";
-import VotacaoAlunos from "@/components/acompanhamento/VotacaoAlunos";
+import VotacaoAlunos from "@/components/apuracao/VotacaoAlunos";
 import Face6Icon from "@mui/icons-material/Face6";
 import EscalatorWarningIcon from "@mui/icons-material/EscalatorWarning";
-import VotacaoResp from "@/components/acompanhamento/VotacaoResp";
+import VotacaoResp from "@/components/apuracao/VotacaoResp";
 
 export default function Apuracao() {
   const { user } = useUserContext();
@@ -100,6 +100,7 @@ export default function Apuracao() {
               variant="contained"
               startIcon={<Face6Icon style={{ fontSize: 24 }} />}
               onClick={() => handleTipo("Alunos")}
+              style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
             >
               Alunos
             </Button>
@@ -109,6 +110,7 @@ export default function Apuracao() {
               variant="contained"
               startIcon={<EscalatorWarningIcon style={{ fontSize: 24 }} />}
               onClick={() => handleTipo("Responsáveis")}
+              style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
             >
               Responsáveis
             </Button>
@@ -118,6 +120,7 @@ export default function Apuracao() {
               variant="contained"
               startIcon={<BadgeIcon style={{ fontSize: 24 }} />}
               onClick={() => handleTipo("Funcionários")}
+              style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
             >
               Funcionários
             </Button>
