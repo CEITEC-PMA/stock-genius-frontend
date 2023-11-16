@@ -103,7 +103,7 @@ export default function ConfirmaCandidato({
     } else if (nomeCandidato === "NULO") {
       return "https://api.anapolis.go.gov.br/apiupload/sed/nulo.jpg";
     } else {
-      return `https://api.anapolis.go.gov.br/apieleicao/fotosCandidato/${cpfSemTraco}/${candidato.foto}`;
+      return `${apiUrl}/fotosCandidato/${cpfSemTraco}/${candidato.foto}`;
     }
   };
 
