@@ -2,7 +2,7 @@ import { Divider, IconButton, List, Toolbar, styled } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { PersonAddAlt1, AccountBox } from "@mui/icons-material";
-import PersonIcon from '@mui/icons-material/Person';
+import PersonIcon from "@mui/icons-material/Person";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import ListItems from "./listItems";
 import Face6Icon from "@mui/icons-material/Face6";
@@ -78,13 +78,11 @@ export default function DrawerComponent({
           />
         )}
 
-        {user.role?.includes("super-adm") && (
-          <ListItems
-            label="Liberar voto"
-            icon={<HowToVoteIcon />}
-            to="/dashboard/liberavoto"
-          />
-        )}
+        <ListItems
+          label="Liberar voto"
+          icon={<HowToVoteIcon />}
+          to="/dashboard/liberavoto"
+        />
 
         <ListItems
           label="Lista de Candidatos"
