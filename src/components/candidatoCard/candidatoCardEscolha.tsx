@@ -22,11 +22,11 @@ export default function CandidatoCardEscolha({
     <Card>
       <CardActionArea>
         <CardMedia
-          height={alturaTela > 800 ? "400px" : "280px"}
+          height={alturaTela > 900 ? "400px" : "280px"}
           style={{
             aspectRatio: "16 / 9",
             maxWidth: "100%",
-            objectFit: alturaTela > 800 ? "cover" : "contain",
+            objectFit: alturaTela > 900 ? "contain" : "contain",
           }}
           component="img"
           image={image}
