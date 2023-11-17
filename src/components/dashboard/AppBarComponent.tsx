@@ -78,7 +78,7 @@ export default function AppBarComponent({
     <AppBar position="absolute" open={open}>
       <Toolbar
         sx={{
-          backgroundColor: "#ffc72c",
+          backgroundColor: "#2b2b2b",
           pr: "24px",
         }}
       >
