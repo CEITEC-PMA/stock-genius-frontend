@@ -32,7 +32,7 @@ export default function AppBarLogin() {
       <AppBar position="absolute" sx={appBarStyle}>
         <Toolbar
           sx={{
-            backgroundColor: "#ffc72c",
+            backgroundColor: "#2b2b2b",
             pr: "24px",
           }}
         >
