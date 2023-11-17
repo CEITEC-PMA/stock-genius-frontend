@@ -89,7 +89,7 @@ export default function DrawerComponent({
           <ListItems
             label="Apuração dos votos"
             icon={<PollIcon />}
-            to="/dashboard/apuracao"
+            to="/dashboard/buscaApuracao"
           />
         )}
 
