@@ -7,6 +7,8 @@ import {
   Paper,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import React, { useEffect, useState, ChangeEvent } from "react";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
@@ -14,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { Candidato } from "@/utils/types/candidato.types";
 import { apiUrl } from "@/utils/api";
 import CustomModal from "@/components/modal";
+import { useUserContext } from "@/userContext";
 
 export default function Settings() {
   const router = useRouter();
@@ -22,6 +25,10 @@ export default function Settings() {
   const [candidato, setCandidato] = useState({
     foto: [],
   } as unknown as Candidato);
+  const { user } = useUserContext();
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
+  const mdDown = useMediaQuery(theme.breakpoints.down("md"));
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -65,54 +72,90 @@ export default function Settings() {
     setTextFieldValue(event.target.value);
   };
 
-  return (
-    <Box margin="24px">
-      <Grid container alignItems="center" flexDirection="column">
-        <Grid item>
-          <Typography variant="h3" marginBottom="12x" textAlign="center">
-            Redefinição de senha de usuário
-          </Typography>
+  if (user.role && user.role.includes("super-adm")) {
+    return (
+      <Box margin="24px">
+        <Grid container alignItems="center" flexDirection="column">
+          <Grid item>
+            <Typography variant="h3" marginBottom="12x" textAlign="center">
+              Redefinição de senha de usuário
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            marginTop="200px"
+            alignItems="center"
+            display="flex"
+            flexDirection="column"
+            gap="24px"
+          >
+            <TextField
+              margin="normal"
+              required
+              name="inep"
+              label="INEP"
+              fullWidth
+              type="tel"
+              id="inep"
+              autoComplete="inep"
+              value={textFieldValue}
+              onChange={handleChange}
+            />
+            <Button
+              variant="contained"
+              startIcon={<RotateLeftIcon />}
+              size="large"
+              onClick={() => openModal()}
+            >
+              Resetar senha
+            </Button>
+            <CustomModal
+              open={isModalOpen}
+              title="Atenção!"
+              description="Confirma o reset de senha?"
+              onClose={closeModal}
+              yesButtonLabel="Sim"
+              noButtonLabel="Não"
+              onYesButtonClick={() => handleReset(textFieldValue)}
+              onNoButtonClick={closeModal}
+            />
+          </Grid>
         </Grid>
-        <Grid
-          item
-          marginTop="200px"
-          alignItems="center"
+      </Box>
+    );
+  } else {
+    return (
+      <Box
+        margin="0"
+        padding="0"
+        height={`calc(100vh - 66px)`}
+        overflow="hidden"
+      >
+        <Typography
+          variant={smDown ? "h6" : mdDown ? "h5" : "h4"}
+          textAlign="center"
+          marginTop={2}
+          color=" #0f4c81"
+        >
+          ELEIÇÕES MUNICIPAIS DE DIRETORES BIÊNIO 2024/25
+        </Typography>
+        <Box
           display="flex"
           flexDirection="column"
-          gap="24px"
+          alignItems="center"
+          justifyContent="flex-start"
+          height="100%"
         >
-          <TextField
-            margin="normal"
-            required
-            name="inep"
-            label="INEP"
-            fullWidth
-            type="tel"
-            id="inep"
-            autoComplete="inep"
-            value={textFieldValue}
-            onChange={handleChange}
-          />
-          <Button
-            variant="contained"
-            startIcon={<RotateLeftIcon />}
-            size="large"
-            onClick={() => openModal()}
+          <Typography
+            variant="h4"
+            textAlign="center"
+            marginTop={1.2}
+            color=" #000"
           >
-            Resetar senha
-          </Button>
-          <CustomModal
-            open={isModalOpen}
-            title="Atenção!"
-            description="Confirma o reset de senha?"
-            onClose={closeModal}
-            yesButtonLabel="Sim"
-            noButtonLabel="Não"
-            onYesButtonClick={() => handleReset(textFieldValue)}
-            onNoButtonClick={closeModal}
-          />
-        </Grid>
-      </Grid>
-    </Box>
-  );
+            Você não possui autorização para acessar essa página
+          </Typography>
+        </Box>
+      </Box>
+    );
+  }
 }
