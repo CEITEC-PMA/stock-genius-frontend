@@ -38,7 +38,7 @@ export default function AppBarLogin() {
         >
           <div style={containerStyle}>
             <Typography variant="h6" color="inherit" noWrap sx={titleStyle}>
-              SED - Sistema de Eleição de Diretores - TESTE
+              SED - Sistema de Eleição de Diretores - SIMULADO
             </Typography>
             <div style={logoStyle}>
               <Image

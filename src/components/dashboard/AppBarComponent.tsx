@@ -101,7 +101,7 @@ export default function AppBarComponent({
           noWrap
           sx={{ flexGrow: 1 }}
         >
-          Sistema de Eleição de Diretores - TESTE
+          Sistema de Eleição de Diretores - SIMULADO
         </Typography>
         <div>
           <Image
