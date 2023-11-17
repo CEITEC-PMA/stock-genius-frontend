@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import PollIcon from "@mui/icons-material/Poll";
+import { useRouter } from "next/navigation";
 
 interface Zona {
   inep: string;
@@ -28,6 +29,7 @@ export default function BuscaApuracao() {
   const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [selectedOption, setSelectedOption] = useState<Zona | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     setIsLoading(true);
@@ -67,9 +69,8 @@ export default function BuscaApuracao() {
     setSelectedOption(value);
   };
 
-  const handleAcompanharClick = () => {
-    // Lógica para lidar com o clique no botão "Acompanhar votação na Unidade escolhida"
-    // Aqui você pode usar o valor de selectedOption
+  const handleAcompanharClick = (id: string) => {
+    router.push(`/dashboard/apuracao/${id}`);
     console.log("Acompanhar votação na Unidade escolhida:", selectedOption);
   };
 
@@ -128,7 +129,7 @@ export default function BuscaApuracao() {
               variant="contained"
               startIcon={<PollIcon style={{ fontSize: 46 }} />}
               style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
-              onClick={handleAcompanharClick}
+              onClick={() => handleAcompanharClick(selectedOption._id)}
             >
               Acompanhar votação na Unidade escolhida
             </Button>

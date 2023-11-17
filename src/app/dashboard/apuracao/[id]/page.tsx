@@ -1,5 +1,4 @@
 "use client";
-import { useUserContext } from "@/userContext";
 import {
   Box,
   Button,
@@ -17,50 +16,73 @@ import Face6Icon from "@mui/icons-material/Face6";
 import EscalatorWarningIcon from "@mui/icons-material/EscalatorWarning";
 import VotacaoResp from "@/components/apuracao/VotacaoResp";
 
-export default function Apuracao() {
-  const { user } = useUserContext();
+export default function Apuracao({ params }: { params: { id: string } }) {
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
   const mdDown = useMediaQuery(theme.breakpoints.down("md"));
   const [tipoResultado, setTipoResultado] = useState("");
   const [candidatos, setCandidatos] = useState<Candidato[]>([]);
+  const { id } = params;
+  const [zona, setZona] = useState<Zona | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  interface Zona {
+    inep: string;
+    nome: string;
+    _id: string;
+  }
 
   const handleTipo = (tipo: string) => {
     setTipoResultado(tipo);
   };
 
   useEffect(() => {
+    setIsLoading(true);
+    const token = localStorage.getItem("token");
+    const getDadosZona = async () => {
+      const response = await fetch(`${apiUrl}/api/v1/zona/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const responseJson = await response.json();
+      setZona(responseJson.zona);
+      setIsLoading(false);
+    };
+    getDadosZona();
+  }, [id]);
+
+  useEffect(() => {
     //fetch
     const token = localStorage.getItem("token");
-    if (user._id) {
-      const getDadosCandidatos = async () => {
-        const response = await fetch(
-          `${apiUrl}/api/v1/candidato/candidatoZona/${user._id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const responseJson = await response.json();
 
-        const candidatosAprovados: Candidato[] = responseJson.candidatos.filter(
-          (candidato: Candidato) =>
-            candidato.aprovado === "Deferida" ||
-            candidato.nome === "Branco" ||
-            candidato.nome === "Nulo"
-        );
+    const getDadosCandidatos = async () => {
+      const response = await fetch(
+        `${apiUrl}/api/v1/candidato/candidatoZona/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const responseJson = await response.json();
 
-        const candidatosOrdenados: Candidato[] = candidatosAprovados.sort(
-          (a: Candidato, b: Candidato) =>
-            parseInt(a.numero_candidato) - parseInt(b.numero_candidato)
-        );
+      const candidatosAprovados: Candidato[] = responseJson.candidatos.filter(
+        (candidato: Candidato) =>
+          candidato.aprovado === "Deferida" ||
+          candidato.nome === "Branco" ||
+          candidato.nome === "Nulo"
+      );
 
-        setCandidatos(candidatosOrdenados);
-      };
-      getDadosCandidatos();
-    }
-  }, [user._id]);
+      const candidatosOrdenados: Candidato[] = candidatosAprovados.sort(
+        (a: Candidato, b: Candidato) =>
+          parseInt(a.numero_candidato) - parseInt(b.numero_candidato)
+      );
+
+      setCandidatos(candidatosOrdenados);
+    };
+    getDadosCandidatos();
+  }, [id]);
 
   return (
     <Box margin="0" padding="0" height={`calc(100vh - 66px)`} overflow="hidden">
@@ -70,7 +92,8 @@ export default function Apuracao() {
         marginTop={2}
         color=" #0f4c81"
       >
-        ELEIÇÕES MUNICIPAIS DE DIRETORES BIÊNIO 2024/25 - {user.nome}
+        ELEIÇÕES MUNICIPAIS DE DIRETORES BIÊNIO 2024/25 -{" "}
+        {isLoading ? "Carregando..." : zona?.nome}
       </Typography>
       <Box
         display="flex"
