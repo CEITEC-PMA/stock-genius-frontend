@@ -6,7 +6,13 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DetailsIcon from "@mui/icons-material/Details";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Box, Container, Typography } from "@mui/material";
+import {
+  Box,
+  Container,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { MouseEvent, useEffect, useState } from "react";
 import { useUserContext } from "@/userContext";
 import { apiUrl } from "@/utils/api";
@@ -21,6 +27,9 @@ export default function DataTable() {
   const [candidatos, setCandidatos] = useState<Candidato[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [justificativa, setJustificativa] = useState("");
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
+  const mdDown = useMediaQuery(theme.breakpoints.down("md"));
 
   const columns: GridColDef[] = [
     { field: "cpf", headerName: "CPF", width: 130 },
@@ -211,69 +220,105 @@ export default function DataTable() {
   let contadorEmAnalise =
     candidatos.length - contadorDeferidas - contadorIndeferidas;
 
-  return (
-    <Box margin="24px">
-      <Container>
-        <Typography variant="h3" marginBottom="12x" textAlign="center">
-          Lista de Candidatos
-        </Typography>
+  if (user.role && user.role.includes("super-adm")) {
+    return (
+      <Box margin="24px">
+        <Container>
+          <Typography variant="h3" marginBottom="12x" textAlign="center">
+            Lista de Candidatos
+          </Typography>
 
+          <Box
+            display="flex"
+            alignContent="space-evenly"
+            gap="48px"
+            justifyContent="center"
+            marginTop="16px"
+            marginBottom="8px"
+          >
+            <Typography variant="h6">
+              Candidaturas em análise:{" "}
+              <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
+                {contadorEmAnalise}
+              </span>
+            </Typography>
+            <Typography variant="h6">
+              Candidaturas deferidas:{" "}
+              <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
+                {contadorDeferidas}
+              </span>
+            </Typography>
+            <Typography variant="h6">
+              Candidaturas indeferidas:{" "}
+              <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
+                {contadorIndeferidas}
+              </span>
+            </Typography>
+          </Box>
+          <div
+            style={{
+              height: "645px",
+              width: "100%",
+              background: "#fff",
+            }}
+          >
+            <DataGrid
+              getRowId={(row) => row._id}
+              rows={candidatos}
+              columns={columns}
+              initialState={{
+                pagination: {
+                  paginationModel: { page: 0, pageSize: 10 },
+                },
+              }}
+              pageSizeOptions={[5, 10]}
+              disableRowSelectionOnClick
+            />
+            <CustomModal
+              open={isModalOpen}
+              title="Motivo do indeferimento:"
+              description={justificativa}
+              onClose={closeModal}
+              yesButtonLabel="Ok"
+              onYesButtonClick={closeModal}
+            />
+          </div>
+        </Container>
+      </Box>
+    );
+  } else {
+    return (
+      <Box
+        margin="0"
+        padding="0"
+        height={`calc(100vh - 66px)`}
+        overflow="hidden"
+      >
+        <Typography
+          variant={smDown ? "h6" : mdDown ? "h5" : "h4"}
+          textAlign="center"
+          marginTop={2}
+          color=" #0f4c81"
+        >
+          ELEIÇÕES MUNICIPAIS DE DIRETORES BIÊNIO 2024/25
+        </Typography>
         <Box
           display="flex"
-          alignContent="space-evenly"
-          gap="48px"
-          justifyContent="center"
-          marginTop="16px"
-          marginBottom="8px"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="flex-start"
+          height="100%"
         >
-          <Typography variant="h6">
-            Candidaturas em análise:{" "}
-            <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
-              {contadorEmAnalise}
-            </span>
-          </Typography>
-          <Typography variant="h6">
-            Candidaturas deferidas:{" "}
-            <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
-              {contadorDeferidas}
-            </span>
-          </Typography>
-          <Typography variant="h6">
-            Candidaturas indeferidas:{" "}
-            <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
-              {contadorIndeferidas}
-            </span>
+          <Typography
+            variant="h4"
+            textAlign="center"
+            marginTop={1.2}
+            color=" #000"
+          >
+            Você não possui autorização para acessar essa página
           </Typography>
         </Box>
-        <div
-          style={{
-            height: "645px",
-            width: "100%",
-            background: "#fff",
-          }}
-        >
-          <DataGrid
-            getRowId={(row) => row._id}
-            rows={candidatos}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: { page: 0, pageSize: 10 },
-              },
-            }}
-            pageSizeOptions={[5, 10]}
-            disableRowSelectionOnClick
-          />
-          <CustomModal
-            open={isModalOpen}
-            title="Motivo do indeferimento:"
-            description={justificativa}
-            onClose={closeModal}
-            yesButtonLabel="Ok"
-            onYesButtonClick={closeModal}
-          />
-        </div>
-      </Container>
-    </Box>
-  );
+      </Box>
+    );
+  }
 }

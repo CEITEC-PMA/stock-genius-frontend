@@ -31,6 +31,8 @@ export default function BuscaApuracao() {
   const [selectedOption, setSelectedOption] = useState<Zona | null>(null);
   const router = useRouter();
 
+  console.log(user);
+
   useEffect(() => {
     setIsLoading(true);
 
@@ -74,68 +76,109 @@ export default function BuscaApuracao() {
     console.log("Acompanhar votação na Unidade escolhida:", selectedOption);
   };
 
-  return (
-    <Box margin="0" padding="0" height={`calc(100vh - 66px)`} overflow="hidden">
-      <Typography
-        variant={smDown ? "h6" : mdDown ? "h5" : "h4"}
-        textAlign="center"
-        marginTop={2}
-        color=" #0f4c81"
-      >
-        ELEIÇÕES MUNICIPAIS DE DIRETORES BIÊNIO 2024/25
-      </Typography>
+  if (user.role && user.role.includes("super-adm")) {
+    return (
       <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="flex-start"
-        height="100%"
+        margin="0"
+        padding="0"
+        height={`calc(100vh - 66px)`}
+        overflow="hidden"
       >
         <Typography
-          variant="h4"
+          variant={smDown ? "h6" : mdDown ? "h5" : "h4"}
           textAlign="center"
-          marginTop={1.2}
-          color=" #000"
+          marginTop={2}
+          color=" #0f4c81"
         >
-          Apuração da votação nas Unidades de Ensino
+          ELEIÇÕES MUNICIPAIS DE DIRETORES BIÊNIO 2024/25
         </Typography>
-        {isLoading === false && (
-          <Box marginTop={4}>
-            <Autocomplete
-              options={zonas}
-              getOptionLabel={(option) => option.nome}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Digite o nome da Unidade de Ensino"
-                  variant="outlined"
-                  onChange={(e) => setInputValue(e.target.value)}
-                  sx={{ width: 500, backgroundColor: "#fff" }}
-                />
-              )}
-              value={selectedOption}
-              onChange={handleOptionChange}
-              renderOption={(props, option) => (
-                <li {...props} key={option._id}>
-                  {option.nome}
-                </li>
-              )}
-            />
-          </Box>
-        )}
-        {selectedOption && (
-          <Box marginTop={4}>
-            <Button
-              variant="contained"
-              startIcon={<PollIcon style={{ fontSize: 46 }} />}
-              style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
-              onClick={() => handleAcompanharClick(selectedOption._id)}
-            >
-              Acompanhar votação na Unidade escolhida
-            </Button>
-          </Box>
-        )}
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="flex-start"
+          height="100%"
+        >
+          <Typography
+            variant="h4"
+            textAlign="center"
+            marginTop={1.2}
+            color=" #000"
+          >
+            Apuração da votação nas Unidades de Ensino
+          </Typography>
+          {isLoading === false && (
+            <Box marginTop={4}>
+              <Autocomplete
+                options={zonas}
+                getOptionLabel={(option) => option.nome}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Digite o nome da Unidade de Ensino"
+                    variant="outlined"
+                    onChange={(e) => setInputValue(e.target.value)}
+                    sx={{ width: 500, backgroundColor: "#fff" }}
+                  />
+                )}
+                value={selectedOption}
+                onChange={handleOptionChange}
+                renderOption={(props, option) => (
+                  <li {...props} key={option._id}>
+                    {option.nome}
+                  </li>
+                )}
+              />
+            </Box>
+          )}
+          {selectedOption && (
+            <Box marginTop={4}>
+              <Button
+                variant="contained"
+                startIcon={<PollIcon style={{ fontSize: 46 }} />}
+                style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
+                onClick={() => handleAcompanharClick(selectedOption._id)}
+              >
+                Acompanhar votação na Unidade escolhida
+              </Button>
+            </Box>
+          )}
+        </Box>
       </Box>
-    </Box>
-  );
+    );
+  } else {
+    return (
+      <Box
+        margin="0"
+        padding="0"
+        height={`calc(100vh - 66px)`}
+        overflow="hidden"
+      >
+        <Typography
+          variant={smDown ? "h6" : mdDown ? "h5" : "h4"}
+          textAlign="center"
+          marginTop={2}
+          color=" #0f4c81"
+        >
+          ELEIÇÕES MUNICIPAIS DE DIRETORES BIÊNIO 2024/25
+        </Typography>
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="flex-start"
+          height="100%"
+        >
+          <Typography
+            variant="h4"
+            textAlign="center"
+            marginTop={1.2}
+            color=" #000"
+          >
+            Você não possui autorização para acessar essa página
+          </Typography>
+        </Box>
+      </Box>
+    );
+  }
 }
