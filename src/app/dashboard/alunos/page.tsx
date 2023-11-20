@@ -4,14 +4,19 @@ import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import IconButton from "@mui/material/IconButton";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import LinearProgress from "@mui/material/LinearProgress";
-import { Box, Container, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, Button, Container, Typography } from "@mui/material";
+import { MouseEvent, useEffect, useState } from "react";
 import { useUserContext } from "@/userContext";
 import { apiUrl } from "@/utils/api";
 import React from "react";
 import { Aluno } from "@/utils/types/aluno.types";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import EditIcon from "@mui/icons-material/Edit";
+import CustomModal from "@/components/modal";
+import { useRouter } from "next/navigation";
 
 //interface para autoTable
 interface jsPDFWithAutoTable extends jsPDF {
@@ -25,6 +30,10 @@ export default function Alunos() {
   const { user } = useUserContext();
   let [alunos, setAlunos] = useState<Aluno[]>([]);
   const [isLoading, setIsloading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [nomeAluno, setNomeAluno] = useState("");
+  const [idAluno, setIdAluno] = useState("");
+  const router = useRouter();
 
   const columns: GridColDef[] = [
     {
@@ -67,6 +76,36 @@ export default function Alunos() {
       align: "center",
       headerAlign: "center",
     },
+    {
+      field: "acoes",
+      headerName: "Ações",
+      width: 95,
+      sortable: false,
+      renderCell: (params: GridRenderCellParams) => {
+        return (
+          <div>
+            <IconButton
+              color="primary"
+              onClick={(
+                event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+              ) => handleEditar(event, params.row._id)}
+              title="Editar dados do aluno"
+            >
+              <EditIcon />
+            </IconButton>
+            <IconButton
+              color="error"
+              onClick={(
+                event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+              ) => handleDeletar(event, params.row.nome, params.row._id)}
+              title="Remover aluno"
+            >
+              <DeleteIcon />
+            </IconButton>
+          </div>
+        );
+      },
+    },
   ];
   useEffect(() => {
     //fetch
@@ -93,6 +132,50 @@ export default function Alunos() {
     }
   }, [user._id]);
 
+  const handleDeletar = (
+    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+    nome: string,
+    id: string
+  ) => {
+    setIsModalOpen(true);
+    setNomeAluno(nome);
+    setIdAluno(id);
+  };
+
+  const confirmDelete = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(`${apiUrl}/api/v1/aluno/${idAluno}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        method: "PATCH",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      setAlunos((prevAlunos) =>
+        prevAlunos.filter((aluno) => aluno._id !== idAluno)
+      );
+      alert("Aluno removido com sucesso!");
+      setIsModalOpen(false);
+      router.refresh();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      // setIsLoading(false);
+    }
+  };
+
+  const handleEditar = (
+    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+    id: string
+  ) => console.log("editar");
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   let indexAlunos = 0;
   let permissaoVoto = "";
   alunos.forEach((aluno) => {
@@ -103,12 +186,8 @@ export default function Alunos() {
     }
     indexAlunos++;
 
-    console.log("permissão de voto: " + permissaoVoto);
-
     alunos[indexAlunos - 1].permissaoVoto = permissaoVoto;
   });
-
-  console.log(alunos);
 
   const downloadPdf = () => {
     doc.text(
@@ -145,6 +224,8 @@ export default function Alunos() {
 
     doc.save("table.pdf");
   };
+
+  const handleAdicionar = () => router.push("/dashboard/formaluno");
   return (
     <Box margin="24px">
       <Container>
@@ -153,7 +234,14 @@ export default function Alunos() {
         </Typography>
 
         {!isLoading && (
-          <Box display="flex" justifyContent="flex-end">
+          <Box display="flex" justifyContent="space-between">
+            <Button
+              variant="contained"
+              startIcon={<AddCircleIcon fontSize="large" />}
+              onClick={handleAdicionar}
+            >
+              Adicionar novo aluno
+            </Button>
             <IconButton onClick={downloadPdf}>
               <PictureAsPdfIcon fontSize="large" sx={{ color: "#b30b00" }} />
             </IconButton>
@@ -187,6 +275,16 @@ export default function Alunos() {
             disableRowSelectionOnClick
           />
         </div>
+        <CustomModal
+          open={isModalOpen}
+          title="Confirma exclusão da lista?"
+          description={`Deseja excluir o aluno/a ${nomeAluno}?`}
+          onClose={closeModal}
+          yesButtonLabel="Sim"
+          noButtonLabel="Não"
+          onYesButtonClick={confirmDelete}
+          onNoButtonClick={closeModal}
+        />
       </Container>
     </Box>
   );
