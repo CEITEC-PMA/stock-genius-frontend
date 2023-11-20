@@ -58,13 +58,13 @@ export default function ConfirmaCandidato({
 
     const handleKeyDown = (event: KeyboardEvent) => {
       switch (event.key) {
-        case "1":
+        case "Enter":
           digitou.play();
           setTimeout(() => {
             handleSubmit();
           }, 800);
           break;
-        case "2":
+        case "0":
           digitou.play();
           setTimeout(() => {
             voltarEtapa();
@@ -162,7 +162,7 @@ export default function ConfirmaCandidato({
             onClick={avancarEtapa}
             sx={{ paddingX: 12, paddingY: 3.5 }}
           >
-            Confirma (1)
+            Confirma (ENTER)
           </Button>
         </Grid>
         <Grid item xs={3}>
@@ -174,7 +174,7 @@ export default function ConfirmaCandidato({
             onClick={voltarEtapa}
             sx={{ paddingX: 12, paddingY: 3.5 }}
           >
-            Corrige (2)
+            Corrige (0)
           </Button>
         </Grid>
       </Grid>
