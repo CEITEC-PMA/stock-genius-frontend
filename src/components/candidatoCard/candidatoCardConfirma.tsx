@@ -22,7 +22,7 @@ export default function CandidatoCardConfirma({
     <Card>
       <CardActionArea>
         <CardMedia
-          height={alturaTela > 800 ? "500px" : "350px"}
+          height={alturaTela > 1000 ? "500px" : "340px"}
           style={{
             aspectRatio: "1 / 1",
             objectFit: "contain",
