@@ -1,5 +1,5 @@
 "use client";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import {
   TextField,
   Button,
@@ -17,7 +17,8 @@ import {
 import { useUserContext } from "@/userContext";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { apiUrl } from "@/utils/api";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Aluno } from "@/utils/types/aluno.types";
 
 interface FormData {
   nome: string;
@@ -33,6 +34,45 @@ const FormularioCadastro = () => {
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
   const mdDown = useMediaQuery(theme.breakpoints.down("md"));
   const router = useRouter();
+  const [isLoading, setIsloading] = useState(false);
+  let [aluno, setAluno] = useState<Aluno[]>();
+
+  const searchParams = useSearchParams(); // Obtenha a instância correta de URLSearchParams
+  const id = searchParams.get("id") ?? "";
+
+  useEffect(() => {
+    //fetch
+    const token = localStorage.getItem("token");
+    if (!!id) {
+      setIsloading(true);
+      const getDadosAluno = async () => {
+        const response = await fetch(`${apiUrl}/api/v1/aluno/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const responseJson = await response.json();
+        const { aluno } = responseJson;
+
+        setFormData({
+          nome: aluno.nome,
+          responsavel1: aluno.responsavel1,
+          responsavel2: aluno.responsavel2,
+          responsavel3: aluno.responsavel3,
+          serie: aluno.serie,
+        });
+        return response;
+      };
+      setIsloading(false);
+      getDadosAluno();
+    }
+  }, [user._id]);
+
+  console.log(aluno);
 
   const serieOptions = [
     "ED. INF. I",
@@ -175,24 +215,26 @@ const FormularioCadastro = () => {
                 onChange={handleInputChange}
               />
             </Grid>
-            <Grid item xs={3}>
-              <InputLabel>Série</InputLabel>
-              <Select
-                variant="outlined"
-                placeholder="Selecione"
-                required
-                sx={{ width: 180, backgroundColor: "#fff" }}
-                name="serie"
-                value={formData.serie}
-                onChange={handleSelectChange}
-              >
-                {serieOptions.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
+            {!id && (
+              <Grid item xs={3}>
+                <InputLabel>Série</InputLabel>
+                <Select
+                  variant="outlined"
+                  placeholder="Selecione"
+                  required
+                  sx={{ width: 180, backgroundColor: "#fff" }}
+                  name="serie"
+                  value={formData.serie}
+                  onChange={handleSelectChange}
+                >
+                  {serieOptions.map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Grid>
+            )}
             <Grid item xs={12}>
               <Button
                 variant="contained"
