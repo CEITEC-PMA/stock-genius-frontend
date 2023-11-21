@@ -2,7 +2,7 @@ import { Divider, IconButton, List, Toolbar, styled } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { PersonAddAlt1, AccountBox } from "@mui/icons-material";
-import PersonIcon from '@mui/icons-material/Person';
+import PersonIcon from "@mui/icons-material/Person";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import ListItems from "./listItems";
 import Face6Icon from "@mui/icons-material/Face6";
@@ -10,6 +10,7 @@ import { useUserContext } from "@/userContext";
 import useTimeCheck from "@/hooks/useTimeCheck";
 import GroupIcon from "@mui/icons-material/Group";
 import HowToVoteIcon from "@mui/icons-material/HowToVote";
+import PollIcon from "@mui/icons-material/Poll";
 
 //import { mainListItems } from "./ListItems";
 interface DrawerProps {
@@ -78,11 +79,17 @@ export default function DrawerComponent({
           />
         )}
 
+        <ListItems
+          label="Liberar voto"
+          icon={<HowToVoteIcon />}
+          to="/dashboard/liberavoto"
+        />
+
         {user.role?.includes("super-adm") && (
           <ListItems
-            label="Liberar voto"
-            icon={<HowToVoteIcon />}
-            to="/dashboard/liberavoto"
+            label="Apuração dos votos"
+            icon={<PollIcon />}
+            to="/dashboard/buscaApuracao"
           />
         )}
 

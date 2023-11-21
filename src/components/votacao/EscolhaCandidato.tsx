@@ -100,7 +100,7 @@ export default function EscolhaCandidato({
   return (
     <Box margin="0" padding="0" height={`calc(100vh - 66px)`} overflow="hidden">
       <Typography
-        variant={smDown ? "h6" : mdDown ? "h5" : "h4"}
+        variant={mdDown ? "h6" : "h5"}
         textAlign="center"
         marginTop={2}
         color=" #0f4c81"
@@ -116,7 +116,7 @@ export default function EscolhaCandidato({
         height="100%"
       >
         <Typography
-          variant="h4"
+          variant={mdDown ? "h6" : "h5"}
           textAlign="center"
           marginTop={1.2}
           color=" #000"
