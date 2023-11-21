@@ -11,6 +11,7 @@ import useTimeCheck from "@/hooks/useTimeCheck";
 import GroupIcon from "@mui/icons-material/Group";
 import HowToVoteIcon from "@mui/icons-material/HowToVote";
 import PollIcon from "@mui/icons-material/Poll";
+import BadgeIcon from "@mui/icons-material/Badge";
 
 //import { mainListItems } from "./ListItems";
 interface DrawerProps {
@@ -106,7 +107,7 @@ export default function DrawerComponent({
         />
         <ListItems
           label="Lista de Funcionários"
-          icon={<PersonIcon />}
+          icon={<BadgeIcon />}
           to="/dashboard/funcionarios"
         />
 
