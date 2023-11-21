@@ -49,7 +49,7 @@ export default function AppBarComponent({
     <AppBar position="absolute" open={open}>
       <Toolbar
         sx={{
-          backgroundColor: "#2b2b2b",
+          backgroundColor: "#0f4c81",
           pr: "24px",
         }}
       >
@@ -83,7 +83,7 @@ export default function AppBarComponent({
                 noWrap
                 sx={{ flexGrow: 1 }}
               >
-                Sistema de Eleição de Diretores - SIMULADO
+                Sistema de Eleição de Diretores
               </Typography>
             </Grid>
           </Grid>

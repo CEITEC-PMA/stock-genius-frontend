@@ -32,13 +32,13 @@ export default function AppBarLogin() {
       <AppBar position="absolute" sx={appBarStyle}>
         <Toolbar
           sx={{
-            backgroundColor: "#2b2b2b",
+            backgroundColor: "#0f4c81",
             pr: "24px",
           }}
         >
           <div style={containerStyle}>
             <Typography variant="h6" color="inherit" noWrap sx={titleStyle}>
-              SED - Sistema de Eleição de Diretores - SIMULADO
+              SED - Sistema de Eleição de Diretores
             </Typography>
             <div style={logoStyle}>
               <Image
