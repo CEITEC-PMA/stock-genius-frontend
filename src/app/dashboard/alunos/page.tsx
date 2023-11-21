@@ -170,7 +170,7 @@ export default function Alunos() {
   const handleEditar = (
     event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
     id: string
-  ) => console.log("editar");
+  ) => router.push(`/dashboard/formaluno?id=${id}`);
 
   const closeModal = () => {
     setIsModalOpen(false);
