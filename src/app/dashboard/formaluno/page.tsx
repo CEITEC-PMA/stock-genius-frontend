@@ -72,8 +72,6 @@ const FormularioCadastro = () => {
     }
   }, [user._id]);
 
-  console.log(aluno);
-
   const serieOptions = [
     "ED. INF. I",
     "ED. INF. II",
@@ -124,7 +122,7 @@ const FormularioCadastro = () => {
     );
     try {
       const response = await fetch(`${apiUrl}/api/v1/aluno/`, {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
