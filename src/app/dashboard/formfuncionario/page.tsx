@@ -20,30 +20,30 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 interface FormData {
   nome: string;
-  responsavel1: string;
-  responsavel2: string | null;
-  responsavel3: string | null;
-  serie: string;
+  cargo: string;
 }
 
-const FormularioCadastro = () => {
+const FormularioFuncionario = () => {
   const { user } = useUserContext();
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
   const mdDown = useMediaQuery(theme.breakpoints.down("md"));
   const router = useRouter();
-  const [isLoading, setIsloading] = useState(false);
 
   const searchParams = useSearchParams();
   const id = searchParams.get("id") ?? "";
+
+  const [formData, setFormData] = useState<FormData>({
+    nome: "",
+    cargo: "",
+  });
 
   useEffect(() => {
     //fetch
     const token = localStorage.getItem("token");
     if (!!id) {
-      setIsloading(true);
-      const getDadosAluno = async () => {
-        const response = await fetch(`${apiUrl}/api/v1/aluno/${id}`, {
+      const getDadosFuncionario = async () => {
+        const response = await fetch(`${apiUrl}/api/v1/funcionario/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -53,45 +53,50 @@ const FormularioCadastro = () => {
         }
 
         const responseJson = await response.json();
-        const { aluno } = responseJson;
+        console.log(responseJson);
+        const { funcionario } = responseJson;
 
         setFormData({
-          nome: aluno.nome,
-          responsavel1: aluno.responsavel1,
-          responsavel2: aluno.responsavel2,
-          responsavel3: aluno.responsavel3,
-          serie: aluno.serie,
+          nome: funcionario.nome,
+          cargo: funcionario.cargo,
         });
         return response;
       };
-      setIsloading(false);
-      getDadosAluno();
+      getDadosFuncionario();
     }
   }, [user._id]);
 
-  const serieOptions = [
-    "ED. INF. I",
-    "ED. INF. II",
-    "ED. INF. III",
-    "ED. INF. IV",
-    "ED. INF. V",
-    "1° ANO",
-    "2° ANO",
-    "3° ANO",
-    "4° ANO",
-    "5° ANO",
-    "6° ANO",
-    "7° ANO",
-    "8° ANO",
+  const cargoOptions = [
+    "Agente Administrativo Educacional Apoio (A)",
+    "Agente Administrativo Educacional Superior (S)",
+    "Agente Administrativo Educacional Técnico (T)",
+    "Agente Administrativo Educacional (VIGIA)",
+    "ASHA",
+    "ASHA ( Readaptado)",
+    "ASHA/Me",
+    "Assessora Geral II",
+    "Auxiliar de Educação",
+    "Auxiliar de Serviços De Higiene E Alimentação (Readaptada)",
+    "Cargo em Comissão/Assessor Geral II",
+    "Cuidadora",
+    "Cuidadora (Comissionada)",
+    "Executor de Serviços Administrativos",
+    "Interprete de Libras ",
+    "Motorista",
+    "Professor II",
+    "Professor III",
+    "Professor IV",
+    "Professor IV(Readaptada)",
+    "Professor V",
   ];
 
-  const [formData, setFormData] = useState<FormData>({
-    nome: "",
-    responsavel1: "",
-    responsavel2: null,
-    responsavel3: null,
-    serie: "",
-  });
+  const handleSelectChange = (e: SelectChangeEvent<string>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
@@ -99,14 +104,6 @@ const FormularioCadastro = () => {
     setFormData((prevData) => ({
       ...prevData,
       [name]: paraMaiuscula,
-    }));
-  };
-
-  const handleSelectChange = (e: SelectChangeEvent<string>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
     }));
   };
 
@@ -119,7 +116,7 @@ const FormularioCadastro = () => {
     );
     try {
       if (!!id) {
-        const response = await fetch(`${apiUrl}/api/v1/aluno/${id}`, {
+        const response = await fetch(`${apiUrl}/api/v1/funcionario/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -130,14 +127,14 @@ const FormularioCadastro = () => {
 
         if (response.ok) {
           console.log("Dados enviados com sucesso!");
-          alert("Edição concluída com sucesso!");
-          router.push("/dashboard/alunos");
+          alert("Edição concluído com sucesso!");
+          router.push("/dashboard/funcionarios");
         } else {
           console.error("Falha ao enviar os dados.");
-          alert("Não foi possível cadastrar o aluno, tente novamente");
+          alert("Não foi possível cadastrar o funcionário, tente novamente");
         }
       } else {
-        const response = await fetch(`${apiUrl}/api/v1/aluno/`, {
+        const response = await fetch(`${apiUrl}/api/v1/funcionario/`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -145,18 +142,18 @@ const FormularioCadastro = () => {
           },
           body: JSON.stringify(filteredFormData),
         });
-
+        console.log(response);
         if (response.ok) {
           console.log("Dados enviados com sucesso!");
           alert("Cadastro concluído com sucesso!");
-          router.push("/dashboard/alunos");
+          router.push("/dashboard/funcionarios");
         } else {
           console.error("Falha ao enviar os dados.");
-          alert("Não foi possível cadastrar o aluno, tente novamente");
+          alert("Não foi possível cadastrar o funcionário, tente novamente");
         }
       }
     } catch (error) {
-      alert("Não foi possível cadastrar o aluno, tente novamente");
+      alert("Não foi possível cadastrar o funcionário, tente novamente");
       console.error("Erro ao enviar os dados:", error);
     }
   };
@@ -181,78 +178,45 @@ const FormularioCadastro = () => {
       >
         <Typography variant="h4" gutterBottom>
           {id
-            ? "Formulário de edição de aluno"
-            : "Formulário de cadastro de aluno"}
+            ? "Formulário de edição de funcionário"
+            : "Formulário de cadastro de funcionário"}
         </Typography>
         <form>
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <TextField
-                label="Nome do Aluno"
+                label="Nome do funcionário"
                 variant="outlined"
                 fullWidth
                 required
-                sx={{ backgroundColor: "#fff" }}
+                sx={{ backgroundColor: "#fff", width: "100%" }}
                 name="nome"
                 value={formData.nome}
                 onChange={handleInputChange}
               />
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="Responsável 1"
+
+            <Grid item xs={12} sx={{ maxWidth: 700, width: "100%" }}>
+              <InputLabel>Cargo</InputLabel>
+              <Select
                 variant="outlined"
-                fullWidth
+                placeholder="Selecione"
                 required
-                sx={{ backgroundColor: "#fff" }}
-                name="responsavel1"
-                value={formData.responsavel1}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="Responsável 2"
-                variant="outlined"
+                sx={{ backgroundColor: "#fff", width: "100%" }}
+                name="cargo"
                 fullWidth
-                sx={{ backgroundColor: "#fff" }}
-                name="responsavel2"
-                value={formData.responsavel2}
-                onChange={handleInputChange}
-              />
+                value={formData.cargo}
+                onChange={handleSelectChange}
+              >
+                {cargoOptions.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </Select>
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="Responsável 3"
-                variant="outlined"
-                fullWidth
-                sx={{ backgroundColor: "#fff" }}
-                name="responsavel3"
-                value={formData.responsavel3}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            {!id && (
-              <Grid item xs={3}>
-                <InputLabel>Série</InputLabel>
-                <Select
-                  variant="outlined"
-                  placeholder="Selecione"
-                  required
-                  sx={{ width: 180, backgroundColor: "#fff" }}
-                  name="serie"
-                  value={formData.serie}
-                  onChange={handleSelectChange}
-                >
-                  {serieOptions.map((option) => (
-                    <MenuItem key={option} value={option}>
-                      {option}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Grid>
-            )}
-            <Grid item xs={12}>
+
+            <Grid item xs={12} sx={{ maxWidth: 700, width: "100%" }}>
               <Button
                 variant="contained"
                 size="large"
@@ -270,4 +234,4 @@ const FormularioCadastro = () => {
   );
 };
 
-export default FormularioCadastro;
+export default FormularioFuncionario;
