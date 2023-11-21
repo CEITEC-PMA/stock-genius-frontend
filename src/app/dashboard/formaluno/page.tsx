@@ -18,7 +18,6 @@ import { useUserContext } from "@/userContext";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { apiUrl } from "@/utils/api";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Aluno } from "@/utils/types/aluno.types";
 
 interface FormData {
   nome: string;
@@ -35,9 +34,8 @@ const FormularioCadastro = () => {
   const mdDown = useMediaQuery(theme.breakpoints.down("md"));
   const router = useRouter();
   const [isLoading, setIsloading] = useState(false);
-  let [aluno, setAluno] = useState<Aluno[]>();
 
-  const searchParams = useSearchParams(); // Obtenha a instância correta de URLSearchParams
+  const searchParams = useSearchParams();
   const id = searchParams.get("id") ?? "";
 
   useEffect(() => {
@@ -121,22 +119,42 @@ const FormularioCadastro = () => {
       )
     );
     try {
-      const response = await fetch(`${apiUrl}/api/v1/aluno/`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(filteredFormData),
-      });
+      if (!!id) {
+        const response = await fetch(`${apiUrl}/api/v1/aluno/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(filteredFormData),
+        });
 
-      if (response.ok) {
-        console.log("Dados enviados com sucesso!");
-        alert("Cadastro concluído com sucesso!");
-        router.push("/dashboard/alunos");
+        if (response.ok) {
+          console.log("Dados enviados com sucesso!");
+          alert("Edição concluída com sucesso!");
+          router.push("/dashboard/alunos");
+        } else {
+          console.error("Falha ao enviar os dados.");
+          alert("Não foi possível cadastrar o aluno, tente novamente");
+        }
       } else {
-        console.error("Falha ao enviar os dados.");
-        alert("Não foi possível cadastrar o aluno, tente novamente");
+        const response = await fetch(`${apiUrl}/api/v1/aluno/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(filteredFormData),
+        });
+
+        if (response.ok) {
+          console.log("Dados enviados com sucesso!");
+          alert("Cadastro concluído com sucesso!");
+          router.push("/dashboard/alunos");
+        } else {
+          console.error("Falha ao enviar os dados.");
+          alert("Não foi possível cadastrar o aluno, tente novamente");
+        }
       }
     } catch (error) {
       alert("Não foi possível cadastrar o aluno, tente novamente");
@@ -163,7 +181,9 @@ const FormularioCadastro = () => {
         height="100%"
       >
         <Typography variant="h4" gutterBottom>
-          Formulário de cadastro de aluno
+          {id
+            ? "Formulário de edição de aluno"
+            : "Formulário de cadastro de aluno"}
         </Typography>
         <form>
           <Grid container spacing={3}>
