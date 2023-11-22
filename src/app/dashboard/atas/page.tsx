@@ -12,7 +12,7 @@ export default function Atas() {
                 <Typography variant='h3'>ATAS</Typography>
             </Box>
             <Box display='flex' gap={2} mx={2}  >
-                <Link href={'/dashboard/atas/psateste'}>
+                <Link href={'/dashboard/atas/psa'}>
                     <Button
                         size="large"
                         variant="contained"
@@ -24,7 +24,7 @@ export default function Atas() {
                     </Button>
                 </Link>
 
-                <Link href={'/dashboard/atas/pateste'}>
+                <Link href={'/dashboard/atas/pa'}>
                     <Button
                         size="large"
                         variant="contained"
@@ -34,7 +34,7 @@ export default function Atas() {
                         Ata Mesa Coletora Responsáveis e Alunos
                     </Button>
                 </Link>
-                <Link href={'/dashboard/atas/resultadoteste'}>
+                <Link href={'/dashboard/atas/quorum'}>
                     <Button
                         size="large"
                         variant="contained"
