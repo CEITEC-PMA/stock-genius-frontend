@@ -10,6 +10,8 @@ import {
   TextField,
   Tooltip,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { useUserContext } from "@/userContext";
@@ -20,6 +22,7 @@ import SelectInput from "@/components/inputs/SelectInput";
 import { analiseCandidaturaDTO } from "@/utils/dtos/analiseDTO";
 import { Candidato } from "@/utils/types/candidato.types";
 import FindInPageIcon from "@mui/icons-material/FindInPage";
+import Unauthorized from "@/components/unauthorized";
 
 export default function ChecklistCandidato({
   params,
@@ -32,6 +35,9 @@ export default function ChecklistCandidato({
   const [fotoCandidato, setFotoCandidato] = useState("");
   const [fileLink, setFileLink] = useState("");
   const [hasDoc, setHasDoc] = useState(false);
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
+  const mdDown = useMediaQuery(theme.breakpoints.down("md"));
 
   const {
     control,
@@ -80,6 +86,9 @@ export default function ChecklistCandidato({
       setValue("respostaComissao", candidato.respostaComissao);
     } else {
       setValue("analise_candidatura", candidato?.aprovado);
+      setValue("justificativa", candidato?.justificativa);
+      setValue("textoRecurso", candidato?.textoRecurso);
+      setValue("respostaComissao", candidato?.respostaComissao);
     }
   }, [candidato, setValue]);
 
@@ -95,6 +104,7 @@ export default function ChecklistCandidato({
         aprovado: data.analise_candidatura,
         justificativa: data.justificativa,
         respostaComissao: data.respostaComissao,
+        justificativa2: data.justificativa2,
       };
 
       const response = await fetch(
@@ -126,196 +136,238 @@ export default function ChecklistCandidato({
     cpfSemTraco = cpfSemTraco.replace(".", "");
     cpfSemTraco = cpfSemTraco.replace("-", "");
   }
-
-  return (
-    <Box margin="24px">
-      <Container>
-        <Typography variant="h4" marginBottom="12px" textAlign="center">
-          Checklist dos documentos necessários para registro da
-          candidatura/indicação
-        </Typography>
-        <Paper sx={{ padding: "12px" }}>
-          <Box margin="0 12px">
-            <Typography variant="h6">
-              Unidade de ensino:{" "}
-              <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
-                {candidato?.zona?.nome}
-              </span>
-            </Typography>
-            <Typography variant="h6">
-              Nome do candidato(a)/indicado(a):{" "}
-              <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
-                {candidato?.nome}
-              </span>
-            </Typography>
-            <Box display="flex" justifyContent="center" alignContent="center">
-              <Avatar
-                alt="User"
-                src={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${fotoCandidato}`}
-                sx={{
-                  width: { xs: 85, sm: 130, md: 150, lg: 175 },
-                  height: { xs: 85, sm: 130, md: 150, lg: 175 },
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginBottom: "10px",
-                }}
-              />
+  if (user.role?.includes("super-adm")) {
+    return (
+      <Box margin="24px">
+        <Container>
+          <Typography variant="h4" marginBottom="12px" textAlign="center">
+            Checklist dos documentos necessários para registro da
+            candidatura/indicação
+          </Typography>
+          <Paper sx={{ padding: "12px" }}>
+            <Box margin="0 12px">
+              <Typography variant="h6">
+                Unidade de ensino:{" "}
+                <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
+                  {candidato?.zona?.nome}
+                </span>
+              </Typography>
+              <Typography variant="h6">
+                Nome do candidato(a)/indicado(a):{" "}
+                <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
+                  {candidato?.nome}
+                </span>
+              </Typography>
+              <Box display="flex" justifyContent="center" alignContent="center">
+                <Avatar
+                  alt="User"
+                  src={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${fotoCandidato}`}
+                  sx={{
+                    width: { xs: 85, sm: 130, md: 150, lg: 175 },
+                    height: { xs: 85, sm: 130, md: 150, lg: 175 },
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginBottom: "10px",
+                  }}
+                />
+              </Box>
             </Box>
-          </Box>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            {documents.map((document, i) => {
-              let src = `${apiUrl}/fotosCandidato/${cpfSemTraco}/${
-                candidato?.docs[document.name]?.file
-              }`;
-              if (
-                src.includes("undefined") ||
-                src.endsWith(`${cpfSemTraco}/`)
-              ) {
-                src = "https://api.anapolis.go.gov.br/apiupload/sed/error.png";
-              }
+            <form onSubmit={handleSubmit(onSubmit)}>
+              {documents.map((document, i) => {
+                let src = `${apiUrl}/fotosCandidato/${cpfSemTraco}/${
+                  candidato?.docs[document.name]?.file
+                }`;
+                if (
+                  src.includes("undefined") ||
+                  src.endsWith(`${cpfSemTraco}/`)
+                ) {
+                  src =
+                    "https://api.anapolis.go.gov.br/apiupload/sed/error.png";
+                }
 
-              return (
-                <ChecklistCardWithController
-                  name={document.name}
-                  alt="Documento Enviado"
-                  label={document.label}
-                  src={src}
+                return (
+                  <ChecklistCardWithController
+                    name={document.name}
+                    alt="Documento Enviado"
+                    label={document.label}
+                    src={src}
+                    control={control}
+                    key={i}
+                  />
+                );
+              })}
+              <div style={{ margin: "8px 16px" }}>
+                <SelectInput
                   control={control}
-                  key={i}
+                  errors={errors}
+                  inputDTO={analiseCandidaturaDTO}
                 />
-              );
-            })}
-            <div style={{ margin: "8px 16px" }}>
-              <SelectInput
-                control={control}
-                errors={errors}
-                inputDTO={analiseCandidaturaDTO}
-              />
 
-              {aprovado === "Indeferida" && (
-                <Controller
-                  name="justificativa"
-                  control={control}
-                  defaultValue=""
-                  rules={{ required: "Justificativa é obrigatória" }}
-                  render={({ field }) => (
-                    <div style={{ marginTop: "16px" }}>
-                      <TextField
-                        {...field}
-                        label="Justificativa do indeferimento da candidatura"
-                        variant="outlined"
-                        fullWidth
-                        multiline
-                        maxRows={4}
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          const capitalizedValue = value
-                            .toLowerCase()
-                            .split(". ")
-                            .map(
-                              (sentence) =>
-                                sentence.charAt(0).toUpperCase() +
-                                sentence.slice(1)
-                            )
-                            .join(". ");
-
-                          field.onChange(capitalizedValue);
-                        }}
-                      />
-                    </div>
-                  )}
-                />
-              )}
-
-              {textoRecurso !== "" && (
-                <Controller
-                  name="textoRecurso"
-                  control={control}
-                  defaultValue=""
-                  // rules={{ required: "Justificativa é obrigatória" }}
-                  render={({ field }) => (
-                    <div style={{ marginTop: "16px" }}>
-                      <TextField
-                        {...field}
-                        label="Texto do recurso"
-                        variant="outlined"
-                        fullWidth
-                        multiline
-                        maxRows={4}
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          const capitalizedValue = value
-                            .toLowerCase()
-                            .split(". ")
-                            .map(
-                              (sentence) =>
-                                sentence.charAt(0).toUpperCase() +
-                                sentence.slice(1)
-                            )
-                            .join(". ");
-
-                          field.onChange(capitalizedValue);
-                        }}
-                      />
-                    </div>
-                  )}
-                />
-              )}
-              <div
-                style={{
-                  margin: "8px 0",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                {hasDoc && (
-                  <Tooltip title="Documento enviado">
-                    <Button
-                      href={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${fileLink}`}
-                      target="_blank"
-                    >
-                      <FindInPageIcon color="success" />
-                    </Button>
-                  </Tooltip>
+                {aprovado === "Indeferida" && (
+                  <Controller
+                    name="justificativa2"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: "Justificativa é obrigatória" }}
+                    render={({ field }) => (
+                      <div style={{ marginTop: "16px" }}>
+                        <TextField
+                          {...field}
+                          label="Justificativa do indeferimento da candidatura"
+                          variant="outlined"
+                          fullWidth
+                          multiline
+                          maxRows={4}
+                        />
+                      </div>
+                    )}
+                  />
                 )}
-              </div>
-              {aprovado === "Indeferida" && (
-                <Controller
-                  name="respostaComissao"
-                  control={control}
-                  defaultValue=""
-                  render={({ field }) => (
-                    <div style={{ marginTop: "16px" }}>
-                      <TextField
-                        {...field}
-                        label="Resposta da Comissão Eleitoral Municipal sobre o recurso"
-                        variant="outlined"
-                        fullWidth
-                        multiline
-                        maxRows={6}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                    </div>
-                  )}
-                />
-              )}
-            </div>
 
-            <Box display="flex" justifyContent="center" alignItems="center">
-              <Button
-                type="submit"
-                variant="contained"
-                style={{ margin: "12px" }}
-                fullWidth
-              >
-                Salvar
-              </Button>
-            </Box>
-          </form>
-        </Paper>
-      </Container>
-    </Box>
-  );
+                {aprovado === "Indeferida" &&
+                  user.role?.includes("super-adm") && (
+                    <Controller
+                      name="justificativa"
+                      control={control}
+                      defaultValue=""
+                      rules={{ required: "Justificativa é obrigatória" }}
+                      render={({ field }) => (
+                        <div style={{ marginTop: "16px" }}>
+                          <TextField
+                            {...field}
+                            label="Justificativa do indeferimento da candidatura"
+                            variant="outlined"
+                            fullWidth
+                            multiline
+                            maxRows={4}
+                            InputProps={{
+                              readOnly: true,
+                              style: { color: "#757575" },
+                            }}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              const capitalizedValue = value
+                                .toLowerCase()
+                                .split(". ")
+                                .map(
+                                  (sentence) =>
+                                    sentence.charAt(0).toUpperCase() +
+                                    sentence.slice(1)
+                                )
+                                .join(". ");
+
+                              field.onChange(capitalizedValue);
+                            }}
+                          />
+                        </div>
+                      )}
+                    />
+                  )}
+
+                {aprovado !== "Deferida" &&
+                  user.role?.includes("super-adm") && (
+                    <Controller
+                      name="textoRecurso"
+                      control={control}
+                      defaultValue=""
+                      // rules={{ required: "Justificativa é obrigatória" }}
+                      render={({ field }) => (
+                        <div style={{ marginTop: "16px" }}>
+                          <TextField
+                            {...field}
+                            label="Texto do recurso"
+                            variant="outlined"
+                            fullWidth
+                            multiline
+                            maxRows={4}
+                            InputProps={{
+                              readOnly: true,
+                              style: { color: "#757575" },
+                            }}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              const capitalizedValue = value
+                                .toLowerCase()
+                                .split(". ")
+                                .map(
+                                  (sentence) =>
+                                    sentence.charAt(0).toUpperCase() +
+                                    sentence.slice(1)
+                                )
+                                .join(". ");
+
+                              field.onChange(capitalizedValue);
+                            }}
+                          />
+                        </div>
+                      )}
+                    />
+                  )}
+                <div
+                  style={{
+                    margin: "8px 0",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {hasDoc &&
+                    aprovado === "Indeferida" &&
+                    user.role?.includes("super-adm") && (
+                      <Tooltip title="Documento enviado">
+                        <Button
+                          href={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${fileLink}`}
+                          target="_blank"
+                        >
+                          <FindInPageIcon color="success" />
+                        </Button>
+                      </Tooltip>
+                    )}
+                </div>
+                {aprovado === "Indeferida" &&
+                  user.role?.includes("super-adm") && (
+                    <Controller
+                      name="respostaComissao"
+                      control={control}
+                      defaultValue=""
+                      render={({ field }) => (
+                        <div style={{ marginTop: "16px" }}>
+                          <TextField
+                            {...field}
+                            label="Resposta da Comissão Eleitoral Municipal sobre o recurso"
+                            variant="outlined"
+                            fullWidth
+                            multiline
+                            maxRows={6}
+                            InputProps={{
+                              readOnly: true,
+                              style: { color: "#757575" },
+                            }}
+                            onChange={(e) => field.onChange(e.target.value)}
+                          />
+                        </div>
+                      )}
+                    />
+                  )}
+              </div>
+
+              <Box display="flex" justifyContent="center" alignItems="center">
+                <Button
+                  type="submit"
+                  variant="contained"
+                  style={{ margin: "12px" }}
+                  fullWidth
+                >
+                  Salvar
+                </Button>
+              </Box>
+            </form>
+          </Paper>
+        </Container>
+      </Box>
+    );
+  } else {
+    return <Unauthorized />;
+  }
 }
