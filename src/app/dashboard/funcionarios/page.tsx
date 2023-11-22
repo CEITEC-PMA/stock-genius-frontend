@@ -6,7 +6,6 @@ import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import LinearProgress from "@mui/material/LinearProgress";
 import { Box, Button, Container, Typography } from "@mui/material";
 import { MouseEvent, useEffect, useState } from "react";
-// import { useUserContext } from "@/userContext";
 import { apiUrl } from "@/utils/api";
 import React from "react";
 import { jsPDF } from "jspdf";
