@@ -31,14 +31,14 @@ const VisuallyHiddenInput = styled("input")({
 export default function RecursoPage({ params }: { params: { id: string } }) {
   const [candidato, setCandidato] = useState<Candidato>();
   const [candidatoDigitou, setCandidatoDigitou] = useState(false);
-  const [textoRecurso, setTextoRecurso] = useState("");
+  const [textoRecurso2, setTextoRecurso2] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [buttonColor, setButtonColor] = useState<"success" | "primary">(
     candidato?.docs.doc_recurso?.file ? "success" : "primary"
   );
   useEffect(() => {
     if (candidato) {
-      setFileLink(candidato.docs.doc_recurso?.file);
+      setFileLink(candidato.docs.doc_recurso2?.file);
     }
   }, [candidato, candidato?.docs]);
 
@@ -58,7 +58,7 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
       );
       const responseJson = await response.json();
       setCandidato(responseJson.candidato);
-      setHasDoc(!!responseJson.candidato?.docs.doc_recurso?.file);
+      setHasDoc(!!responseJson.candidato?.docs.doc_recurso2?.file);
       return;
     };
     const token = localStorage.getItem("token");
@@ -77,7 +77,7 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
 
       //fetch
       fetch(
-        `${apiUrl}/api/v1/candidato/docs/${candidato?._id}?cpf=${candidato?.cpf}&categoria=doc_recurso`,
+        `${apiUrl}/api/v1/candidato/docs/${candidato?._id}?cpf=${candidato?.cpf}&categoria=doc_recurso2`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -88,7 +88,7 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
       )
         .then(async (res) => {
           const resJSON = await res.json();
-          setFileLink(resJSON.candidato.docs.doc_recurso.file);
+          setFileLink(resJSON.candidato.docs.doc_recurso2.file);
           setIsLoading(false);
           alert("Envio concluído");
           setButtonColor("success");
@@ -113,7 +113,7 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
         `${apiUrl}/api/v1/candidato/${candidato?._id}`,
         {
           method: "PUT",
-          body: JSON.stringify({ textoRecurso }),
+          body: JSON.stringify({ textoRecurso2 }),
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -137,8 +137,8 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     if (candidato) {
-      if (candidato.textoRecurso !== "") {
-        setTextoRecurso(candidato.textoRecurso);
+      if (candidato.textoRecurso2 !== "") {
+        setTextoRecurso2(candidato.textoRecurso2);
       }
     }
   }, [candidato]);
@@ -173,7 +173,7 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
             Justificativa da Comissão Eleitoral Municipal para indeferimento da
             candidatura:{" "}
             <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
-              {candidato?.justificativa}
+              {candidato?.justificativa2}
             </span>
           </Typography>
         </Box>
@@ -197,9 +197,9 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
               multiline
               rows={8}
               fullWidth
-              value={textoRecurso}
+              value={textoRecurso2}
               onChange={(e) => {
-                setTextoRecurso(e.target.value);
+                setTextoRecurso2(e.target.value);
                 if (e.target.value.length > 0) {
                   setCandidatoDigitou(true);
                 } else {
@@ -215,7 +215,8 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
               justifyContent: "center",
             }}
           >
-            <Box
+            {/* ---------------------- remove botoes ---------------------------
+             <Box
               marginTop="24px"
               display="flex"
               alignItems="center"
@@ -240,7 +241,7 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
                   </Tooltip>
                 )}
               </div>
-              {/* {candidatoDigitou && (
+              {candidatoDigitou && (
                 <div
                   style={{
                     display: "flex",
@@ -280,7 +281,7 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
                     />
                   )}
                 </div>
-              )} */}
+              )}
               <Box marginTop="16px">
                 <Button
                   type="submit"
@@ -291,7 +292,8 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
                   Enviar recurso
                 </Button>
               </Box>
-            </Box>
+            </Box> 
+            ------------------------------------------------------------------*/}
           </div>
         </form>
       </Container>

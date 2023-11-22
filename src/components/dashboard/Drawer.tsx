@@ -86,14 +86,6 @@ export default function DrawerComponent({
           to="/dashboard/liberavoto"
         />
 
-        {user.role?.includes("super-adm") && (
-          <ListItems
-            label="Apuração dos votos"
-            icon={<PollIcon />}
-            to="/dashboard/buscaApuracao"
-          />
-        )}
-
         <ListItems
           label="Lista de Candidatos"
           icon={<AccountBox />}
@@ -110,6 +102,14 @@ export default function DrawerComponent({
           icon={<BadgeIcon />}
           to="/dashboard/funcionarios"
         />
+
+        {user.role?.includes("super-adm") && (
+          <ListItems
+            label="Apuração dos votos"
+            icon={<PollIcon />}
+            to="/dashboard/buscaApuracao"
+          />
+        )}
 
         {user.role?.includes("super-adm") && (
           <ListItems
