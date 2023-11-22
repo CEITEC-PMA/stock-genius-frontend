@@ -82,6 +82,7 @@ export default function ChecklistCandidato({
     if (candidato?.aprovado === "Indeferida") {
       setValue("analise_candidatura", candidato.aprovado);
       setValue("justificativa", candidato.justificativa);
+      setValue("justificativa2", candidato.justificativa2);
       setValue("textoRecurso", candidato.textoRecurso);
       setValue("respostaComissao", candidato.respostaComissao);
     } else {
