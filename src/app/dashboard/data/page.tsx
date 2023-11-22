@@ -67,6 +67,8 @@ export default function DataTable() {
               <DeleteIcon />
             </IconButton> */}
 
+            {/* 
+            ---------------------------habilitar para recurso-----------------------
             {aprovado === "Indeferida" && (
               <IconButton
                 color="error"
@@ -87,7 +89,9 @@ export default function DataTable() {
               >
                 <ArticleIcon />
               </IconButton>
-            )}
+            )} 
+            --------------------------------------------------------------
+            */}
 
             {/* {user.role?.includes("super-adm") && (
               <IconButton
