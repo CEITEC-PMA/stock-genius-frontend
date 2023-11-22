@@ -4,15 +4,17 @@ import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import IconButton from "@mui/material/IconButton";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import LinearProgress from "@mui/material/LinearProgress";
-import { Box, Container, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-// import { useUserContext } from "@/userContext";
+import { Box, Button, Container, Typography } from "@mui/material";
+import { MouseEvent, useEffect, useState } from "react";
 import { apiUrl } from "@/utils/api";
 import React from "react";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import { Funcionario } from "@/utils/types/funcionario.types";
 import { useUserContext } from "@/userContext";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { useRouter } from "next/navigation";
+import EditIcon from "@mui/icons-material/Edit";
 
 //interface para autoTable
 interface jsPDFWithAutoTable extends jsPDF {
@@ -24,6 +26,14 @@ export default function Funcionarios() {
   const { user } = useUserContext();
   let [funcionarios, setFuncionarios] = useState<Funcionario[]>([]);
   const [isLoading, setIsloading] = useState(true);
+  const router = useRouter();
+
+  const handleAdicionar = () => router.push("/dashboard/formfuncionario");
+
+  const handleEditar = (
+    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+    id: string
+  ) => router.push(`/dashboard/formfuncionario?id=${id}`);
 
   const columns: GridColDef[] = [
     {
@@ -41,6 +51,27 @@ export default function Funcionarios() {
       align: "center",
       headerAlign: "center",
       flex: 1,
+    },
+    {
+      field: "acoes",
+      headerName: "Ações",
+      width: 95,
+      sortable: false,
+      renderCell: (params: GridRenderCellParams) => {
+        return (
+          <div>
+            <IconButton
+              color="primary"
+              onClick={(
+                event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+              ) => handleEditar(event, params.row._id)}
+              title="Editar dados do funcionário"
+            >
+              <EditIcon />
+            </IconButton>
+          </div>
+        );
+      },
     },
   ];
 
@@ -105,7 +136,14 @@ export default function Funcionarios() {
         </Typography>
 
         {!isLoading && (
-          <Box display="flex" justifyContent="flex-end">
+          <Box display="flex" justifyContent="space-between">
+            <Button
+              variant="contained"
+              startIcon={<AddCircleIcon fontSize="large" />}
+              onClick={handleAdicionar}
+            >
+              Adicionar novo funcionário
+            </Button>
             <IconButton onClick={downloadPdf}>
               <PictureAsPdfIcon fontSize="large" sx={{ color: "#b30b00" }} />
             </IconButton>
