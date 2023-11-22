@@ -15,6 +15,7 @@ import VotacaoAlunos from "@/components/apuracao/VotacaoAlunos";
 import Face6Icon from "@mui/icons-material/Face6";
 import EscalatorWarningIcon from "@mui/icons-material/EscalatorWarning";
 import VotacaoResp from "@/components/apuracao/VotacaoResp";
+import { ResultadoVoto } from "@/utils/types/resultado.types";
 
 export default function Apuracao({ params }: { params: { id: string } }) {
   const theme = useTheme();
@@ -25,6 +26,9 @@ export default function Apuracao({ params }: { params: { id: string } }) {
   const { id } = params;
   const [zona, setZona] = useState<Zona | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [resultadoVoto, setResultadoVoto] = useState<ResultadoVoto | null>(
+    null
+  );
 
   interface Zona {
     inep: string;
@@ -83,6 +87,34 @@ export default function Apuracao({ params }: { params: { id: string } }) {
     };
     getDadosCandidatos();
   }, [id]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    const getResultadoVoto = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/api/v1/votacao`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          alert("Erro ao obter os resultados dos votos, tente novamente");
+          console.error("Erro ao obter resultados de votos");
+          return;
+        }
+
+        const resultadoVotoJson = await response.json();
+        setResultadoVoto(resultadoVotoJson);
+      } catch (error) {
+        console.error("Erro na solicitação, tente novamente", error);
+      }
+    };
+
+    getResultadoVoto();
+  }, [zona?._id]);
+  console.log(resultadoVoto);
 
   return (
     <Box margin="0" padding="0" height={`calc(100vh - 66px)`} overflow="hidden">
@@ -160,7 +192,14 @@ export default function Apuracao({ params }: { params: { id: string } }) {
             >
               Alunos
             </Typography>
-            <VotacaoAlunos candidatos={candidatos} />
+            {resultadoVoto ? (
+              <VotacaoAlunos
+                candidatos={candidatos}
+                resultadoVoto={resultadoVoto}
+              />
+            ) : (
+              <p>Carregando resultados...</p>
+            )}
           </>
         )}
         {tipoResultado === "Responsáveis" && (
@@ -174,7 +213,14 @@ export default function Apuracao({ params }: { params: { id: string } }) {
             >
               Responsáveis
             </Typography>
-            <VotacaoResp candidatos={candidatos} />
+            {resultadoVoto ? (
+              <VotacaoResp
+                candidatos={candidatos}
+                resultadoVoto={resultadoVoto}
+              />
+            ) : (
+              <p>Carregando...</p>
+            )}
           </>
         )}
         {tipoResultado === "Funcionários" && (
@@ -188,7 +234,14 @@ export default function Apuracao({ params }: { params: { id: string } }) {
             >
               Funcionários
             </Typography>
-            <VotacaoFuncionarios candidatos={candidatos} />
+            {resultadoVoto ? (
+              <VotacaoFuncionarios
+                candidatos={candidatos}
+                resultadoVoto={resultadoVoto}
+              />
+            ) : (
+              <p>Carregando...</p>
+            )}
           </>
         )}
       </Box>
