@@ -11,6 +11,8 @@ import useTimeCheck from "@/hooks/useTimeCheck";
 import GroupIcon from "@mui/icons-material/Group";
 import HowToVoteIcon from "@mui/icons-material/HowToVote";
 import PollIcon from "@mui/icons-material/Poll";
+import ReplyIcon from '@mui/icons-material/Reply';
+import DescriptionIcon from '@mui/icons-material/Description';
 
 //import { mainListItems } from "./ListItems";
 interface DrawerProps {
@@ -108,6 +110,12 @@ export default function DrawerComponent({
           label="Lista de Funcionários"
           icon={<PersonIcon />}
           to="/dashboard/funcionarios"
+        />
+
+        <ListItems
+          label="Atas"
+          icon={<DescriptionIcon />}
+          to="/dashboard/atas"
         />
 
         {user.role?.includes("super-adm") && (
