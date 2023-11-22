@@ -67,8 +67,6 @@ export default function DataTable() {
               <DeleteIcon />
             </IconButton> */}
 
-            {/* 
-            ---------------------------habilitar para recurso-----------------------
             {aprovado === "Indeferida" && (
               <IconButton
                 color="error"
@@ -79,6 +77,8 @@ export default function DataTable() {
               </IconButton>
             )}
 
+            {/* 
+            ---------------------------habilitar para resposta da comissao ao recurso-----------------------
             {aprovado === "Indeferida" && (
               <IconButton
                 color="warning"
