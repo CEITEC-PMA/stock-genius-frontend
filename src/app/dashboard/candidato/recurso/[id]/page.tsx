@@ -215,8 +215,7 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
               justifyContent: "center",
             }}
           >
-            {/* ---------------------- remove botoes ---------------------------
-             <Box
+            <Box
               marginTop="24px"
               display="flex"
               alignItems="center"
@@ -292,8 +291,7 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
                   Enviar recurso
                 </Button>
               </Box>
-            </Box> 
-            ------------------------------------------------------------------*/}
+            </Box>
           </div>
         </form>
       </Container>
