@@ -198,6 +198,9 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
               rows={8}
               fullWidth
               value={textoRecurso2}
+              InputProps={{
+                readOnly: true,
+              }}
               onChange={(e) => {
                 setTextoRecurso2(e.target.value);
                 if (e.target.value.length > 0) {
@@ -213,9 +216,10 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              marginLeft: "5px",
             }}
           >
-            <Box
+            {/* -------------- botoes <Box
               marginTop="24px"
               display="flex"
               alignItems="center"
@@ -292,6 +296,16 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
                 </Button>
               </Box>
             </Box>
+            ------------ */}
+            {candidato?.respostaComissao2 && (
+              <Typography variant="h6">
+                Resposta da Comissão Eleitoral Municipal ao recurso apresentado
+                pelo candidato:{" "}
+                <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
+                  {candidato?.respostaComissao2}
+                </span>
+              </Typography>
+            )}
           </div>
         </form>
       </Container>
