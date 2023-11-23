@@ -297,7 +297,8 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
               </Box>
             </Box>
             ------------ */}
-            {candidato?.respostaComissao2 && (
+
+            {/* {candidato?.respostaComissao2 && (
               <Typography variant="h6">
                 Resposta da Comissão Eleitoral Municipal ao recurso apresentado
                 pelo candidato:{" "}
@@ -305,7 +306,7 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
                   {candidato?.respostaComissao2}
                 </span>
               </Typography>
-            )}
+            )} */}
           </div>
         </form>
       </Container>
