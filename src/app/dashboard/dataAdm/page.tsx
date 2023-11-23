@@ -19,6 +19,7 @@ import { apiUrl } from "@/utils/api";
 import { useRouter } from "next/navigation";
 import { Candidato } from "@/utils/types/candidato.types";
 import CustomModal from "@/components/modal";
+import Unauthorized from "@/components/unauthorized";
 
 export default function DataTable() {
   const { user } = useUserContext();
@@ -50,7 +51,7 @@ export default function DataTable() {
     {
       field: "acoes",
       headerName: "Ações",
-      width: 150,
+      width: 190,
       sortable: false,
       renderCell: (params: GridRenderCellParams) => (
         <div>
@@ -100,9 +101,30 @@ export default function DataTable() {
             <IconButton
               color="warning"
               onClick={(event) => {
-                handleDetalharIndeferimento(event, params.row.justificativa);
+                handleDetalharIndeferimento(
+                  event,
+                  params.row.justificativa,
+                  params.row.justificativa2,
+                  "modal1"
+                );
               }}
               title="Detalhar indeferimento"
+            >
+              <DetailsIcon />
+            </IconButton>
+          )}
+          {params.row.aprovado === "Indeferida" && (
+            <IconButton
+              style={{ color: "#f74904" }}
+              onClick={(event) => {
+                handleDetalharIndeferimento(
+                  event,
+                  params.row.justificativa,
+                  params.row.justificativa2,
+                  "modal2"
+                );
+              }}
+              title="Detalhar indeferimento 2"
             >
               <DetailsIcon />
             </IconButton>
@@ -176,9 +198,19 @@ export default function DataTable() {
 
   const handleDetalharIndeferimento = (
     event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
-    justificativa: string
+    justificativa: string,
+    justificativa2: string,
+    modalType: string
   ) => {
-    setJustificativa(justificativa);
+    let justificativaParaModal = "";
+    if (modalType === "modal1") {
+      justificativaParaModal = justificativa;
+      openModal();
+    } else if (modalType === "modal2") {
+      justificativaParaModal = justificativa2;
+    }
+    console.log(justificativaParaModal);
+    setJustificativa(justificativaParaModal);
     openModal();
   };
 
@@ -287,38 +319,6 @@ export default function DataTable() {
       </Box>
     );
   } else {
-    return (
-      <Box
-        margin="0"
-        padding="0"
-        height={`calc(100vh - 66px)`}
-        overflow="hidden"
-      >
-        <Typography
-          variant={smDown ? "h6" : mdDown ? "h5" : "h4"}
-          textAlign="center"
-          marginTop={2}
-          color=" #0f4c81"
-        >
-          ELEIÇÕES MUNICIPAIS DE DIRETORES BIÊNIO 2024/25
-        </Typography>
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="flex-start"
-          height="100%"
-        >
-          <Typography
-            variant="h4"
-            textAlign="center"
-            marginTop={1.2}
-            color=" #000"
-          >
-            Você não possui autorização para acessar essa página
-          </Typography>
-        </Box>
-      </Box>
-    );
+    return <Unauthorized />;
   }
 }
