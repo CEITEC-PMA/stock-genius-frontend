@@ -34,6 +34,7 @@ export default function ChecklistCandidato({
   const [candidato, setCandidato] = useState<Candidato>();
   const [fotoCandidato, setFotoCandidato] = useState("");
   const [fileLink, setFileLink] = useState("");
+  const [fileLink2, setFileLink2] = useState("");
   const [hasDoc, setHasDoc] = useState(false);
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
@@ -54,6 +55,7 @@ export default function ChecklistCandidato({
   useEffect(() => {
     if (candidato) {
       setFileLink(candidato.docs.doc_recurso?.file);
+      setFileLink2(candidato.docs.doc_recurso2?.file);
     }
   }, [candidato, candidato?.docs]);
 
@@ -84,11 +86,15 @@ export default function ChecklistCandidato({
       setValue("justificativa", candidato.justificativa);
       setValue("justificativa2", candidato.justificativa2);
       setValue("textoRecurso", candidato.textoRecurso);
+      setValue("textoRecurso2", candidato.textoRecurso2);
       setValue("respostaComissao", candidato.respostaComissao);
+      setValue("respostaComissao2", candidato.respostaComissao2);
     } else {
       setValue("analise_candidatura", candidato?.aprovado);
       setValue("justificativa", candidato?.justificativa);
       setValue("textoRecurso", candidato?.textoRecurso);
+      setValue("textoRecurso2", candidato?.textoRecurso2);
+      setValue("respostaComissao", candidato?.respostaComissao);
       setValue("respostaComissao", candidato?.respostaComissao);
     }
   }, [candidato, setValue]);
@@ -106,6 +112,7 @@ export default function ChecklistCandidato({
         justificativa: data.justificativa,
         respostaComissao: data.respostaComissao,
         justificativa2: data.justificativa2,
+        respostaComissao2: data.respostaComissao2,
       };
 
       const response = await fetch(
@@ -226,6 +233,88 @@ export default function ChecklistCandidato({
                   />
                 )}
 
+                {aprovado !== "Deferida" &&
+                  user.role?.includes("super-adm") && (
+                    <Controller
+                      name="textoRecurso2"
+                      control={control}
+                      defaultValue=""
+                      // rules={{ required: "Justificativa é obrigatória" }}
+                      render={({ field }) => (
+                        <div style={{ marginTop: "16px" }}>
+                          <TextField
+                            {...field}
+                            label="Texto do recurso"
+                            variant="outlined"
+                            fullWidth
+                            multiline
+                            maxRows={4}
+                            InputProps={{
+                              readOnly: true,
+                            }}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              const capitalizedValue = value
+                                .toLowerCase()
+                                .split(". ")
+                                .map(
+                                  (sentence) =>
+                                    sentence.charAt(0).toUpperCase() +
+                                    sentence.slice(1)
+                                )
+                                .join(". ");
+
+                              field.onChange(capitalizedValue);
+                            }}
+                          />
+                        </div>
+                      )}
+                    />
+                  )}
+                <div
+                  style={{
+                    margin: "8px 0",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {hasDoc &&
+                    aprovado === "Indeferida" &&
+                    user.role?.includes("super-adm") && (
+                      <Tooltip title="Documento enviado">
+                        <Button
+                          href={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${fileLink2}`}
+                          target="_blank"
+                        >
+                          <FindInPageIcon color="success" />
+                        </Button>
+                      </Tooltip>
+                    )}
+                </div>
+
+                {aprovado === "Indeferida" &&
+                  user.role?.includes("super-adm") && (
+                    <Controller
+                      name="respostaComissao2"
+                      control={control}
+                      defaultValue=""
+                      render={({ field }) => (
+                        <div style={{ marginTop: "16px" }}>
+                          <TextField
+                            {...field}
+                            label="Resposta da Comissão Eleitoral Municipal sobre o recurso"
+                            variant="outlined"
+                            fullWidth
+                            multiline
+                            maxRows={6}
+                            onChange={(e) => field.onChange(e.target.value)}
+                          />
+                        </div>
+                      )}
+                    />
+                  )}
+
                 {aprovado === "Indeferida" &&
                   user.role?.includes("super-adm") && (
                     <Controller
@@ -244,7 +333,7 @@ export default function ChecklistCandidato({
                             maxRows={4}
                             InputProps={{
                               readOnly: true,
-                              style: { color: "#757575" },
+                              style: { color: "#b7b7b7" },
                             }}
                             onChange={(e) => {
                               const value = e.target.value;
@@ -284,7 +373,7 @@ export default function ChecklistCandidato({
                             maxRows={4}
                             InputProps={{
                               readOnly: true,
-                              style: { color: "#757575" },
+                              style: { color: "#b7b7b7" },
                             }}
                             onChange={(e) => {
                               const value = e.target.value;
@@ -343,7 +432,7 @@ export default function ChecklistCandidato({
                             maxRows={6}
                             InputProps={{
                               readOnly: true,
-                              style: { color: "#757575" },
+                              style: { color: "#b7b7b7" },
                             }}
                             onChange={(e) => field.onChange(e.target.value)}
                           />
