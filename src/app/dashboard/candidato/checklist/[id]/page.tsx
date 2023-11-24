@@ -6,7 +6,6 @@ import {
   Box,
   Button,
   Container,
-  Divider,
   Paper,
   TextField,
   Tooltip,
