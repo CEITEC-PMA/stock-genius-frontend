@@ -71,7 +71,7 @@ export default function ChecklistCandidato({
       );
       const responseJson = await response.json();
       setCandidato(responseJson.candidato);
-      setHasDoc(!!responseJson.candidato?.docs.doc_recurso?.file);
+      setHasDoc(!!responseJson.candidato?.docs.doc_recurso2?.file);
       return;
     };
     const token = localStorage.getItem("token");
