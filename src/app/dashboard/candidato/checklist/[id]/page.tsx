@@ -402,7 +402,7 @@ export default function ChecklistCandidato({
                     justifyContent: "center",
                   }}
                 >
-                  {hasDoc &&
+                  {!!candidato?.docs.doc_recurso &&
                     aprovado === "Indeferida" &&
                     user.role?.includes("super-adm") && (
                       <Tooltip title="Documento enviado">
