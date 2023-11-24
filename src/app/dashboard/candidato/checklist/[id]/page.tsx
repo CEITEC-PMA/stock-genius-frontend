@@ -23,6 +23,7 @@ import { analiseCandidaturaDTO } from "@/utils/dtos/analiseDTO";
 import { Candidato } from "@/utils/types/candidato.types";
 import FindInPageIcon from "@mui/icons-material/FindInPage";
 import Unauthorized from "@/components/unauthorized";
+import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 
 export default function ChecklistCandidato({
   params,
@@ -276,20 +277,38 @@ export default function ChecklistCandidato({
                     margin: "8px 0",
                     display: "flex",
                     alignItems: "center",
+                    flexDirection: "column",
                     justifyContent: "center",
                   }}
                 >
                   {hasDoc &&
                     aprovado === "Indeferida" &&
                     user.role?.includes("super-adm") && (
-                      <Tooltip title="Documento enviado">
-                        <Button
-                          href={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${fileLink2}`}
-                          target="_blank"
-                        >
-                          <FindInPageIcon color="success" />
-                        </Button>
-                      </Tooltip>
+                      <>
+                        <Tooltip title="Abrir página de recurso do candidato">
+                          <Button
+                            href={`/dashboard/candidato/recurso/${candidato?._id}`}
+                            target="_blank"
+                          >
+                            <PlaylistAddCheckIcon
+                              style={{ fontSize: "40px" }}
+                              color="error"
+                            />
+                          </Button>
+                        </Tooltip>
+
+                        <Tooltip title="Documento enviado">
+                          <Button
+                            href={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${fileLink2}`}
+                            target="_blank"
+                          >
+                            <FindInPageIcon
+                              style={{ fontSize: "40px" }}
+                              color="success"
+                            />
+                          </Button>
+                        </Tooltip>
+                      </>
                     )}
                 </div>
 

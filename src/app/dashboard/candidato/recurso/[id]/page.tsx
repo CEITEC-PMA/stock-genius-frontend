@@ -219,7 +219,7 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
               marginLeft: "5px",
             }}
           >
-            {/* -------------- botoes <Box
+            <Box
               marginTop="24px"
               display="flex"
               alignItems="center"
@@ -244,7 +244,7 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
                   </Tooltip>
                 )}
               </div>
-              {candidatoDigitou && (
+              {/* {candidatoDigitou && (
                 <div
                   style={{
                     display: "flex",
@@ -294,9 +294,8 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
                 >
                   Enviar recurso
                 </Button>
-              </Box>
+              </Box> */}
             </Box>
-            ------------ */}
 
             {/* {candidato?.respostaComissao2 && (
               <Typography variant="h6">
