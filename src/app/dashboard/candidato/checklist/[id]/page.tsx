@@ -90,13 +90,14 @@ export default function ChecklistCandidato({
       setValue("textoRecurso2", candidato.textoRecurso2);
       setValue("respostaComissao", candidato.respostaComissao);
       setValue("respostaComissao2", candidato.respostaComissao2);
+      setValue("respostaFinalRecurso", candidato.respostaFinalRecurso);
     } else {
       setValue("analise_candidatura", candidato?.aprovado);
       setValue("justificativa", candidato?.justificativa);
       setValue("textoRecurso", candidato?.textoRecurso);
       setValue("textoRecurso2", candidato?.textoRecurso2);
       setValue("respostaComissao", candidato?.respostaComissao);
-      setValue("respostaComissao", candidato?.respostaComissao);
+      setValue("respostaComissao2", candidato?.respostaComissao2);
     }
   }, [candidato, setValue]);
 
@@ -114,6 +115,7 @@ export default function ChecklistCandidato({
         respostaComissao: data.respostaComissao,
         justificativa2: data.justificativa2,
         respostaComissao2: data.respostaComissao2,
+        respostaFinalRecurso: data.respostaFinalRecurso,
       };
 
       const response = await fetch(
@@ -145,6 +147,7 @@ export default function ChecklistCandidato({
     cpfSemTraco = cpfSemTraco.replace(".", "");
     cpfSemTraco = cpfSemTraco.replace("-", "");
   }
+
   if (user.role?.includes("super-adm")) {
     return (
       <Box margin="24px">
@@ -327,6 +330,32 @@ export default function ChecklistCandidato({
                             fullWidth
                             multiline
                             maxRows={6}
+                            onChange={(e) => field.onChange(e.target.value)}
+                          />
+                        </div>
+                      )}
+                    />
+                  )}
+
+                {!!candidato?.respostaComissao2 &&
+                  user.role?.includes("super-adm") && (
+                    <Controller
+                      name="respostaFinalRecurso"
+                      control={control}
+                      defaultValue=""
+                      render={({ field }) => (
+                        <div style={{ marginTop: "16px" }}>
+                          <TextField
+                            {...field}
+                            label="Resposta Final ao Recurso"
+                            variant="outlined"
+                            fullWidth
+                            multiline
+                            maxRows={6}
+                            InputProps={{
+                              readOnly: true,
+                              style: { color: "#b7b7b7" },
+                            }}
                             onChange={(e) => field.onChange(e.target.value)}
                           />
                         </div>

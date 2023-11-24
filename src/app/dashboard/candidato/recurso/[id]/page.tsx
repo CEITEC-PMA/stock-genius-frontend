@@ -239,7 +239,10 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
                       href={`${apiUrl}/fotosCandidato/${cpfSemTraco}/${fileLink}`}
                       target="_blank"
                     >
-                      <FindInPageIcon color="success" />
+                      <FindInPageIcon
+                        style={{ fontSize: "40px" }}
+                        color="success"
+                      />
                     </Button>
                   </Tooltip>
                 )}
@@ -295,17 +298,17 @@ export default function RecursoPage({ params }: { params: { id: string } }) {
                   Enviar recurso
                 </Button>
               </Box> */}
-            </Box>
 
-            {/* {candidato?.respostaComissao2 && (
-              <Typography variant="h6">
-                Resposta da Comissão Eleitoral Municipal ao recurso apresentado
-                pelo candidato:{" "}
-                <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
-                  {candidato?.respostaComissao2}
-                </span>
-              </Typography>
-            )} */}
+              {candidato?.respostaComissao2 && (
+                <Typography variant="h6" marginTop={2}>
+                  Resposta da Comissão Eleitoral Municipal ao recurso
+                  apresentado pelo candidato:{" "}
+                  <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
+                    {candidato?.respostaComissao2}
+                  </span>
+                </Typography>
+              )}
+            </Box>
           </div>
         </form>
       </Container>

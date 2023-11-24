@@ -26,6 +26,7 @@ export interface Candidato {
   textoRecurso2: string;
   respostaComissao: string;
   respostaComissao2: string;
+  respostaFinalRecurso: string;
   numero_candidato: string;
   __v: number;
 }
