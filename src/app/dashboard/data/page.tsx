@@ -77,21 +77,17 @@ export default function DataTable() {
               </IconButton>
             )}
 
-            {/* 
-            ---------------------------habilitar para resposta da comissao ao recurso-----------------------
             {aprovado === "Indeferida" && (
               <IconButton
                 color="warning"
                 onClick={(event) =>
-                  handleRespostaComissao(event, params.row.respostaComissao)
+                  handleRespostaComissao(event, params.row.respostaComissao2)
                 }
                 title="Resposta da Comissão Eleitoral Municipal ao recurso"
               >
                 <ArticleIcon />
               </IconButton>
-            )} 
-            --------------------------------------------------------------
-            */}
+            )}
 
             {/* {user.role?.includes("super-adm") && (
               <IconButton
