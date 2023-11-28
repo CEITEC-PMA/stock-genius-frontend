@@ -23,7 +23,7 @@ import { resultadoVotoTypes } from '@/utils/types/result.eleicao.types';
 
 export default function Psa() {
 
-    const [resultadoVoto, setResultadoVoto] = useState<resultadoVotoTypes[]>([])
+    const [resultadoVoto, setResultadoVoto] = useState<resultadoVotoTypes>({} as resultadoVotoTypes)
     const [isLoading, setIsloading] = useState(true);
     const { user } = useUserContext();
 
@@ -57,36 +57,44 @@ export default function Psa() {
         if (user._id) {
             setIsloading(true);
             const getDadosVotos = async () => {
-                const response = await fetch(`${apiUrl}/api/v1/votacao`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                if (!response.ok) {
-                    throw new Error("Failed to fetch data");
+                try {
+
+                    const response = await fetch(`${apiUrl}/api/v1/votacao`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                    if (!response.ok) {
+                        alert("Erro ao obter os resultados dos votos, tente novamente");
+                        console.error("Erro ao obter resultados de votos");
+                        return;
+                    }
+
+                    const responseJson = await response.json();
+                    //console.log(responseJson)    
+                    setResultadoVoto(responseJson);
+
+                } catch (error) {
+                    console.log("Erro na solicitação", error)
                 }
 
-                const responseJson = await response.json();
-                console.log(responseJson)
 
-                // setResultadoVoto(responseJson);
-                return response;
             };
             setIsloading(false);
             getDadosVotos();
         }
     }, [user._id]);
 
-    console.log()
+    console.log(resultadoVoto.alunosVotaram)
+
+    // console.log(resultadoVoto?.quantidadeFuncionarios)
+
+    const qtdFuncionariosConstantes = resultadoVoto.quantidadeFuncionarios;
+    const qtdFuncionarosCompareceram = resultadoVoto.funcionariosVotaram;
+    const qtdFucionariosNaoCompareceram = qtdFuncionariosConstantes - qtdFuncionarosCompareceram
 
 
 
-
-
-
-    // let qtdConstantes = resultadoVoto.quantidadeFuncionarios;
-    // let qtdCompareceram = resultadoVoto.funcionariosVotaram;
-    // let qtdNaoCompareceram = qtdConstantes - qtdCompareceram
 
 
 
@@ -259,7 +267,7 @@ export default function Psa() {
                                         </Grid>
                                         <Grid item xs={1}>
                                             <Box padding={2} border={1} height='100%'>
-                                                {/* <Typography >{qtdConstantes}</Typography> */}
+                                                <Typography >{qtdFuncionariosConstantes}</Typography>
                                             </Box>
                                         </Grid>
                                         <Grid item xs={1} >
@@ -282,12 +290,12 @@ export default function Psa() {
                                         </Grid>
                                         <Grid item xs={1}>
                                             <Box padding={2} border={1} height='100%'>
-                                                {/* <Typography >{qtdCompareceram}</Typography> */}
+                                                <Typography >{qtdFuncionarosCompareceram}</Typography>
                                             </Box>
                                         </Grid>
                                         <Grid item xs={1} >
                                             <Box padding={2} border={1} height='100%' >
-                                                {/* <Typography >{Math.round((qtdCompareceram / qtdConstantes) * 100)}%</Typography> */}
+                                                <Typography >{Math.ceil((qtdFuncionarosCompareceram / qtdFuncionariosConstantes) * 100)}%</Typography>
                                             </Box>
                                         </Grid>
                                         <Grid item xs={6} >
@@ -305,12 +313,12 @@ export default function Psa() {
                                         </Grid>
                                         <Grid item xs={1}>
                                             <Box padding={2} border={1} height='100%'>
-                                                {/* <Typography >{qtdNaoCompareceram}</Typography> */}
+                                                <Typography >{qtdFucionariosNaoCompareceram}</Typography>
                                             </Box>
                                         </Grid>
                                         <Grid item xs={1} >
                                             <Box padding={2} border={1} height='100%' >
-                                                {/* <Typography >{Math.round((qtdNaoCompareceram / qtdConstantes) * 100)}%</Typography> */}
+                                                <Typography >{Math.floor((qtdFucionariosNaoCompareceram / qtdFuncionariosConstantes) * 100)}%</Typography>
                                             </Box>
                                         </Grid>
                                         <Grid item xs={6} >

@@ -20,7 +20,9 @@ import Link from 'next/link';
 
 export default function PA() {
 
-    const [resultado, setResultado] = useState<resultadoVotoTypes[]>([])
+
+    const [resultadoVoto, setResultadoVoto] = useState<resultadoVotoTypes>({} as resultadoVotoTypes)
+    const [isLoading, setIsloading] = useState(true);
     const { user } = useUserContext();
 
     const options: Options = {
@@ -54,6 +56,43 @@ export default function PA() {
         },
     };
 
+    useEffect(() => {
+        //fetch
+        const token = localStorage.getItem("token");
+        if (user._id) {
+            setIsloading(true);
+            const getDadosVotos = async () => {
+                try {
+
+                    const response = await fetch(`${apiUrl}/api/v1/votacao`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                    if (!response.ok) {
+                        alert("Erro ao obter os resultados dos votos, tente novamente");
+                        console.error("Erro ao obter resultados de votos");
+                        return;
+                    }
+
+                    const responseJson = await response.json();
+                    //console.log(responseJson)    
+                    setResultadoVoto(responseJson);
+
+                } catch (error) {
+                    console.log("Erro na solicitação", error)
+                }
+
+
+            };
+            setIsloading(false);
+            getDadosVotos();
+        }
+    }, [user._id]);
+    console.log(resultadoVoto)
+
+
+
     // Alunos Votantes
     const qtdAlunosConstantes = resultadoVoto.quantidadeAlunosVotantes;
     const qtdAlunosCompareceram = resultadoVoto.alunosVotaram;
@@ -63,6 +102,8 @@ export default function PA() {
     const qtdRespAlunosVotantesConstantes = resultadoVoto.quantidadeAlunosVotantes;
     const qtdRespAlunosVotantesCompareceram = resultadoVoto.respAlunosVotantesVotaram;
     const qtdRespAlunosVotantesNaoCompareceram = qtdRespAlunosVotantesConstantes - qtdRespAlunosVotantesCompareceram
+
+    console.log(qtdRespAlunosVotantesNaoCompareceram)
 
     // Responsáveis por Alunos Não Votantes
     const qtdRespAlunosNaoVotantesConstantes = resultadoVoto.quantidadeAlunosNaoVotantes;
@@ -261,7 +302,7 @@ export default function PA() {
                                     </Grid>
                                     <Grid item xs={1} >
                                         <Box padding={2} border={1} height='100%' >
-                                            <Typography >{Math.round((qtdAlunosCompareceram / qtdAlunosConstantes) * 100)}%</Typography>
+                                            <Typography >{Math.ceil((qtdAlunosCompareceram / qtdAlunosConstantes) * 100)}%</Typography>
                                         </Box>
                                     </Grid>
                                     <Grid item xs={6} >
@@ -284,7 +325,7 @@ export default function PA() {
                                     </Grid>
                                     <Grid item xs={1} >
                                         <Box padding={2} border={1} height='100%' >
-                                            <Typography >{Math.round((qtdAlunosNaoCompareceram / qtdAlunosConstantes) * 100)}%</Typography>
+                                            <Typography >{Math.floor((qtdAlunosNaoCompareceram / qtdAlunosConstantes) * 100)}%</Typography>
                                         </Box>
                                     </Grid>
                                     <Grid item xs={6} >
@@ -358,7 +399,7 @@ export default function PA() {
                                     </Grid>
                                     <Grid item xs={1} >
                                         <Box padding={2} border={1} height='100%' >
-                                            <Typography >{Math.round((qtdRespAlunosVotantesCompareceram / qtdRespAlunosVotantesConstantes) * 100)}%</Typography>
+                                            <Typography >{Math.ceil((qtdRespAlunosVotantesCompareceram / qtdRespAlunosVotantesConstantes) * 100)}%</Typography>
                                         </Box>
                                     </Grid>
                                     <Grid item xs={6} >
@@ -376,12 +417,12 @@ export default function PA() {
                                     </Grid>
                                     <Grid item xs={1}>
                                         <Box padding={2} border={1} height='100%'>
-                                            <Typography >{qtdRespAlunosNaoVotantesConstantes}</Typography>
+                                            <Typography >{qtdRespAlunosVotantesNaoCompareceram}</Typography>
                                         </Box>
                                     </Grid>
                                     <Grid item xs={1} >
                                         <Box padding={2} border={1} height='100%' >
-                                            <Typography >{Math.round((qtdRespAlunosVotantesNaoCompareceram / qtdRespAlunosVotantesConstantes) * 100)}%</Typography>
+                                            <Typography >{Math.floor((qtdRespAlunosVotantesNaoCompareceram / qtdRespAlunosVotantesConstantes) * 100)}%</Typography>
                                         </Box>
                                     </Grid>
                                     <Grid item xs={6} >
@@ -454,7 +495,7 @@ export default function PA() {
                                     </Grid>
                                     <Grid item xs={1} >
                                         <Box padding={2} border={1} height='100%' >
-                                            <Typography >{Math.round((qtdRespAlunosNaoVotantesCompareceram / qtdRespAlunosNaoVotantesConstantes) * 100)}%</Typography>
+                                            <Typography >{Math.ceil((qtdRespAlunosNaoVotantesCompareceram / qtdRespAlunosNaoVotantesConstantes) * 100)}%</Typography>
                                         </Box>
                                     </Grid>
                                     <Grid item xs={6} >
@@ -477,7 +518,7 @@ export default function PA() {
                                     </Grid>
                                     <Grid item xs={1} >
                                         <Box padding={2} border={1} height='100%' >
-                                            <Typography >{Math.round((qtdRespAlunosNaoVotantesNaoCompareceram / qtdRespAlunosNaoVotantesConstantes) * 100)}%</Typography>
+                                            <Typography >{Math.floor((qtdRespAlunosNaoVotantesNaoCompareceram / qtdRespAlunosNaoVotantesConstantes) * 100)}%</Typography>
                                         </Box>
                                     </Grid>
                                     <Grid item xs={6} >
@@ -494,8 +535,6 @@ export default function PA() {
                 </div>
 
             </Container>
-
-            <Button onClick={() => generatePDF(getTargetElement, options)}>Download PDF</Button>
         </>
 
     )

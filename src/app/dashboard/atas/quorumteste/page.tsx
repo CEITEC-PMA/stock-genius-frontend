@@ -19,10 +19,10 @@ import Link from 'next/link';
 import { Candidato } from '@/utils/types/candidato.types';
 
 
-export default function Quorum() {
+export default function QuorumTeste() {
 
     const [resultadoVoto, setResultadoVoto] = useState<resultadoVotoTypes>({
-        quantidadeAlunosVotantes: 50,
+        quantidadeAlunosVotantes: 0,
         quantidadeAlunosNaoVotantes: 0,
         quantidadeFuncionarios: 0,
         alunosVotaram: 0,
@@ -490,6 +490,148 @@ export default function Quorum() {
                                     </Box>
                                 </Grid>
                             </Grid>
+
+                            <Grid container direction="column" padding={2}  >
+                                <Grid container item direction="row" textAlign='center'  >
+                                    <Grid item xs={4} >
+                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center' >
+                                            <Typography >Diretor</Typography>
+                                        </Box>
+                                    </Grid>
+                                    <Grid item xs={2}>
+                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
+                                            <Typography >Voto de Alunos</Typography>
+                                        </Box>
+                                    </Grid>
+                                    <Grid container direction="column" item xs={4}  >
+                                        <Grid item>
+                                            <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center' >
+                                                <Typography >Voto Pais e Responsáveis</Typography>
+                                            </Box>
+                                        </Grid>
+                                        <Grid container item direction="row" >
+                                            <Grid item xs={6} >
+                                                <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center' >
+                                                    <Typography >Resp por Alunos Votantes </Typography>
+                                                </Box>
+                                            </Grid>
+                                            <Grid item xs={6} >
+                                                <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center' >
+                                                    <Typography >Resp por Alunos Não Votantes</Typography>
+                                                </Box>
+                                            </Grid>
+
+                                        </Grid>
+
+                                    </Grid>
+                                    <Grid item xs={2} >
+                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
+                                            <Typography >Total de Votos (Alunos e Responsáveis) </Typography>
+                                        </Box>
+                                    </Grid>
+                                </Grid>
+
+                                <Grid container item direction="row" textAlign='center' >
+                                    <Grid item xs={4}>
+                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
+                                            <Typography >JAQUELINE PONTIERI DA COSTA SANTOS </Typography>
+                                        </Box>
+                                    </Grid>
+
+                                    <Grid item xs={2}>
+                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
+                                            <Typography >41 </Typography>
+                                        </Box>
+                                    </Grid>
+
+                                    <Grid item xs={2}>
+                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
+                                            <Typography >33 </Typography>
+                                        </Box>
+                                    </Grid>
+                                    <Grid item xs={2}>
+                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
+                                            <Typography >104 </Typography>
+                                        </Box>
+                                    </Grid>
+
+                                    <Grid item xs={2}>
+                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
+                                            <Typography >178 </Typography>
+                                        </Box>
+                                    </Grid>
+                                </Grid>
+
+                                <Grid container item direction="row" textAlign='center' >
+                                    <Grid item xs={4}>
+                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
+                                            <Typography >Nulo </Typography>
+                                        </Box>
+                                    </Grid>
+
+                                    <Grid item xs={2}>
+                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
+                                            <Typography >1 </Typography>
+                                        </Box>
+                                    </Grid>
+
+                                    <Grid item xs={2}>
+                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
+                                            <Typography >0 </Typography>
+                                        </Box>
+                                    </Grid>
+                                    <Grid item xs={2}>
+                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
+                                            <Typography >4 </Typography>
+                                        </Box>
+                                    </Grid>
+
+                                    <Grid item xs={2}>
+                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
+                                            <Typography >5 </Typography>
+                                        </Box>
+                                    </Grid>
+                                </Grid>
+
+                                <Grid container item direction="row" textAlign='center' >
+                                    <Grid item xs={4}>
+                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
+                                            <Typography >Branco </Typography>
+                                        </Box>
+                                    </Grid>
+
+                                    <Grid item xs={2}>
+                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
+                                            <Typography >0 </Typography>
+                                        </Box>
+                                    </Grid>
+
+                                    <Grid item xs={2}>
+                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
+                                            <Typography >0 </Typography>
+                                        </Box>
+                                    </Grid>
+                                    <Grid item xs={2}>
+                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
+                                            <Typography >0 </Typography>
+                                        </Box>
+                                    </Grid>
+
+                                    <Grid item xs={2}>
+                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
+                                            <Typography >0 </Typography>
+                                        </Box>
+                                    </Grid>
+                                </Grid>
+
+                                <Grid container item direction="row" textAlign='center' >
+                                    <Box padding={2} border={1} height='100%' width='100%' display='flex' alignItems='center' justifyContent='center'>
+                                        <Typography >TOTAL VOTOS VÁLIDOS SEGMENTO PAIS / RESPONSÁVEIS E ALUNOS: 180 </Typography>
+                                    </Box>
+                                </Grid>
+                            </Grid>
+
+
 
                             {/* _______________________________________________________________________________________     */}
 
