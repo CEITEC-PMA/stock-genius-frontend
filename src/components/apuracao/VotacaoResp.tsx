@@ -1,6 +1,6 @@
 "use client";
-import { resultadoVoto } from "@/utils/resultado.eleicao.mock";
 import { Candidato } from "@/utils/types/candidato.types";
+import { ResultadoVoto } from "@/utils/types/resultado.types";
 import React from "react";
 import {
   Cell,
@@ -12,38 +12,12 @@ import {
   Tooltip,
 } from "recharts";
 
-export default function VotacaoResp(props: { candidatos: Candidato[] }) {
+export default function VotacaoResp(props: {
+  candidatos: Candidato[];
+  resultadoVoto: ResultadoVoto;
+}) {
   const { candidatos } = props;
-
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (user._id) {
-  //     const getDados = async () => {
-  //       const response = await fetch(`${apiUrl}/api/v1/funcionario`, {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-  //       if (!response.ok) {
-  //         throw new Error("Failed to fetch data");
-  //       }
-  //       const responseJson = await response.json();
-  //       setFuncionarios(responseJson.funcionarios);
-  //       return response;
-  //     };
-  //     getDados();
-  //   }
-  // }, [setFuncionarios, user._id]);
-  // console.log(funcionarios);
-  // const funcionariosTotais = funcionarios.length;
-  // const qtdeFuncJaVotaram = funcionarios.filter(
-  //   (funcionario) => !!funcionario.votou
-  // ).length;
-
-  // const data01 = [
-  //   { name: "Funcionários totais", value: funcionariosTotais },
-  //   { name: "Funcionários que já votaram", value: qtdeFuncJaVotaram },
-  // ];
+  const { resultadoVoto } = props;
 
   const data01 = [
     {

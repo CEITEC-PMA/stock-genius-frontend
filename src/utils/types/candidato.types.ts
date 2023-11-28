@@ -21,8 +21,12 @@ export interface Candidato {
   createdAt: Date;
   updatedAt: Date;
   justificativa: string;
+  justificativa2: string;
   textoRecurso: string;
+  textoRecurso2: string;
   respostaComissao: string;
+  respostaComissao2: string;
+  respostaFinalRecurso: string;
   numero_candidato: string;
   __v: number;
 }

@@ -118,7 +118,7 @@ export default function ConfirmaCandidato({
       justifyContent="space-between"
     >
       <Typography
-        variant={smDown ? "h6" : mdDown ? "h5" : "h4"}
+        variant={mdDown ? "h6" : "h5"}
         textAlign="center"
         marginTop={2}
         color=" #0f4c81"
@@ -152,8 +152,9 @@ export default function ConfirmaCandidato({
         gap={2}
         justifyItems="center"
         justifyContent="center"
+        marginBottom={7}
       >
-        <Grid item xs={3} marginBottom={5}>
+        <Grid item xs={3} marginBottom={7}>
           <Button
             style={textStyle}
             variant="contained"

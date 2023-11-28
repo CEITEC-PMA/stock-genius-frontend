@@ -13,6 +13,8 @@ import HowToVoteIcon from "@mui/icons-material/HowToVote";
 import PollIcon from "@mui/icons-material/Poll";
 import ReplyIcon from '@mui/icons-material/Reply';
 import DescriptionIcon from '@mui/icons-material/Description';
+import BadgeIcon from "@mui/icons-material/Badge";
+
 
 //import { mainListItems } from "./ListItems";
 interface DrawerProps {
@@ -87,14 +89,6 @@ export default function DrawerComponent({
           to="/dashboard/liberavoto"
         />
 
-        {user.role?.includes("super-adm") && (
-          <ListItems
-            label="Apuração dos votos"
-            icon={<PollIcon />}
-            to="/dashboard/buscaApuracao"
-          />
-        )}
-
         <ListItems
           label="Lista de Candidatos"
           icon={<AccountBox />}
@@ -108,7 +102,7 @@ export default function DrawerComponent({
         />
         <ListItems
           label="Lista de Funcionários"
-          icon={<PersonIcon />}
+          icon={<BadgeIcon />}
           to="/dashboard/funcionarios"
         />
 
@@ -117,6 +111,14 @@ export default function DrawerComponent({
           icon={<DescriptionIcon />}
           to="/dashboard/atas"
         />
+
+        {user.role?.includes("super-adm") && (
+          <ListItems
+            label="Apuração dos votos"
+            icon={<PollIcon />}
+            to="/dashboard/buscaApuracao"
+          />
+        )}
 
         {user.role?.includes("super-adm") && (
           <ListItems

@@ -81,7 +81,7 @@ export default function DataTable() {
               <IconButton
                 color="warning"
                 onClick={(event) =>
-                  handleRespostaComissao(event, params.row.respostaComissao)
+                  handleRespostaComissao(event, params.row.respostaComissao2)
                 }
                 title="Resposta da Comissão Eleitoral Municipal ao recurso"
               >
