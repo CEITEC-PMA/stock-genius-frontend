@@ -23,6 +23,8 @@ import { resultadoVotoTypes } from '@/utils/types/result.eleicao.types';
 
 export default function PsaCopy() {
 
+
+
     const [resultadoVoto, setResultadoVoto] = useState<resultadoVotoTypes>({} as resultadoVotoTypes)
     const [isLoading, setIsloading] = useState(true);
     const { user } = useUserContext();
@@ -85,7 +87,7 @@ export default function PsaCopy() {
         }
     }, [user._id]);
 
-    console.log(resultadoVoto.alunosVotaram)
+    console.log(resultadoVoto)
 
     // console.log(resultadoVoto?.quantidadeFuncionarios)
 
@@ -151,6 +153,29 @@ export default function PsaCopy() {
                                 <Typography>
                                     Integram a mesa coletora de votos os seguintes membros
                                 </Typography>
+
+                                {resultadoVoto && (<table border={1} width="100%" suppressHydrationWarning >
+                                    <tr>
+                                        <th>Cargos</th>
+                                        <th>Nome</th>
+                                        <th>Assinatura</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Presidente</th>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <th>1° Mesário</th>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <th>2° Mesário</th>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </table>)}
                             </Box>
 
                             <Box mt={1} textAlign='center'>
