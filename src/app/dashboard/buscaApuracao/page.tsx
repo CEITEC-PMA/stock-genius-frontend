@@ -32,8 +32,6 @@ export default function BuscaApuracao() {
   const [selectedOption, setSelectedOption] = useState<Zona | null>(null);
   const router = useRouter();
 
-  console.log(user);
-
   useEffect(() => {
     setIsLoading(true);
 
@@ -74,7 +72,6 @@ export default function BuscaApuracao() {
 
   const handleAcompanharClick = (id: string) => {
     router.push(`/dashboard/apuracao/${id}`);
-    console.log("Acompanhar votação na Unidade escolhida:", selectedOption);
   };
 
   if (user.role && user.role.includes("super-adm")) {
