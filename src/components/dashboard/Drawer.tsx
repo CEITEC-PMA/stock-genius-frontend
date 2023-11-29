@@ -57,7 +57,6 @@ export default function DrawerComponent({
   }));
 
   const isBeforeDeadline = useTimeCheck();
-  console.log(pathname);
 
   return (
     <Drawer variant="permanent" open={open}>
