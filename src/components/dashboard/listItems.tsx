@@ -10,12 +10,24 @@ interface IListItemsProps {
   label: string;
   to: string;
   icon: any;
+  isActive: boolean;
 }
 
-export default function ListItems({ label, to, icon }: IListItemsProps) {
+export default function ListItems({
+  label,
+  to,
+  icon,
+  isActive,
+}: IListItemsProps) {
   return (
     <Link href={to} passHref style={{ textDecoration: "none", color: "black" }}>
-      <ListItemButton color="black" style={{ textDecoration: "none" }}>
+      <ListItemButton
+        color="black"
+        style={{
+          textDecoration: "none",
+          backgroundColor: isActive ? "#ccc" : "",
+        }}
+      >
         <ListItemIcon>
           <Icon>{icon}</Icon>
         </ListItemIcon>
