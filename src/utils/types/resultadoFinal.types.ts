@@ -3,6 +3,7 @@ export type ResultadoFinalEleicao = {
   confirmaPercentual: ConfirmaPercentual[];
   candidatoApto: boolean;
   candidatoEleito: string;
+  percentualMaior: number;
   motivosIndeferimento: MotivosIndeferimento[];
 };
 

@@ -33,15 +33,15 @@ const passouQuorum = (qtdeVotos: NumerosVotacao) => {
 
   if (!quorumFunc.result) {
     resultGeral = false;
-    quorunsNaoAtingidos.push("Quórum de funcionários não atingido.");
+    quorunsNaoAtingidos.push("Quórum de funcionários não atingido");
   }
   if (!quorumAlunos.result) {
     resultGeral = false;
-    quorunsNaoAtingidos.push("Quórum de alunos não atingido.");
+    quorunsNaoAtingidos.push("Quórum de alunos não atingido");
   }
   if (!quorumPais.result) {
     resultGeral = false;
-    quorunsNaoAtingidos.push("Quórum de pais/responsáveis não atingido.");
+    quorunsNaoAtingidos.push("Quórum de pais/responsáveis não atingido");
   }
 
   return {
@@ -124,7 +124,7 @@ export const resultadoFinal = (qtdeVotos: NumerosVotacao) => {
     candidatoApto = false;
     motivosIndeferimento.push({
       tipo: "Percentual",
-      motivos: ["Percentual não atingido."],
+      motivos: ["Percentual mínimo não atingido"],
     });
   }
 
@@ -135,10 +135,9 @@ export const resultadoFinal = (qtdeVotos: NumerosVotacao) => {
       motivos: confirmaQuorum.quorunsNaoAtingidos,
     });
   }
+  let percentualMaior = 0;
 
   if (confirmaQuorum.resultGeral && somaPercentualCandidatos > 50) {
-    let percentualMaior = 0;
-
     confirmaPercentual.forEach((percentual) => {
       if (percentual.percentualTotal > percentualMaior) {
         percentualMaior = percentual.percentualTotal;
@@ -151,6 +150,7 @@ export const resultadoFinal = (qtdeVotos: NumerosVotacao) => {
     confirmaPercentual,
     candidatoApto,
     candidatoEleito,
+    percentualMaior,
     motivosIndeferimento,
   };
 };
