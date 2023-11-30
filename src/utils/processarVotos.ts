@@ -1,42 +1,6 @@
-import { ResultadoVoto } from "./types/resultado.types";
+import { NumerosVotacao } from "./types/numerosVotacao.type";
 
-const qtdeVotos = {
-  quantidadeAlunosVotantes: 100,
-  quantidadeAlunosNaoVotantes: 100,
-  quantidadeFuncionarios: 100,
-  alunosVotaram: 100,
-  funcionariosVotaram: 49,
-  respAlunosVotantesVotaram: 100,
-  respAlunosNaoVotantesVotaram: 100,
-  votos: {
-    votosRespAlunosVotantes: {
-      candidato_um: 35,
-      candidato_dois: 50,
-      branco: 10,
-      nulo: 5,
-    },
-    votosRespAlunosNaoVotantes: {
-      candidato_um: 25,
-      candidato_dois: 50,
-      branco: 15,
-      nulo: 10,
-    },
-    votosAlunos: {
-      candidato_um: 40,
-      candidato_dois: 50,
-      branco: 6,
-      nulo: 4,
-    },
-    votosFuncionarios: {
-      candidato_um: 40,
-      candidato_dois: 50,
-      branco: 7,
-      nulo: 3,
-    },
-  },
-};
-
-const passouQuorum = (qtdeVotos: ResultadoVoto) => {
+const passouQuorum = (qtdeVotos: NumerosVotacao) => {
   const {
     quantidadeFuncionarios,
     funcionariosVotaram,
@@ -89,7 +53,7 @@ const passouQuorum = (qtdeVotos: ResultadoVoto) => {
   };
 };
 
-const percentualVotos = (qtdeVotos: ResultadoVoto) => {
+const percentualVotos = (qtdeVotos: NumerosVotacao) => {
   const { votos } = qtdeVotos;
   const {
     votosRespAlunosVotantes,
@@ -101,11 +65,11 @@ const percentualVotos = (qtdeVotos: ResultadoVoto) => {
   const arrayDeCandidatos = Object.keys(votosAlunos);
 
   const qtdeVotosCandidato = arrayDeCandidatos.map((candidato) => {
-    const qtdeVotosRespAlunosVotantes = votosRespAlunosVotantes[candidato];
+    const qtdeVotosRespAlunosVotantes = votosRespAlunosVotantes[candidato] || 0;
     const qtdeVotosRespAlunosNaoVotantes =
-      votosRespAlunosNaoVotantes[candidato];
-    const qtdeVotosAlunos = votosAlunos[candidato];
-    const qtdeVotosFuncionarios = votosFuncionarios[candidato];
+      votosRespAlunosNaoVotantes[candidato] || 0;
+    const qtdeVotosAlunos = votosAlunos[candidato] || 0;
+    const qtdeVotosFuncionarios = votosFuncionarios[candidato] || 0;
 
     const somaPaisAlunos =
       qtdeVotosRespAlunosNaoVotantes +
@@ -124,6 +88,9 @@ const percentualVotos = (qtdeVotos: ResultadoVoto) => {
     const percentualTotal = percentualRespAlunos + percentualFunc;
 
     return {
+      qtdeVotosAlunos,
+      qtdeVotosRespAlunosVotantes,
+      qtdeVotosRespAlunosNaoVotantes,
       candidato,
       somaPaisAlunos,
       qtdeVotosFuncionarios,
@@ -133,7 +100,7 @@ const percentualVotos = (qtdeVotos: ResultadoVoto) => {
   return qtdeVotosCandidato;
 };
 
-const resultadoFinal = (qtdeVotos: ResultadoVoto) => {
+export const resultadoFinal = (qtdeVotos: NumerosVotacao) => {
   const confirmaQuorum = passouQuorum(qtdeVotos);
   const confirmaPercentual = percentualVotos(qtdeVotos);
 
@@ -148,11 +115,10 @@ const resultadoFinal = (qtdeVotos: ResultadoVoto) => {
 
   const initialValue = 0;
   const somaPercentualCandidatos = candidatosDisputando.reduce(
-    (accumulator, currentValue) => accumulator + currentValue.percentualTotal,
+    (accumulator, currentValue) =>
+      accumulator + (currentValue.percentualTotal || 0),
     initialValue
   );
-
-  let totalSoma = false;
 
   if (somaPercentualCandidatos <= 50) {
     candidatoApto = false;
@@ -180,7 +146,11 @@ const resultadoFinal = (qtdeVotos: ResultadoVoto) => {
       }
     });
   }
-  return { candidatoApto, candidatoEleito, motivosIndeferimento };
+  return {
+    confirmaQuorum,
+    confirmaPercentual,
+    candidatoApto,
+    candidatoEleito,
+    motivosIndeferimento,
+  };
 };
-
-console.log(JSON.stringify(resultadoFinal(qtdeVotos)));

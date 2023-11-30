@@ -98,6 +98,7 @@ export default function ChecklistCandidato({
       setValue("textoRecurso2", candidato?.textoRecurso2);
       setValue("respostaComissao", candidato?.respostaComissao);
       setValue("respostaComissao2", candidato?.respostaComissao2);
+      setValue("respostaFinalRecurso", candidato?.respostaFinalRecurso);
     }
   }, [candidato, setValue]);
 
@@ -352,10 +353,6 @@ export default function ChecklistCandidato({
                             fullWidth
                             multiline
                             maxRows={6}
-                            InputProps={{
-                              readOnly: true,
-                              style: { color: "#b7b7b7" },
-                            }}
                             onChange={(e) => field.onChange(e.target.value)}
                           />
                         </div>

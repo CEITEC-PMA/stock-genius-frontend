@@ -1,6 +1,7 @@
 "use client";
 import { Candidato } from "@/utils/types/candidato.types";
-import { ResultadoVoto } from "@/utils/types/resultado.types";
+import { NumerosVotacao } from "@/utils/types/numerosVotacao.type";
+import { ResultadoFinalEleicao } from "@/utils/types/resultadoFinal.types";
 import React from "react";
 import {
   Cell,
@@ -14,61 +15,38 @@ import {
 
 export default function VotacaoAlunos(props: {
   candidatos: Candidato[];
-  resultadoVoto: ResultadoVoto;
+  numerosVotacao: NumerosVotacao;
+  resultadoEleicao: ResultadoFinalEleicao;
 }) {
   const { candidatos } = props;
-  const { resultadoVoto } = props;
+  const { numerosVotacao } = props;
+  const { resultadoEleicao } = props;
+
+  console.log(numerosVotacao);
+  console.log(resultadoEleicao);
 
   const data01 = [
     {
       name: "Alunos que não votaram",
       value:
-        resultadoVoto.quantidadeAlunosVotantes - resultadoVoto.alunosVotaram,
+        numerosVotacao.quantidadeAlunosVotantes - numerosVotacao.alunosVotaram,
     },
     {
       name: "Alunos que já votaram",
-      value: resultadoVoto.alunosVotaram,
+      value: numerosVotacao.alunosVotaram,
     },
   ];
 
-  const data02 = [
-    {
-      name: `${candidatos[0]?.nome}`,
-      value: parseFloat(
-        (
-          (resultadoVoto.votos.votosAlunos.candidato_um * 100) /
-          resultadoVoto.alunosVotaram
-        ).toFixed(2)
-      ),
-    },
-    {
-      name: `${candidatos[1]?.nome}`,
-      value: parseFloat(
-        (
-          (resultadoVoto.votos.votosAlunos.candidato_dois * 100) /
-          resultadoVoto.alunosVotaram
-        ).toFixed(2)
-      ),
-    },
-    {
-      name: `${candidatos[2]?.nome}`,
-      value: parseFloat(
-        (
-          (resultadoVoto.votos.votosAlunos.branco * 100) /
-          resultadoVoto.alunosVotaram
-        ).toFixed(2)
-      ),
-    },
-    {
-      name: `${candidatos[3]?.nome}`,
-      value: parseFloat(
-        (
-          (resultadoVoto.votos.votosAlunos.nulo * 100) /
-          resultadoVoto.alunosVotaram
-        ).toFixed(2)
-      ),
-    },
-  ];
+  const data02 = candidatos.map((candidato, i) => {
+    const votosCandidato =
+      resultadoEleicao?.confirmaPercentual[i].qtdeVotosAlunos;
+    const nomeCandidato = resultadoEleicao?.confirmaPercentual[i].candidato;
+
+    return {
+      name: nomeCandidato,
+      value: votosCandidato,
+    };
+  });
 
   const colors = ["#F4DEB2", "#227487", "#4EA3B7", "#104A57", "#00A9B5"];
 
