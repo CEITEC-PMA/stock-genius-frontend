@@ -1,4 +1,4 @@
-export interface ResultadoVoto {
+export interface NumerosVotacao {
   quantidadeAlunosVotantes: number;
   quantidadeAlunosNaoVotantes: number;
   quantidadeFuncionarios: number;
@@ -18,7 +18,8 @@ export interface Votos {
 
 export interface VotosAlunosClass {
   candidato_um: number;
-  candidato_dois: number;
+  candidato_dois?: number;
   branco: number;
   nulo: number;
+  [key: string]: number | undefined;
 }
