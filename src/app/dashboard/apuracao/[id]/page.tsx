@@ -35,6 +35,7 @@ export default function Apuracao({ params }: { params: { id: string } }) {
   >(undefined);
   const [resultadoEleicao, setResultadoEleicao] =
     useState<ResultadoFinalEleicao>({
+      percentualMaior: 0,
       confirmaQuorum: {
         quorumFunc: {
           percentual: 0,
