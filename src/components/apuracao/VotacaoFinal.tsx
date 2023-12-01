@@ -26,7 +26,7 @@ export default function VotacaoFinal(props: {
   const { candidatos } = props;
   const { numerosVotacao } = props;
   const { resultadoEleicao } = props;
-  const colors = ["#F4DEB2", "#227487", "#4EA3B7", "#104A57", "#00A9B5"];
+  const colors = ["#227487", "#4EA3B7", "#104A57", "#F4DEB2", "#00A9B5"];
 
   const data01 = candidatos.map((candidato, i) => {
     const votosCandidato =

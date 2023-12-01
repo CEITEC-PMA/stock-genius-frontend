@@ -49,12 +49,12 @@ export default function VotacaoResp(props: {
     {
       name: "Pais de alunos-não-votantes que não votaram",
       value:
-        numerosVotacao.quantidadeAlunosVotantes -
-        numerosVotacao.respAlunosVotantesVotaram,
+        numerosVotacao.quantidadeAlunosNaoVotantes -
+        numerosVotacao.respAlunosNaoVotantesVotaram,
     },
     {
       name: "Pais de alunos-não-votantes que já votaram",
-      value: numerosVotacao.respAlunosVotantesVotaram,
+      value: numerosVotacao.respAlunosNaoVotantesVotaram,
     },
   ];
 
@@ -69,8 +69,8 @@ export default function VotacaoResp(props: {
     };
   });
 
-  const colors = ["#8884d8", "#83a6ed", "#8dd1e1", "#82ca9d", "#a4de6c"];
-  const colors2 = ["#F4DEB2", "#227487", "#4EA3B7", "#104A57", "#00A9B5"];
+  const colors = ["#8dd1e1", "#82ca9d", "#83a6ed", "#8884d8", "#a4de6c"];
+  const colors2 = ["#227487", "#4EA3B7", "#104A57", "#F4DEB2", "#00A9B5"];
 
   return (
     <ResponsiveContainer width="100%" height="100%">
