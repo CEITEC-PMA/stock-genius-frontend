@@ -125,11 +125,21 @@ export default function DrawerComponent({
           isActive={pathname === "/dashboard/atas"}
         />
 
-        {user.role?.includes("super-adm") && (
+        {user.role?.includes("super-adm") ? (
           <ListItems
             label="Apuração dos votos"
             icon={<PollIcon />}
             to="/dashboard/buscaApuracao"
+            isActive={
+              pathname === "/dashboard/buscaApuracao" ||
+              pathname.startsWith("/dashboard/apuracao/")
+            }
+          />
+        ) : (
+          <ListItems
+            label="Apuração dos votos"
+            icon={<PollIcon />}
+            to={`/dashboard/apuracao/${user._id}`}
             isActive={
               pathname === "/dashboard/buscaApuracao" ||
               pathname.startsWith("/dashboard/apuracao/")

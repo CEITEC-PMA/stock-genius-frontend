@@ -36,12 +36,16 @@ export default function VotacaoResp(props: {
 
   const data02 = candidatos.map((candidato, i) => {
     const votosCandidato =
-      resultadoEleicao?.confirmaPercentual[i].qtdeVotosRespAlunosVotantes;
+      (resultadoEleicao?.confirmaPercentual[i].qtdeVotosRespAlunosVotantes *
+        100) /
+      numerosVotacao.respAlunosVotantesVotaram;
+
+    const votosCandidatoArredondado = parseFloat(votosCandidato.toFixed(2));
     const nomeCandidato = resultadoEleicao?.confirmaPercentual[i].candidato;
 
     return {
       name: nomeCandidato,
-      value: votosCandidato,
+      value: votosCandidatoArredondado,
     };
   });
 
@@ -60,12 +64,16 @@ export default function VotacaoResp(props: {
 
   const data04 = candidatos.map((candidato, i) => {
     const votosCandidato =
-      resultadoEleicao?.confirmaPercentual[i].qtdeVotosRespAlunosNaoVotantes;
+      (resultadoEleicao?.confirmaPercentual[i].qtdeVotosRespAlunosNaoVotantes *
+        100) /
+      numerosVotacao.respAlunosNaoVotantesVotaram;
+
+    const votosCandidatoArredondado = parseFloat(votosCandidato.toFixed(2));
     const nomeCandidato = resultadoEleicao?.confirmaPercentual[i].candidato;
 
     return {
       name: nomeCandidato,
-      value: votosCandidato,
+      value: votosCandidatoArredondado,
     };
   });
 
