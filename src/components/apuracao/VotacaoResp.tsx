@@ -1,4 +1,5 @@
 "use client";
+import { colors, colors1 } from "@/utils/colors";
 import { Candidato } from "@/utils/types/candidato.types";
 import { NumerosVotacao } from "@/utils/types/numerosVotacao.type";
 import { ResultadoFinalEleicao } from "@/utils/types/resultadoFinal.types";
@@ -77,9 +78,6 @@ export default function VotacaoResp(props: {
     };
   });
 
-  const colors = ["#8dd1e1", "#82ca9d", "#83a6ed", "#8884d8", "#a4de6c"];
-  const colors2 = ["#227487", "#4EA3B7", "#104A57", "#F4DEB2", "#00A9B5"];
-
   return (
     <ResponsiveContainer width="100%" height="100%">
       <div
@@ -112,7 +110,7 @@ export default function VotacaoResp(props: {
               {data01.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
-                  fill={colors[index % colors.length]}
+                  fill={colors1[index % colors.length]}
                 />
               ))}
             </Pie>
@@ -144,7 +142,7 @@ export default function VotacaoResp(props: {
               {data03.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
-                  fill={colors2[index % colors2.length]}
+                  fill={colors1[index % colors1.length]}
                 />
               ))}
             </Pie>
@@ -213,7 +211,7 @@ export default function VotacaoResp(props: {
               {data04.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
-                  fill={colors2[index % colors2.length]}
+                  fill={colors[index % colors.length]}
                 />
               ))}
             </Pie>

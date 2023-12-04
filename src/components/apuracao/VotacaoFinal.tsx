@@ -1,3 +1,4 @@
+import { colors } from "@/utils/colors";
 import { Candidato } from "@/utils/types/candidato.types";
 import { NumerosVotacao } from "@/utils/types/numerosVotacao.type";
 import { ResultadoFinalEleicao } from "@/utils/types/resultadoFinal.types";
@@ -26,16 +27,17 @@ export default function VotacaoFinal(props: {
   const { candidatos } = props;
   const { numerosVotacao } = props;
   const { resultadoEleicao } = props;
-  const colors = ["#227487", "#4EA3B7", "#104A57", "#F4DEB2", "#00A9B5"];
 
   const data01 = candidatos.map((candidato, i) => {
     const votosCandidato =
-      resultadoEleicao?.confirmaPercentual[i].qtdeVotosAlunos;
+      resultadoEleicao?.confirmaPercentual[i].percentualTotal;
+
+    const votosCandidatoArredondado = parseFloat(votosCandidato.toFixed(2));
     const nomeCandidato = resultadoEleicao?.confirmaPercentual[i].candidato;
 
     return {
       name: nomeCandidato,
-      value: votosCandidato,
+      value: votosCandidatoArredondado,
     };
   });
 
@@ -109,8 +111,8 @@ export default function VotacaoFinal(props: {
         </div>
         {resultadoEleicao.candidatoApto && (
           <Typography>
-            Com {resultadoEleicao.percentualMaior}% dos votos, o/a candidato(a)
-            vencedor foi {resultadoEleicao.candidatoEleito}!
+            Com {resultadoEleicao.percentualMaior.toFixed(2)}% dos votos, o/a
+            candidato(a) vencedor foi {resultadoEleicao.candidatoEleito}!
           </Typography>
         )}
         {!resultadoEleicao.candidatoApto && (

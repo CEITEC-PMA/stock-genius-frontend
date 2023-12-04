@@ -1,5 +1,6 @@
 "use client";
 import { apiUrl } from "@/utils/api";
+import { colors, colors1 } from "@/utils/colors";
 import { Candidato } from "@/utils/types/candidato.types";
 import { NumerosVotacao } from "@/utils/types/numerosVotacao.type";
 import { ResultadoFinalEleicao } from "@/utils/types/resultadoFinal.types";
@@ -50,8 +51,6 @@ export default function VotacaoFuncionarios(props: {
     };
   });
 
-  const colors = ["#F4DEB2", "#227487", "#4EA3B7", "#104A57", "#00A9B5"];
-
   return (
     <ResponsiveContainer width="100%" height="100%">
       <div
@@ -84,7 +83,7 @@ export default function VotacaoFuncionarios(props: {
               {data01.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
-                  fill={colors[index % colors.length]}
+                  fill={colors1[index % colors.length]}
                 />
               ))}
             </Pie>
