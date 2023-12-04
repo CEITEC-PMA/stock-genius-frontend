@@ -23,6 +23,9 @@ export default function VotacaoAlunos(props: {
   const { resultadoEleicao } = props;
 
   console.log(numerosVotacao);
+  console.log(
+    numerosVotacao.quantidadeAlunosVotantes - numerosVotacao.alunosVotaram
+  );
   console.log(resultadoEleicao);
 
   const data01 = [
@@ -39,12 +42,15 @@ export default function VotacaoAlunos(props: {
 
   const data02 = candidatos.map((candidato, i) => {
     const votosCandidato =
-      resultadoEleicao?.confirmaPercentual[i].qtdeVotosAlunos;
+      (resultadoEleicao?.confirmaPercentual[i].qtdeVotosAlunos * 100) /
+      numerosVotacao.alunosVotaram;
+
+    const votosCandidatoArredondado = parseFloat(votosCandidato.toFixed(2));
     const nomeCandidato = resultadoEleicao?.confirmaPercentual[i].candidato;
 
     return {
       name: nomeCandidato,
-      value: votosCandidato,
+      value: votosCandidatoArredondado,
     };
   });
 
