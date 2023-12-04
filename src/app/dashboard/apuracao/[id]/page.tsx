@@ -15,7 +15,11 @@ import VotacaoAlunos from "@/components/apuracao/VotacaoAlunos";
 import Face6Icon from "@mui/icons-material/Face6";
 import EscalatorWarningIcon from "@mui/icons-material/EscalatorWarning";
 import VotacaoResp from "@/components/apuracao/VotacaoResp";
-import { ResultadoVoto } from "@/utils/types/resultado.types";
+import { NumerosVotacao } from "@/utils/types/numerosVotacao.type";
+import { resultadoFinal } from "@/utils/processarVotos";
+import VotacaoFinal from "@/components/apuracao/VotacaoFinal";
+import PollIcon from "@mui/icons-material/Poll";
+import { ResultadoFinalEleicao } from "@/utils/types/resultadoFinal.types";
 
 export default function Apuracao({ params }: { params: { id: string } }) {
   const theme = useTheme();
@@ -26,9 +30,79 @@ export default function Apuracao({ params }: { params: { id: string } }) {
   const { id } = params;
   const [zona, setZona] = useState<Zona | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [resultadoVoto, setResultadoVoto] = useState<ResultadoVoto | null>(
-    null
-  );
+  const [numerosVotacao, setNumerosVotacao] = useState<
+    NumerosVotacao | undefined
+  >(undefined);
+  const [resultadoEleicao, setResultadoEleicao] =
+    useState<ResultadoFinalEleicao>({
+      percentualMaior: 0,
+      confirmaQuorum: {
+        quorumFunc: {
+          percentual: 0,
+          result: false,
+        },
+        quorumAlunos: {
+          percentual: 0,
+          result: false,
+        },
+        quorumPais: {
+          percentual: null,
+          result: false,
+        },
+        quorunsNaoAtingidos: [""],
+        resultGeral: false,
+      },
+      confirmaPercentual: [
+        {
+          qtdeVotosAlunos: 0,
+          qtdeVotosRespAlunosVotantes: 0,
+          qtdeVotosRespAlunosNaoVotantes: 0,
+          candidato: "candidato_um",
+          somaPaisAlunos: 0,
+          qtdeVotosFuncionarios: 0,
+          percentualTotal: 0,
+        },
+        {
+          qtdeVotosAlunos: 0,
+          qtdeVotosRespAlunosVotantes: 0,
+          qtdeVotosRespAlunosNaoVotantes: 0,
+          candidato: "candidato_dois",
+          somaPaisAlunos: 0,
+          qtdeVotosFuncionarios: 0,
+          percentualTotal: 0,
+        },
+        {
+          qtdeVotosAlunos: 0,
+          qtdeVotosRespAlunosVotantes: 0,
+          qtdeVotosRespAlunosNaoVotantes: 0,
+          candidato: "branco",
+          somaPaisAlunos: 0,
+          qtdeVotosFuncionarios: 0,
+          percentualTotal: 0,
+        },
+        {
+          qtdeVotosAlunos: 0,
+          qtdeVotosRespAlunosVotantes: 0,
+          qtdeVotosRespAlunosNaoVotantes: 0,
+          candidato: "nulo",
+          somaPaisAlunos: 0,
+          qtdeVotosFuncionarios: 0,
+          percentualTotal: 0,
+        },
+      ],
+      candidatoApto: false,
+      candidatoEleito: "",
+      motivosIndeferimento: [
+        {
+          tipo: "",
+          motivos: [""],
+        },
+        {
+          tipo: "",
+          motivos: [""],
+        },
+      ],
+    });
 
   interface Zona {
     inep: string;
@@ -91,7 +165,7 @@ export default function Apuracao({ params }: { params: { id: string } }) {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    const getResultadoVoto = async () => {
+    const getNumerosVotacao = async () => {
       try {
         const response = await fetch(`${apiUrl}/api/v1/votacao`, {
           headers: {
@@ -105,21 +179,28 @@ export default function Apuracao({ params }: { params: { id: string } }) {
           return;
         }
 
-        const resultadoVotoJson = await response.json();
-        setResultadoVoto(resultadoVotoJson);
+        const numerosVotacaoJson = await response.json();
+        setNumerosVotacao(numerosVotacaoJson);
       } catch (error) {
         console.error("Erro na solicitação, tente novamente", error);
       }
     };
 
-    getResultadoVoto();
+    getNumerosVotacao();
   }, [zona?._id]);
-  console.log(resultadoVoto);
+
+  useEffect(() => {
+    if (numerosVotacao) {
+      setResultadoEleicao(resultadoFinal(numerosVotacao));
+    }
+  }, [numerosVotacao]);
+
+  console.log(resultadoEleicao);
 
   return (
     <Box margin="0" padding="0" height={`calc(100vh - 66px)`} overflow="hidden">
       <Typography
-        variant={smDown ? "h6" : mdDown ? "h5" : "h4"}
+        variant={smDown ? "h6" : mdDown ? "h5" : "h5"}
         textAlign="center"
         marginTop={2}
         color=" #0f4c81"
@@ -135,7 +216,7 @@ export default function Apuracao({ params }: { params: { id: string } }) {
         height="100%"
       >
         <Typography
-          variant="h4"
+          variant="h5"
           textAlign="center"
           marginTop={1.2}
           color=" #000"
@@ -180,6 +261,16 @@ export default function Apuracao({ params }: { params: { id: string } }) {
               Funcionários
             </Button>
           </Box>
+          <Box>
+            <Button
+              variant="contained"
+              startIcon={<PollIcon style={{ fontSize: 24 }} />}
+              onClick={() => handleTipo("Resultado Final")}
+              style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
+            >
+              Resultado Final
+            </Button>
+          </Box>
         </Box>
         {tipoResultado === "Alunos" && (
           <>
@@ -192,10 +283,11 @@ export default function Apuracao({ params }: { params: { id: string } }) {
             >
               Alunos
             </Typography>
-            {resultadoVoto ? (
+            {numerosVotacao ? (
               <VotacaoAlunos
                 candidatos={candidatos}
-                resultadoVoto={resultadoVoto}
+                numerosVotacao={numerosVotacao}
+                resultadoEleicao={resultadoEleicao}
               />
             ) : (
               <p>Carregando resultados...</p>
@@ -213,10 +305,11 @@ export default function Apuracao({ params }: { params: { id: string } }) {
             >
               Responsáveis
             </Typography>
-            {resultadoVoto ? (
+            {numerosVotacao ? (
               <VotacaoResp
                 candidatos={candidatos}
-                resultadoVoto={resultadoVoto}
+                numerosVotacao={numerosVotacao}
+                resultadoEleicao={resultadoEleicao}
               />
             ) : (
               <p>Carregando...</p>
@@ -234,10 +327,33 @@ export default function Apuracao({ params }: { params: { id: string } }) {
             >
               Funcionários
             </Typography>
-            {resultadoVoto ? (
+            {numerosVotacao ? (
               <VotacaoFuncionarios
                 candidatos={candidatos}
-                resultadoVoto={resultadoVoto}
+                numerosVotacao={numerosVotacao}
+                resultadoEleicao={resultadoEleicao}
+              />
+            ) : (
+              <p>Carregando...</p>
+            )}
+          </>
+        )}
+        {tipoResultado === "Resultado Final" && (
+          <>
+            <Typography
+              variant="h5"
+              textAlign="center"
+              marginTop={2}
+              marginBottom={2}
+              color="#000"
+            >
+              Resultado Final
+            </Typography>
+            {numerosVotacao ? (
+              <VotacaoFinal
+                candidatos={candidatos}
+                numerosVotacao={numerosVotacao}
+                resultadoEleicao={resultadoEleicao}
               />
             ) : (
               <p>Carregando...</p>

@@ -91,7 +91,6 @@ export default function Funcionarios() {
         }
 
         const responseJson = await response.json();
-        console.log(responseJson);
         setFuncionarios(responseJson.funcionarios);
         return response;
       };
@@ -131,7 +130,7 @@ export default function Funcionarios() {
   return (
     <Box margin="24px">
       <Container>
-        <Typography variant="h3" marginBottom="12x" textAlign="center">
+        <Typography variant="h4" marginBottom="12x" textAlign="center">
           Lista de Funcionários - {user.nome}
         </Typography>
 

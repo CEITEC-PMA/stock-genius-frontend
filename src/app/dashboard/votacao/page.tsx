@@ -52,7 +52,6 @@ export default function Votacao() {
       },
       body: JSON.stringify(dadosParaEnviar),
     });
-    console.log(response);
     avancarEtapa();
   };
 

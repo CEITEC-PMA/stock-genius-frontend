@@ -245,8 +245,10 @@ export default function LoginPage() {
               />
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleCloseDialog}>Cancelar</Button>
-              <Button onClick={handleResetPassword}>Enviar</Button>
+              {/* <Button onClick={handleCloseDialog}>Cancelar</Button> */}
+              <Button variant="contained" onClick={handleResetPassword}>
+                Enviar
+              </Button>
             </DialogActions>
           </Dialog>
           <Snackbar
