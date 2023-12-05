@@ -195,8 +195,6 @@ export default function Apuracao({ params }: { params: { id: string } }) {
     }
   }, [numerosVotacao]);
 
-  console.log(resultadoEleicao);
-
   return (
     <Box margin="0" padding="0" height={`calc(100vh - 66px)`} overflow="hidden">
       <Typography
@@ -216,9 +214,9 @@ export default function Apuracao({ params }: { params: { id: string } }) {
         height="100%"
       >
         <Typography
-          variant="h5"
+          variant="h6"
           textAlign="center"
-          marginTop={1.2}
+          marginTop={0.2}
           color=" #000"
         >
           Apuração da votação
@@ -226,10 +224,10 @@ export default function Apuracao({ params }: { params: { id: string } }) {
         <Box
           display="flex"
           width="100%"
-          marginTop="20px"
+          marginTop="5px"
           alignItems="center"
           justifyContent="center"
-          gap={4}
+          gap={2.5}
         >
           <Box>
             <Button
@@ -277,8 +275,8 @@ export default function Apuracao({ params }: { params: { id: string } }) {
             <Typography
               variant="h5"
               textAlign="center"
-              marginTop={2}
-              marginBottom={2}
+              marginTop={0.8}
+              marginBottom={0.8}
               color="#000"
             >
               Alunos
@@ -299,8 +297,8 @@ export default function Apuracao({ params }: { params: { id: string } }) {
             <Typography
               variant="h5"
               textAlign="center"
-              marginTop={2}
-              marginBottom={2}
+              marginTop={0.8}
+              marginBottom={0.8}
               color="#000"
             >
               Responsáveis
@@ -321,8 +319,8 @@ export default function Apuracao({ params }: { params: { id: string } }) {
             <Typography
               variant="h5"
               textAlign="center"
-              marginTop={2}
-              marginBottom={2}
+              marginTop={0.8}
+              marginBottom={0.8}
               color="#000"
             >
               Funcionários
@@ -343,8 +341,8 @@ export default function Apuracao({ params }: { params: { id: string } }) {
             <Typography
               variant="h5"
               textAlign="center"
-              marginTop={2}
-              marginBottom={2}
+              marginTop={0.8}
+              marginBottom={0.8}
               color="#000"
             >
               Resultado Final
