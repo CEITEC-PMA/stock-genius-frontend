@@ -157,74 +157,78 @@ export default function VotacaoResp(props: {
           </PieChart>
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Text x={0} y={15} width={300} textAnchor="middle">
-            Total de responsáveis de alunos-votantes
-          </Text>
-          <PieChart width={380} height={380}>
-            <Pie
-              data={data03}
-              dataKey="value"
-              cx="50%"
-              cy="50%"
-              outerRadius={100}
-              fill="#8884d8"
-              label
+        {numerosVotacao.quantidadeAlunosVotantes !== 0 && (
+          <>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
             >
-              {data03.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={colors1[index % colors1.length]}
-                />
-              ))}
-            </Pie>
-            <Legend verticalAlign="bottom" height={36} />
-            <Tooltip formatter={(value, name, props) => [value, name]} />
-          </PieChart>
-        </div>
+              <Text x={0} y={15} width={300} textAnchor="middle">
+                Total de responsáveis de alunos-votantes
+              </Text>
+              <PieChart width={380} height={380}>
+                <Pie
+                  data={data03}
+                  dataKey="value"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={100}
+                  fill="#8884d8"
+                  label
+                >
+                  {data03.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={colors1[index % colors1.length]}
+                    />
+                  ))}
+                </Pie>
+                <Legend verticalAlign="bottom" height={36} />
+                <Tooltip formatter={(value, name, props) => [value, name]} />
+              </PieChart>
+            </div>
 
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Text x={0} y={15} width={300} textAnchor="middle">
-            Votos dos responsáveis de alunos-votantes (%)
-          </Text>
-          <PieChart width={380} height={380}>
-            <Pie
-              data={data04}
-              dataKey="value"
-              cx="50%"
-              cy="50%"
-              outerRadius={100}
-              fill="#8884d8"
-              label
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
             >
-              {data04.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={colors[index % colors.length]}
+              <Text x={0} y={15} width={300} textAnchor="middle">
+                Votos dos responsáveis de alunos-votantes (%)
+              </Text>
+              <PieChart width={380} height={380}>
+                <Pie
+                  data={data04}
+                  dataKey="value"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={100}
+                  fill="#8884d8"
+                  label
+                >
+                  {data04.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={colors[index % colors.length]}
+                    />
+                  ))}
+                </Pie>
+                <Legend verticalAlign="bottom" height={36} />
+                <Tooltip
+                  formatter={(value, name, props) => [
+                    `${Number(value).toFixed(2)}%`,
+                    name,
+                  ]}
                 />
-              ))}
-            </Pie>
-            <Legend verticalAlign="bottom" height={36} />
-            <Tooltip
-              formatter={(value, name, props) => [
-                `${Number(value).toFixed(2)}%`,
-                name,
-              ]}
-            />
-          </PieChart>
-        </div>
+              </PieChart>
+            </div>
+          </>
+        )}
       </div>
     </ResponsiveContainer>
   );

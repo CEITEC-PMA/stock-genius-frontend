@@ -230,14 +230,16 @@ export default function Apuracao({ params }: { params: { id: string } }) {
           gap={2.5}
         >
           <Box>
-            <Button
-              variant="contained"
-              startIcon={<Face6Icon style={{ fontSize: 24 }} />}
-              onClick={() => handleTipo("Alunos")}
-              style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
-            >
-              Alunos
-            </Button>
+            {numerosVotacao?.quantidadeAlunosVotantes !== 0 && (
+              <Button
+                variant="contained"
+                startIcon={<Face6Icon style={{ fontSize: 24 }} />}
+                onClick={() => handleTipo("Alunos")}
+                style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
+              >
+                Alunos
+              </Button>
+            )}
           </Box>
           <Box>
             <Button
