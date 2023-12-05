@@ -83,7 +83,7 @@ export default function VotacaoFinal(props: {
           <Text x={0} y={15} width={300} textAnchor="middle">
             Total geral de votos (%)
           </Text>
-          <PieChart width={400} height={400}>
+          <PieChart width={380} height={380}>
             <Pie
               data={data01}
               dataKey="value"
@@ -109,25 +109,27 @@ export default function VotacaoFinal(props: {
             />
           </PieChart>
         </div>
-        {resultadoEleicao.candidatoApto && (
-          <Typography>
-            Com {resultadoEleicao.percentualMaior.toFixed(2)}% dos votos, o/a
-            candidato(a) vencedor foi {resultadoEleicao.candidatoEleito}!
-          </Typography>
-        )}
-        {!resultadoEleicao.candidatoApto && (
-          <Typography>
-            A eleição não teve um candidato apto a vencê-la. Estes foram os
-            motivos:{" "}
-            {motivosRenderizados.map((motivo, index) => (
-              <React.Fragment key={index}>
-                <span>{motivo.tipo}: </span>
-                <span>{motivo.motivos.join(", ")}</span>
-                <br />
-              </React.Fragment>
-            ))}
-          </Typography>
-        )}
+        <div style={{ marginTop: "10px" }}>
+          {resultadoEleicao.candidatoApto && (
+            <Typography>
+              Com {resultadoEleicao.percentualMaior.toFixed(2)}% dos votos, o/a
+              candidato(a) vencedor foi {resultadoEleicao.candidatoEleito}!
+            </Typography>
+          )}
+          {!resultadoEleicao.candidatoApto && (
+            <Typography>
+              A eleição não teve um candidato apto a vencê-la. Estes foram os
+              motivos:{" "}
+              {motivosRenderizados.map((motivo, index) => (
+                <React.Fragment key={index}>
+                  <span>{motivo.tipo}: </span>
+                  <span>{motivo.motivos.join(", ")}</span>
+                  <br />
+                </React.Fragment>
+              ))}
+            </Typography>
+          )}
+        </div>
       </div>
     </ResponsiveContainer>
   );
