@@ -143,7 +143,7 @@ export default function VotacaoResp(props: {
               {data02.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
-                  fill={colors1[index % colors1.length]}
+                  fill={colors[index % colors.length]}
                 />
               ))}
             </Pie>
