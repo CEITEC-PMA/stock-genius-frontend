@@ -1,12 +1,12 @@
 "use client";
+import { Box, Button, Container, Grid, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useUserContext } from "@/userContext";
 import { apiUrl } from "@/utils/api";
-import { Box, Button, Container, Grid, Typography } from "@mui/material";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import generatePDF, { Resolution, Margin, Options } from "react-to-pdf";
 import { Aluno } from "@/utils/types/aluno.types";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import html2pdf from "html2pdf.js";
 
 const GetContainer = ({ aluno }: { aluno: Aluno }) => {
   return (
@@ -20,7 +20,7 @@ const GetContainer = ({ aluno }: { aluno: Aluno }) => {
       </Grid>
       <Grid item container>
         <Grid item align="center" xs={4} mb={1}>
-          <Typography>{aluno?.responsavel1.substring(0, 30)}</Typography>
+          <Typography>{aluno?.responsavel1?.substring(0, 30)}</Typography>
           <Typography>Responsável 1</Typography>
         </Grid>
         <Grid item align="center" xs={4}>
@@ -50,65 +50,43 @@ const GetContainer = ({ aluno }: { aluno: Aluno }) => {
   );
 };
 
-const options: Options = {
-  // default is `save`
-  method: "save",
-  // default is Resolution.MEDIUM = 3, which should be enough, higher values
-  // increases the image quality but also the size of the PDF, so be careful
-  // using values higher than 10 when having multiple pages generated, it
-  // might cause the page to crash or hang.
-  resolution: Resolution.HIGH,
-  page: {
-    // margin is in MM, default is Margin.NONE = 0
-    margin: Margin.MEDIUM,
-    // default is 'A4'
-    format: "A4",
-    // default is 'portrait'
-    orientation: "portrait",
-  },
-
-  overrides: {
-    // see https://artskydj.github.io/jsPDF/docs/jsPDF.html for more options
-    pdf: {
-      compress: true,
-    },
-    // see https://html2canvas.hertzen.com/configuration for more options
-    // canvas: {
-    //     useCORS: true
-    // }
-  },
-};
-
 export default function AtaAlunosNaoVotantes() {
   const { user } = useUserContext();
-  const [alunos, setAlunos] = useState([]);
+  const [alunos, setAlunos] = useState<Aluno[]>([]);
 
   const alunosVotantes = alunos.filter((aluno) => aluno.votante);
 
   useEffect(() => {
-    //fetch
     const token = localStorage.getItem("token");
-    if (user._id) {
+    if (user._id && token) {
       const getDadosAlunos = async () => {
-        const response = await fetch(`${apiUrl}/api/v1/aluno/`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
+        try {
+          const response = await fetch(`${apiUrl}/api/v1/aluno/`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch data");
+          }
+
+          const responseJson = await response.json();
+          setAlunos(responseJson.alunos);
+        } catch (error) {
+          console.error("Error fetching data:", error);
         }
-
-        const responseJson = await response.json();
-
-        setAlunos(responseJson.alunos);
-        return response;
       };
       getDadosAlunos();
     }
   }, [user._id]);
 
-  const getTargetElement = () => document.getElementById("print");
+  const generatePDF = () => {
+    const element = document.getElementById("print");
+    if (element) {
+      html2pdf(element);
+    }
+  };
 
   return (
     <div>
@@ -117,7 +95,7 @@ export default function AtaAlunosNaoVotantes() {
           <Typography variant="h4" align="center">
             Lista de Funcionários
           </Typography>
-          <Button onClick={() => generatePDF(getTargetElement, options)}>
+          <Button onClick={generatePDF}>
             <PictureAsPdfIcon
               sx={{ color: "#b30b00", marginRight: "20px", fontSize: 48 }}
             />
@@ -140,9 +118,9 @@ export default function AtaAlunosNaoVotantes() {
           <Typography align="center" variant="h5">
             Lista de Funcionários - Eleição Diretores 2021
           </Typography>
-          {alunosVotantes.map((aluno, i) => {
-            return <GetContainer aluno={aluno} key={`tableAluno-${i}`} />;
-          })}
+          {alunosVotantes.map((aluno, i) => (
+            <GetContainer aluno={aluno} key={`tableAluno-${i}`} />
+          ))}
         </Box>
       </Container>
     </div>
