@@ -19,12 +19,7 @@ export default function VotacaoAlunos(props: {
   numerosVotacao: NumerosVotacao;
   resultadoEleicao: ResultadoFinalEleicao;
 }) {
-  const { candidatos } = props;
-  const { numerosVotacao } = props;
-  const { resultadoEleicao } = props;
-
-  console.log(numerosVotacao);
-  console.log(resultadoEleicao);
+  const { candidatos, numerosVotacao, resultadoEleicao } = props;
 
   const data01 = [
     {
