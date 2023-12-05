@@ -22,14 +22,24 @@ export default function Atas() {
               ATA DE FUNCIONÁRIOS
             </Button>
           </Link>
-          <Link href={"/dashboard/atas/pa"}>
+          <Link href={"/dashboard/atas/alunosNaoVotantes"}>
             <Button
               size="large"
               variant="contained"
               startIcon={<ArticleIcon style={{ fontSize: 48 }} />}
               // onClick={handleAluno}
             >
-              ATA DE ALUNOS E RESPONSÁVEIS
+              ATA DE ALUNOS NÃO VOTANTES
+            </Button>
+          </Link>
+          <Link href={"/dashboard/atas/alunosVotantes"}>
+            <Button
+              size="large"
+              variant="contained"
+              startIcon={<ArticleIcon style={{ fontSize: 48 }} />}
+              // onClick={handleAluno}
+            >
+              ATA DE ALUNOS VOTANTES
             </Button>
           </Link>
         </Box>
