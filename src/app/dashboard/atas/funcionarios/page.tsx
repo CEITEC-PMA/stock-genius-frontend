@@ -1,12 +1,12 @@
 "use client";
+import { Box, Button, Container, Grid, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useUserContext } from "@/userContext";
 import { apiUrl } from "@/utils/api";
 import { Funcionario } from "@/utils/types/funcionario.types";
-import { Box, Button, Container, Grid, Typography } from "@mui/material";
-import Image from "next/image";
-import { useEffect, useState } from "react";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import generatePDF, { Resolution, Margin, Options } from "react-to-pdf";
+import html2pdf from "html2pdf.js";
 
 const GetContainer = ({ funcionario }: { funcionario: Funcionario }) => {
   return (
@@ -28,64 +28,41 @@ const GetContainer = ({ funcionario }: { funcionario: Funcionario }) => {
   );
 };
 
-const options: Options = {
-  // default is `save`
-  method: "save",
-  // default is Resolution.MEDIUM = 3, which should be enough, higher values
-  // increases the image quality but also the size of the PDF, so be careful
-  // using values higher than 10 when having multiple pages generated, it
-  // might cause the page to crash or hang.
-  resolution: Resolution.HIGH,
-  page: {
-    // margin is in MM, default is Margin.NONE = 0
-    margin: Margin.MEDIUM,
-    // default is 'A4'
-    format: "A4",
-    // default is 'portrait'
-    orientation: "portrait",
-  },
-
-  overrides: {
-    // see https://artskydj.github.io/jsPDF/docs/jsPDF.html for more options
-    pdf: {
-      compress: true,
-    },
-    // see https://html2canvas.hertzen.com/configuration for more options
-    // canvas: {
-    //     useCORS: true
-    // }
-  },
-};
-
 export default function AtaFuncionarios() {
   const { user } = useUserContext();
-  const [funcionarios, setFuncionarios] = useState([]);
+  const [funcionarios, setFuncionarios] = useState<Funcionario[]>([]);
 
   useEffect(() => {
-    //fetch
     const token = localStorage.getItem("token");
-    if (user._id) {
+    if (user._id && token) {
       const getDadosFuncionarios = async () => {
-        const response = await fetch(`${apiUrl}/api/v1/funcionario/`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
+        try {
+          const response = await fetch(`${apiUrl}/api/v1/funcionario/`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch data");
+          }
+
+          const responseJson = await response.json();
+          setFuncionarios(responseJson.funcionarios);
+        } catch (error) {
+          console.error("Error fetching data:", error);
         }
-
-        const responseJson = await response.json();
-        console.log(responseJson.funcionarios);
-
-        setFuncionarios(responseJson.funcionarios);
-        return response;
       };
       getDadosFuncionarios();
     }
   }, [user._id]);
 
-  const getTargetElement = () => document.getElementById("print");
+  const generatePDF = () => {
+    const element = document.getElementById("print");
+    if (element) {
+      html2pdf(element);
+    }
+  };
 
   return (
     <div>
@@ -94,7 +71,7 @@ export default function AtaFuncionarios() {
           <Typography variant="h4" align="center">
             Lista de Funcionários
           </Typography>
-          <Button onClick={() => generatePDF(getTargetElement, options)}>
+          <Button onClick={generatePDF}>
             <PictureAsPdfIcon
               sx={{ color: "#b30b00", marginRight: "20px", fontSize: 48 }}
             />
@@ -117,11 +94,9 @@ export default function AtaFuncionarios() {
           <Typography align="center" variant="h5">
             Lista de Funcionários - Eleição Diretores 2021
           </Typography>
-          {funcionarios.map((funcionario, i) => {
-            return (
-              <GetContainer funcionario={funcionario} key={`tableFunc-${i}`} />
-            );
-          })}
+          {funcionarios.map((funcionario, i) => (
+            <GetContainer funcionario={funcionario} key={`tableFunc-${i}`} />
+          ))}
         </Box>
       </Container>
     </div>
