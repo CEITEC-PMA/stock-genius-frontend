@@ -106,20 +106,20 @@ export default function DrawerComponent({
         />
 
         <ListItems
-          label="Lista de Alunos"
+          label="Alunos"
           icon={<Face6Icon />}
           to="/dashboard/alunos"
           isActive={pathname === "/dashboard/alunos"}
         />
         <ListItems
-          label="Lista de Funcionários"
+          label="Funcionários"
           icon={<BadgeIcon />}
           to="/dashboard/funcionarios"
           isActive={pathname === "/dashboard/funcionarios"}
         />
 
         <ListItems
-          label="Atas"
+          label="Listas e Atas"
           icon={<DescriptionIcon />}
           to="/dashboard/atas"
           isActive={pathname === "/dashboard/atas"}
