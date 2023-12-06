@@ -85,7 +85,7 @@ export default function DrawerComponent({
           />
         )}
 
-        <ListItems
+        {/* <ListItems
           label="Liberar voto"
           icon={<HowToVoteIcon />}
           to="/dashboard/liberavoto"
@@ -93,7 +93,7 @@ export default function DrawerComponent({
             pathname === "/dashboard/liberavoto" ||
             pathname.startsWith("/dashboard/votacao")
           }
-        />
+        /> */}
 
         <ListItems
           label="Lista de Candidatos"
@@ -125,7 +125,7 @@ export default function DrawerComponent({
           isActive={pathname === "/dashboard/atas"}
         />
 
-        {user.role?.includes("super-adm") ? (
+        {/* {user.role?.includes("super-adm") ? (
           <ListItems
             label="Apuração dos votos"
             icon={<PollIcon />}
@@ -145,7 +145,7 @@ export default function DrawerComponent({
               pathname.startsWith("/dashboard/apuracao/")
             }
           />
-        )}
+        )} */}
 
         {user.role?.includes("super-adm") && (
           <ListItems
