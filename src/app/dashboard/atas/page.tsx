@@ -52,7 +52,7 @@ export default function Atas() {
     <Box>
       <Box>
         <Box textAlign="center" my={8} mb={12}>
-          <Typography variant="h3">ATAS DE ASSINATURA</Typography>
+          <Typography variant="h3">LISTAS DE ASSINATURA</Typography>
         </Box>
         <Box
           display="flex"
@@ -69,7 +69,7 @@ export default function Atas() {
           {alunosNaoVotantes.length ? <AtaAlunosNaoVotantes /> : null}
         </Box>
       </Box>
-      <Box
+      {/* <Box
         alignContent="center"
         display="flex"
         flexDirection="column"
@@ -119,7 +119,7 @@ export default function Atas() {
             </Button>
           </Link>
         </Box>
-      </Box>
+      </Box> */}
     </Box>
   );
 }

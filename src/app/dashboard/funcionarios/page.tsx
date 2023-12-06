@@ -143,9 +143,9 @@ export default function Funcionarios() {
             >
               Adicionar novo funcionário
             </Button>
-            <IconButton onClick={downloadPdf}>
+            {/* <IconButton onClick={downloadPdf}>
               <PictureAsPdfIcon fontSize="large" sx={{ color: "#b30b00" }} />
-            </IconButton>
+            </IconButton> */}
           </Box>
         )}
 
