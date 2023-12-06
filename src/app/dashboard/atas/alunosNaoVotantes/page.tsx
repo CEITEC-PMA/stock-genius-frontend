@@ -59,22 +59,9 @@ const GetContainer = ({ aluno }: { aluno: Aluno }) => {
   );
 };
 
-export default function AtaAlunosNaoVotantes() {
+export default function AtaAlunosNaoVotantes({ pagina, arrayAlunos }) {
   const { user } = useUserContext();
   const [alunos, setAlunos] = useState([] as Aluno[]);
-
-  const alunosNaoVotantes = alunos.filter((aluno) => aluno.votante === false);
-
-  const alunosProcessar = [...alunosNaoVotantes];
-
-  const quantPaginas = Math.ceil(alunosProcessar.length / 12);
-  const arrayAlunos = [];
-
-  for (let i = 0; i < quantPaginas; i++) {
-    const arrayNovo = alunosProcessar.slice(0, 12);
-    arrayAlunos.push(arrayNovo);
-    alunosProcessar.splice(0, 12);
-  }
 
   useEffect(() => {
     //fetch
@@ -100,8 +87,11 @@ export default function AtaAlunosNaoVotantes() {
   }, [user._id]);
 
   const generatePDF = () => {
+    const opt = {
+      filename: `ataAlunosNaoVotantespt${pagina + 1}`,
+    };
     // Choose the element that our invoice is rendered in.
-    const element = document.getElementById("printAlunosNaoVotantes");
+    const element = document.getElementById("printAlunosNaoVotantes" + pagina);
     if (element) {
       // clone the element
       var clonedElement = element.cloneNode(true) as HTMLElement;
@@ -110,7 +100,7 @@ export default function AtaAlunosNaoVotantes() {
       clonedElement.style.display = "block";
 
       // Choose the clonedElement and save the PDF for our user.
-      html2pdf(clonedElement);
+      html2pdf(clonedElement, opt);
 
       // remove cloned element
       clonedElement.remove();
@@ -126,9 +116,12 @@ export default function AtaAlunosNaoVotantes() {
         startIcon={<ArticleIcon style={{ fontSize: 48 }} />}
         // onClick={handleAluno}
       >
-        ATA DE ALUNOS NÃO VOTANTES
+        ATA DE ALUNOS NÃO VOTANTES PT {pagina + 1}
       </Button>
-      <Container id={"printAlunosNaoVotantes"} sx={{ display: "none" }}>
+      <Container
+        id={"printAlunosNaoVotantes" + pagina}
+        sx={{ display: "none" }}
+      >
         {arrayAlunos.map((pagina, i) => {
           return (
             <Box

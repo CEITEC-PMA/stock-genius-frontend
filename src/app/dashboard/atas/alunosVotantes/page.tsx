@@ -46,7 +46,15 @@ const GetContainer = ({ aluno }: { aluno: Aluno }) => {
         </Grid>
       </Grid>
       <Grid item container>
-        <Grid item xs={12}>
+        <Grid item xs={6}>
+          <Typography sx={{ fontSize: "10px", textAlign: "center" }}>
+            ______________________________________
+          </Typography>
+          <Typography sx={{ fontSize: "10px", textAlign: "center" }}>
+            Assinatura Aluno
+          </Typography>
+        </Grid>
+        <Grid item xs={6}>
           <Typography sx={{ fontSize: "10px", textAlign: "center" }}>
             ______________________________________
           </Typography>
@@ -59,22 +67,11 @@ const GetContainer = ({ aluno }: { aluno: Aluno }) => {
   );
 };
 
-export default function AtaAlunosVotantes() {
+export default function AtaAlunosVotantes({ pagina, arrayAlunos }) {
   const { user } = useUserContext();
   const [alunos, setAlunos] = useState<Aluno[]>([]);
 
-  const alunosVotantes = alunos.filter((aluno) => aluno.votante);
-
-  const alunosProcessar = [...alunosVotantes];
-
-  const quantPaginas = Math.ceil(alunosProcessar.length / 12);
-  const arrayAlunos = [];
-
-  for (let i = 0; i < quantPaginas; i++) {
-    const arrayNovo = alunosProcessar.slice(0, 12);
-    arrayAlunos.push(arrayNovo);
-    alunosProcessar.splice(0, 12);
-  }
+  console.log(arrayAlunos);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -102,8 +99,11 @@ export default function AtaAlunosVotantes() {
   }, [user._id]);
 
   const generatePDF = () => {
+    const opt = {
+      filename: `ataAlunosVotantespt${pagina + 1}`,
+    };
     // Choose the element that our invoice is rendered in.
-    const element = document.getElementById("printAlunosVotantes");
+    const element = document.getElementById("printAlunosVotantes" + pagina);
     if (element) {
       // clone the element
       var clonedElement = element.cloneNode(true) as HTMLElement;
@@ -112,7 +112,7 @@ export default function AtaAlunosVotantes() {
       clonedElement.style.display = "block";
 
       // Choose the clonedElement and save the PDF for our user.
-      html2pdf(clonedElement);
+      html2pdf(clonedElement, opt);
 
       // remove cloned element
       clonedElement.remove();
@@ -128,9 +128,9 @@ export default function AtaAlunosVotantes() {
         startIcon={<ArticleIcon style={{ fontSize: 48 }} />}
         // onClick={handleAluno}
       >
-        ATA DE ALUNOS VOTANTES
+        ATA DE ALUNOS VOTANTES pt {pagina + 1}
       </Button>
-      <Container id={"printAlunosVotantes"} sx={{ display: "none" }}>
+      <Container id={"printAlunosVotantes" + pagina} sx={{ display: "none" }}>
         {arrayAlunos.map((pagina, i) => {
           return (
             <Box
@@ -149,7 +149,7 @@ export default function AtaAlunosVotantes() {
                 {user.nome}
               </Typography>
               <Typography align="center" variant="h5" sx={{ fontSize: "16px" }}>
-                Lista de Alunos-não-votantes - Eleição Diretores Biênio 2024/25
+                Lista de Alunos-votantes - Eleição Diretores Biênio 2024/25
               </Typography>
               {pagina.map((aluno, i) => {
                 return <GetContainer aluno={aluno} key={`tableAluno-${i}`} />;

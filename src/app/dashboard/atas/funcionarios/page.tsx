@@ -46,9 +46,6 @@ export default function AtaFuncionarios() {
     funcionariosProcessar.splice(0, 12);
   }
 
-  console.log(funcionarios);
-  console.log(arrayFuncionarios);
-
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (user._id && token) {

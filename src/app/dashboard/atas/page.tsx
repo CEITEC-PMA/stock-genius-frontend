@@ -19,6 +19,37 @@ export default function Atas() {
   const [alunosVotantes, setAlunosVotantes] = useState([] as Aluno[]);
   const [alunosNaoVotantes, setalunosNaoVotantes] = useState([] as Aluno[]);
 
+  const processarPaginas = (array: any[]) => {
+    const alunosVotantesProcessar = [...array];
+
+    const quantPaginas = Math.ceil(alunosVotantesProcessar.length / 12);
+    const arrayAlunosVotantes = [];
+
+    for (let i = 0; i < quantPaginas; i++) {
+      const arrayNovo = alunosVotantesProcessar.slice(0, 12);
+      arrayAlunosVotantes.push(arrayNovo);
+      alunosVotantesProcessar.splice(0, 12);
+    }
+
+    const arrayPaginas = [];
+    const arrayProcessar = [...arrayAlunosVotantes];
+    const quant = Math.ceil(arrayProcessar.length / 20);
+    for (let i = 0; i < quant; i++) {
+      const arrayNovo = arrayProcessar.slice(0, 20);
+      arrayPaginas.push({
+        numeroPagina: i,
+        paginas: arrayNovo,
+      });
+      arrayProcessar.splice(0, 20);
+    }
+    return arrayPaginas;
+  };
+
+  const alunosVotantesPaginas = processarPaginas(alunosVotantes);
+  const alunosNaoVotantesPaginas = processarPaginas(alunosNaoVotantes);
+
+  console.log(alunosVotantesPaginas);
+
   useEffect(() => {
     const votantes = alunos.filter((alunos) => alunos.votante);
     const naoVotantes = alunos.filter((alunos) => !alunos.votante);
@@ -65,8 +96,26 @@ export default function Atas() {
           justifyItems="center"
         >
           <AtaFuncionarios />
-          {alunosVotantes.length ? <AtaAlunosVotantes /> : null}
-          {alunosNaoVotantes.length ? <AtaAlunosNaoVotantes /> : null}
+          {alunosVotantesPaginas.map((votantes, i) => {
+            return (
+              <AtaAlunosVotantes
+                key={`ata-votante-${i}`}
+                pagina={votantes.numeroPagina}
+                arrayAlunos={votantes.paginas}
+              />
+            );
+          })}
+          {alunosNaoVotantesPaginas.map((votantes, i) => {
+            return (
+              <AtaAlunosNaoVotantes
+                key={`ata-votante-${i}`}
+                pagina={votantes.numeroPagina}
+                arrayAlunos={votantes.paginas}
+              />
+            );
+          })}
+          {/* {alunosVotantes.length ? <AtaAlunosVotantes /> : null} */}
+          {/* {alunosNaoVotantes.length ? <AtaAlunosNaoVotantes /> : null} */}
         </Box>
       </Box>
       {/* <Box
