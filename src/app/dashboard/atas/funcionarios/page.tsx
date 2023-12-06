@@ -92,7 +92,7 @@ export default function AtaFuncionarios() {
             {user.nome}
           </Typography>
           <Typography align="center" variant="h5">
-            Lista de Funcionários - Eleição Diretores 2021
+            Lista de Funcionários - Eleição Diretores Biênio 2024/25
           </Typography>
           {funcionarios.map((funcionario, i) => (
             <GetContainer funcionario={funcionario} key={`tableFunc-${i}`} />
