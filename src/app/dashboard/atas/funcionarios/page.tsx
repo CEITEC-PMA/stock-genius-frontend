@@ -1,128 +1,138 @@
 "use client";
+import { Box, Button, Container, Grid, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useUserContext } from "@/userContext";
 import { apiUrl } from "@/utils/api";
 import { Funcionario } from "@/utils/types/funcionario.types";
-import { Box, Button, Container, Grid, Typography } from "@mui/material";
-import Image from "next/image";
-import { useEffect, useState } from "react";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import generatePDF, { Resolution, Margin, Options } from "react-to-pdf";
+import html2pdf from "html2pdf.js";
+import DescriptionIcon from "@mui/icons-material/Description";
 
 const GetContainer = ({ funcionario }: { funcionario: Funcionario }) => {
   return (
-    <Grid my={5} padding={2} container sx={{ border: "1px solid black" }}>
+    <Grid my={0.1} padding={0.5} container sx={{ border: "1px solid black" }}>
       <Grid item xs={12}>
-        <Typography textAlign="center">
+        <Typography textAlign="center" fontSize={"12px"}>
           {funcionario?.nome} - {funcionario.cargo}
         </Typography>
       </Grid>
       <Grid item container my={1}>
         <Grid item xs={12}>
-          <Typography textAlign="center">
+          <Typography textAlign="center" fontSize={"12px"}>
             ______________________________________
           </Typography>
-          <Typography textAlign="center">Assinatura Servidor</Typography>
+          <Typography textAlign="center" fontSize={"12px"}>
+            Assinatura Servidor
+          </Typography>
         </Grid>
       </Grid>
     </Grid>
   );
 };
 
-const options: Options = {
-  // default is `save`
-  method: "save",
-  // default is Resolution.MEDIUM = 3, which should be enough, higher values
-  // increases the image quality but also the size of the PDF, so be careful
-  // using values higher than 10 when having multiple pages generated, it
-  // might cause the page to crash or hang.
-  resolution: Resolution.HIGH,
-  page: {
-    // margin is in MM, default is Margin.NONE = 0
-    margin: Margin.MEDIUM,
-    // default is 'A4'
-    format: "A4",
-    // default is 'portrait'
-    orientation: "portrait",
-  },
-
-  overrides: {
-    // see https://artskydj.github.io/jsPDF/docs/jsPDF.html for more options
-    pdf: {
-      compress: true,
-    },
-    // see https://html2canvas.hertzen.com/configuration for more options
-    // canvas: {
-    //     useCORS: true
-    // }
-  },
-};
-
 export default function AtaFuncionarios() {
   const { user } = useUserContext();
-  const [funcionarios, setFuncionarios] = useState([]);
+  const [funcionarios, setFuncionarios] = useState<Funcionario[]>([]);
+
+  const funcionariosProcessar = [...funcionarios];
+
+  const quantPaginas = Math.ceil(funcionariosProcessar.length / 12);
+  const arrayFuncionarios = [];
+
+  for (let i = 0; i < quantPaginas; i++) {
+    const arrayNovo = funcionariosProcessar.slice(0, 12);
+    arrayFuncionarios.push(arrayNovo);
+    funcionariosProcessar.splice(0, 12);
+  }
+
+  console.log(funcionarios);
+  console.log(arrayFuncionarios);
 
   useEffect(() => {
-    //fetch
     const token = localStorage.getItem("token");
-    if (user._id) {
+    if (user._id && token) {
       const getDadosFuncionarios = async () => {
-        const response = await fetch(`${apiUrl}/api/v1/funcionario/`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
+        try {
+          const response = await fetch(`${apiUrl}/api/v1/funcionario/`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch data");
+          }
+
+          const responseJson = await response.json();
+          setFuncionarios(responseJson.funcionarios);
+        } catch (error) {
+          console.error("Error fetching data:", error);
         }
-
-        const responseJson = await response.json();
-        console.log(responseJson.funcionarios);
-
-        setFuncionarios(responseJson.funcionarios);
-        return response;
       };
       getDadosFuncionarios();
     }
   }, [user._id]);
 
-  const getTargetElement = () => document.getElementById("print");
+  const generatePDF = () => {
+    // Choose the element that our invoice is rendered in.
+    const element = document.getElementById("printFuncionarios");
+
+    // clone the element
+    var clonedElement = element.cloneNode(true);
+
+    // change display of cloned element
+    clonedElement.style.display = "block";
+
+    if (clonedElement) {
+      // Choose the clonedElement and save the PDF for our user.
+      html2pdf(clonedElement);
+
+      // remove cloned element
+      clonedElement.remove();
+    }
+  };
 
   return (
     <div>
-      <Grid container>
-        <Grid item xs={12}>
-          <Typography variant="h4" align="center">
-            Lista de Funcionários
-          </Typography>
-          <Button onClick={() => generatePDF(getTargetElement, options)}>
-            <PictureAsPdfIcon
-              sx={{ color: "#b30b00", marginRight: "20px", fontSize: 48 }}
-            />
-          </Button>
-        </Grid>
-      </Grid>
-      <Container id={"print"}>
-        <Box sx={{ pageBreakAfter: "always" }}>
-          <Container sx={{ textAlign: "center", marginBottom: 5 }}>
-            <Image
-              src="https://cdn.anapolis.go.gov.br/img/logos/sem_fundo/azuis/educacao.png"
-              alt="logo"
-              height={50}
-              width={250}
-            />
-          </Container>
-          <Typography align="center" variant="h5">
-            {user.nome}
-          </Typography>
-          <Typography align="center" variant="h5">
-            Lista de Funcionários - Eleição Diretores 2021
-          </Typography>
-          {funcionarios.map((funcionario, i) => {
-            return (
-              <GetContainer funcionario={funcionario} key={`tableFunc-${i}`} />
-            );
-          })}
-        </Box>
+      <Button
+        size="large"
+        onClick={generatePDF}
+        variant="contained"
+        startIcon={<DescriptionIcon style={{ fontSize: 48 }} />}
+      >
+        ATA DE FUNCIONÁRIOS
+      </Button>
+      <Container id={"printFuncionarios"} sx={{ display: "none" }}>
+        {arrayFuncionarios.map((pagina, i) => {
+          return (
+            <Box
+              key={`pagefuncionario-${i}`}
+              sx={{ pageBreakAfter: "always", padding: 1 }}
+            >
+              <Container sx={{ textAlign: "center" }}>
+                <Image
+                  src="https://cdn.anapolis.go.gov.br/img/logos/sem_fundo/azuis/educacao.png"
+                  alt="logo"
+                  height={50}
+                  width={250}
+                />
+              </Container>
+              <Typography align="center" fontSize={"16px"}>
+                {user.nome}
+              </Typography>
+              <Typography align="center" fontSize={"16px"}>
+                Lista de Funcionários - Eleição Diretores Biênio 2024/25
+              </Typography>
+              {pagina.map((funcionario, i) => (
+                <GetContainer
+                  funcionario={funcionario}
+                  key={`tableFunc-${i}`}
+                />
+              ))}
+            </Box>
+          );
+        })}
       </Container>
     </div>
   );
