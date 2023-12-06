@@ -61,7 +61,7 @@ const GetContainer = ({ aluno }: { aluno: Aluno }) => {
 
 export default function AtaAlunosNaoVotantes() {
   const { user } = useUserContext();
-  const [alunos, setAlunos] = useState([]);
+  const [alunos, setAlunos] = useState([] as Aluno[]);
 
   const alunosNaoVotantes = alunos.filter((aluno) => aluno.votante === false);
 
@@ -102,14 +102,13 @@ export default function AtaAlunosNaoVotantes() {
   const generatePDF = () => {
     // Choose the element that our invoice is rendered in.
     const element = document.getElementById("printAlunosNaoVotantes");
+    if (element) {
+      // clone the element
+      var clonedElement = element.cloneNode(true) as HTMLElement;
 
-    // clone the element
-    var clonedElement = element.cloneNode(true);
+      // change display of cloned element
+      clonedElement.style.display = "block";
 
-    // change display of cloned element
-    clonedElement.style.display = "block";
-
-    if (clonedElement) {
       // Choose the clonedElement and save the PDF for our user.
       html2pdf(clonedElement);
 

@@ -10,13 +10,14 @@ import AtaAlunosNaoVotantes from "./alunosNaoVotantes/page";
 import AtaAlunosVotantes from "./alunosVotantes/page";
 import { apiUrl } from "@/utils/api";
 import { useUserContext } from "@/userContext";
+import { Aluno } from "@/utils/types/aluno.types";
 
 export default function Atas() {
   const { user } = useUserContext();
 
-  const [alunos, setAlunos] = useState([]);
-  const [alunosVotantes, setAlunosVotantes] = useState([]);
-  const [alunosNaoVotantes, setalunosNaoVotantes] = useState([]);
+  const [alunos, setAlunos] = useState([] as Aluno[]);
+  const [alunosVotantes, setAlunosVotantes] = useState([] as Aluno[]);
+  const [alunosNaoVotantes, setalunosNaoVotantes] = useState([] as Aluno[]);
 
   useEffect(() => {
     const votantes = alunos.filter((alunos) => alunos.votante);

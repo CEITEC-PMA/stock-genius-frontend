@@ -77,14 +77,13 @@ export default function AtaFuncionarios() {
   const generatePDF = () => {
     // Choose the element that our invoice is rendered in.
     const element = document.getElementById("printFuncionarios");
+    if (element) {
+      // clone the element
+      var clonedElement = element.cloneNode(true) as HTMLElement;
 
-    // clone the element
-    var clonedElement = element.cloneNode(true);
+      // change display of cloned element
+      clonedElement.style.display = "block";
 
-    // change display of cloned element
-    clonedElement.style.display = "block";
-
-    if (clonedElement) {
       // Choose the clonedElement and save the PDF for our user.
       html2pdf(clonedElement);
 
