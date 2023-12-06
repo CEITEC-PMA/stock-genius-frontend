@@ -67,36 +67,13 @@ const GetContainer = ({ aluno }: { aluno: Aluno }) => {
   );
 };
 
-export default function AtaAlunosVotantes({ pagina, arrayAlunos }) {
+export default function AtaAlunosVotantes(props: {
+  pagina: number;
+  arrayAlunos: any[];
+}) {
   const { user } = useUserContext();
-  const [alunos, setAlunos] = useState<Aluno[]>([]);
 
-  console.log(arrayAlunos);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (user._id && token) {
-      const getDadosAlunos = async () => {
-        try {
-          const response = await fetch(`${apiUrl}/api/v1/aluno/`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
-          if (!response.ok) {
-            throw new Error("Failed to fetch data");
-          }
-
-          const responseJson = await response.json();
-          setAlunos(responseJson.alunos);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      };
-      getDadosAlunos();
-    }
-  }, [user._id]);
+  const { pagina, arrayAlunos } = props;
 
   const generatePDF = () => {
     const opt = {
@@ -151,7 +128,7 @@ export default function AtaAlunosVotantes({ pagina, arrayAlunos }) {
               <Typography align="center" variant="h5" sx={{ fontSize: "16px" }}>
                 Lista de Alunos-votantes - Eleição Diretores Biênio 2024/25
               </Typography>
-              {pagina.map((aluno, i) => {
+              {pagina.map((aluno: Aluno, i: number) => {
                 return <GetContainer aluno={aluno} key={`tableAluno-${i}`} />;
               })}
             </Box>

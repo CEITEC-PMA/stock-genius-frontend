@@ -58,8 +58,11 @@ const GetContainer = ({ aluno }: { aluno: Aluno }) => {
     </Grid>
   );
 };
-
-export default function AtaAlunosNaoVotantes({ pagina, arrayAlunos }) {
+export default function AtaAlunosNaoVotantes(props: {
+  pagina: number;
+  arrayAlunos: any[];
+}) {
+  const { pagina, arrayAlunos } = props;
   const { user } = useUserContext();
   const [alunos, setAlunos] = useState([] as Aluno[]);
 
@@ -122,7 +125,7 @@ export default function AtaAlunosNaoVotantes({ pagina, arrayAlunos }) {
         id={"printAlunosNaoVotantes" + pagina}
         sx={{ display: "none" }}
       >
-        {arrayAlunos.map((pagina, i) => {
+        {arrayAlunos.map((pagina: any, i: number) => {
           return (
             <Box
               key={`paginaAluno-${i}`}
@@ -142,7 +145,7 @@ export default function AtaAlunosNaoVotantes({ pagina, arrayAlunos }) {
               <Typography align="center" variant="h5" sx={{ fontSize: "16px" }}>
                 Lista de Alunos-não-votantes - Eleição Diretores Biênio 2024/25
               </Typography>
-              {pagina.map((aluno, i) => {
+              {pagina.map((aluno: Aluno, i: number) => {
                 return <GetContainer aluno={aluno} key={`tableAluno-${i}`} />;
               })}
             </Box>
