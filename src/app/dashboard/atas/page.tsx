@@ -53,17 +53,41 @@ export default function Atas() {
         <Box textAlign="center" my={8} mb={12}>
           <Typography variant="h3">ATAS DE ASSINATURA</Typography>
         </Box>
-        <Box display="flex" gap={2} mx={2}>
+        <Box
+          display="flex"
+          gap={2}
+          mx={2}
+          alignContent="center"
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="center"
+          justifyItems="center"
+        >
           <AtaFuncionarios />
           {alunosVotantes.length ? <AtaAlunosVotantes /> : null}
           {alunosNaoVotantes.length ? <AtaAlunosNaoVotantes /> : null}
         </Box>
       </Box>
-      <Box>
+      <Box
+        alignContent="center"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        justifyItems="center"
+      >
         <Box textAlign="center" my={8} mb={12}>
           <Typography variant="h3">ATAS DE RESULTADO</Typography>
         </Box>
-        <Box display="flex" gap={2} mx={2}>
+        <Box
+          display="flex"
+          gap={2}
+          mx={2}
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="center"
+          justifyItems="center"
+        >
           <Link href={"/dashboard/atas/psa"}>
             <Button
               size="large"
