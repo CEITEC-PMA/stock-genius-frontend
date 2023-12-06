@@ -90,30 +90,36 @@ export default function Atas() {
           gap={2}
           mx={2}
           alignContent="center"
-          flexDirection="row"
+          flexDirection="column"
           alignItems="center"
           justifyContent="center"
           justifyItems="center"
         >
-          <AtaFuncionarios />
-          {alunosVotantesPaginas.map((votantes, i) => {
-            return (
-              <AtaAlunosVotantes
-                key={`ata-votante-${i}`}
-                pagina={votantes.numeroPagina}
-                arrayAlunos={votantes.paginas}
-              />
-            );
-          })}
-          {alunosNaoVotantesPaginas.map((votantes, i) => {
-            return (
-              <AtaAlunosNaoVotantes
-                key={`ata-votante-${i}`}
-                pagina={votantes.numeroPagina}
-                arrayAlunos={votantes.paginas}
-              />
-            );
-          })}
+          <Box display="flex" flexDirection="row" gap={2} mx={2}>
+            <AtaFuncionarios />
+          </Box>
+          <Box display="flex" flexDirection="row" gap={2} mx={2}>
+            {alunosVotantesPaginas.map((votantes, i) => {
+              return (
+                <AtaAlunosVotantes
+                  key={`ata-votante-${i}`}
+                  pagina={votantes.numeroPagina}
+                  arrayAlunos={votantes.paginas}
+                />
+              );
+            })}
+          </Box>
+          <Box display="flex" flexDirection="row" gap={2} mx={2}>
+            {alunosNaoVotantesPaginas.map((votantes, i) => {
+              return (
+                <AtaAlunosNaoVotantes
+                  key={`ata-votante-${i}`}
+                  pagina={votantes.numeroPagina}
+                  arrayAlunos={votantes.paginas}
+                />
+              );
+            })}
+          </Box>
           {/* {alunosVotantes.length ? <AtaAlunosVotantes /> : null} */}
           {/* {alunosNaoVotantes.length ? <AtaAlunosNaoVotantes /> : null} */}
         </Box>

@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import { Aluno } from "@/utils/types/aluno.types";
-import ArticleIcon from "@mui/icons-material/Article";
+import DescriptionIcon from "@mui/icons-material/Description";
 import html2pdf from "html2pdf.js";
 
 const GetContainer = ({ aluno }: { aluno: Aluno }) => {
@@ -113,7 +113,7 @@ export default function AtaAlunosNaoVotantes({ pagina, arrayAlunos }) {
         size="large"
         variant="contained"
         onClick={generatePDF}
-        startIcon={<ArticleIcon style={{ fontSize: 48 }} />}
+        startIcon={<DescriptionIcon style={{ fontSize: 48 }} />}
         // onClick={handleAluno}
       >
         ATA DE ALUNOS NÃO VOTANTES PT {pagina + 1}

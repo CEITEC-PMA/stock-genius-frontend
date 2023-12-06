@@ -6,7 +6,7 @@ import { useUserContext } from "@/userContext";
 import { apiUrl } from "@/utils/api";
 import { Aluno } from "@/utils/types/aluno.types";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import ArticleIcon from "@mui/icons-material/Article";
+import DescriptionIcon from "@mui/icons-material/Description";
 import html2pdf from "html2pdf.js";
 
 const GetContainer = ({ aluno }: { aluno: Aluno }) => {
@@ -125,7 +125,7 @@ export default function AtaAlunosVotantes({ pagina, arrayAlunos }) {
         size="large"
         variant="contained"
         onClick={generatePDF}
-        startIcon={<ArticleIcon style={{ fontSize: 48 }} />}
+        startIcon={<DescriptionIcon style={{ fontSize: 48 }} />}
         // onClick={handleAluno}
       >
         ATA DE ALUNOS VOTANTES pt {pagina + 1}
