@@ -76,7 +76,7 @@ export default function AtaFuncionarios() {
 
   const generatePDF = () => {
     // Choose the element that our invoice is rendered in.
-    const element = document.getElementById("print");
+    const element = document.getElementById("printFuncionarios");
 
     // clone the element
     var clonedElement = element.cloneNode(true);
@@ -103,7 +103,7 @@ export default function AtaFuncionarios() {
       >
         ATA DE FUNCIONÁRIOS
       </Button>
-      <Container id={"print"} sx={{ display: "none" }}>
+      <Container id={"printFuncionarios"} sx={{ display: "none" }}>
         {arrayFuncionarios.map((pagina, i) => {
           return (
             <Box

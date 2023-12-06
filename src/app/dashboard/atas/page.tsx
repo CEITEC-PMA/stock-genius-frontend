@@ -1,12 +1,52 @@
+"use client";
 import { Box, Button, Typography } from "@mui/material";
 import DescriptionIcon from "@mui/icons-material/Description";
 import ArticleIcon from "@mui/icons-material/Article";
 import DocumentScannerIcon from "@mui/icons-material/DocumentScanner";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import AtaFuncionarios from "./funcionarios/page";
+import AtaAlunosNaoVotantes from "./alunosNaoVotantes/page";
+import AtaAlunosVotantes from "./alunosVotantes/page";
+import { apiUrl } from "@/utils/api";
+import { useUserContext } from "@/userContext";
 
 export default function Atas() {
+  const { user } = useUserContext();
+
+  const [alunos, setAlunos] = useState([]);
+  const [alunosVotantes, setAlunosVotantes] = useState([]);
+  const [alunosNaoVotantes, setalunosNaoVotantes] = useState([]);
+
+  useEffect(() => {
+    const votantes = alunos.filter((alunos) => alunos.votante);
+    const naoVotantes = alunos.filter((alunos) => !alunos.votante);
+    setAlunosVotantes(votantes);
+    setalunosNaoVotantes(naoVotantes);
+  }, [alunos]);
+
+  useEffect(() => {
+    //fetch
+    const token = localStorage.getItem("token");
+    if (user._id) {
+      const getDadosAlunos = async () => {
+        const response = await fetch(`${apiUrl}/api/v1/aluno/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const responseJson = await response.json();
+
+        setAlunos(responseJson.alunos);
+        return response;
+      };
+      getDadosAlunos();
+    }
+  }, [user._id]);
   return (
     <Box>
       <Box>
@@ -15,26 +55,8 @@ export default function Atas() {
         </Box>
         <Box display="flex" gap={2} mx={2}>
           <AtaFuncionarios />
-          <Link href={"/dashboard/atas/alunosNaoVotantes"}>
-            <Button
-              size="large"
-              variant="contained"
-              startIcon={<ArticleIcon style={{ fontSize: 48 }} />}
-              // onClick={handleAluno}
-            >
-              ATA DE ALUNOS NÃO VOTANTES
-            </Button>
-          </Link>
-          <Link href={"/dashboard/atas/alunosVotantes"}>
-            <Button
-              size="large"
-              variant="contained"
-              startIcon={<ArticleIcon style={{ fontSize: 48 }} />}
-              // onClick={handleAluno}
-            >
-              ATA DE ALUNOS VOTANTES
-            </Button>
-          </Link>
+          {alunosVotantes.length ? <AtaAlunosVotantes /> : null}
+          {alunosNaoVotantes.length ? <AtaAlunosNaoVotantes /> : null}
         </Box>
       </Box>
       <Box>
