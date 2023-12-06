@@ -4,6 +4,7 @@ import ArticleIcon from "@mui/icons-material/Article";
 import DocumentScannerIcon from "@mui/icons-material/DocumentScanner";
 import React from "react";
 import Link from "next/link";
+import AtaFuncionarios from "./funcionarios/page";
 
 export default function Atas() {
   return (
@@ -13,15 +14,7 @@ export default function Atas() {
           <Typography variant="h3">ATAS DE ASSINATURA</Typography>
         </Box>
         <Box display="flex" gap={2} mx={2}>
-          <Link href={"/dashboard/atas/funcionarios"}>
-            <Button
-              size="large"
-              variant="contained"
-              startIcon={<DescriptionIcon style={{ fontSize: 48 }} />}
-            >
-              ATA DE FUNCIONÁRIOS
-            </Button>
-          </Link>
+          <AtaFuncionarios />
           <Link href={"/dashboard/atas/alunosNaoVotantes"}>
             <Button
               size="large"

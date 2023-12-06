@@ -7,21 +7,24 @@ import { apiUrl } from "@/utils/api";
 import { Funcionario } from "@/utils/types/funcionario.types";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import html2pdf from "html2pdf.js";
+import DescriptionIcon from "@mui/icons-material/Description";
 
 const GetContainer = ({ funcionario }: { funcionario: Funcionario }) => {
   return (
-    <Grid my={5} padding={2} container sx={{ border: "1px solid black" }}>
+    <Grid my={0.1} padding={0.5} container sx={{ border: "1px solid black" }}>
       <Grid item xs={12}>
-        <Typography textAlign="center">
+        <Typography textAlign="center" fontSize={"12px"}>
           {funcionario?.nome} - {funcionario.cargo}
         </Typography>
       </Grid>
       <Grid item container my={1}>
         <Grid item xs={12}>
-          <Typography textAlign="center">
+          <Typography textAlign="center" fontSize={"12px"}>
             ______________________________________
           </Typography>
-          <Typography textAlign="center">Assinatura Servidor</Typography>
+          <Typography textAlign="center" fontSize={"12px"}>
+            Assinatura Servidor
+          </Typography>
         </Grid>
       </Grid>
     </Grid>
@@ -31,6 +34,20 @@ const GetContainer = ({ funcionario }: { funcionario: Funcionario }) => {
 export default function AtaFuncionarios() {
   const { user } = useUserContext();
   const [funcionarios, setFuncionarios] = useState<Funcionario[]>([]);
+
+  const funcionariosProcessar = [...funcionarios];
+
+  const quantPaginas = Math.ceil(funcionariosProcessar.length / 12);
+  const arrayFuncionarios = [];
+
+  for (let i = 0; i < quantPaginas; i++) {
+    const arrayNovo = funcionariosProcessar.slice(0, 12);
+    arrayFuncionarios.push(arrayNovo);
+    funcionariosProcessar.splice(0, 12);
+  }
+
+  console.log(funcionarios);
+  console.log(arrayFuncionarios);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -58,46 +75,64 @@ export default function AtaFuncionarios() {
   }, [user._id]);
 
   const generatePDF = () => {
+    // Choose the element that our invoice is rendered in.
     const element = document.getElementById("print");
-    if (element) {
-      html2pdf(element);
+
+    // clone the element
+    var clonedElement = element.cloneNode(true);
+
+    // change display of cloned element
+    clonedElement.style.display = "block";
+
+    if (clonedElement) {
+      // Choose the clonedElement and save the PDF for our user.
+      html2pdf(clonedElement);
+
+      // remove cloned element
+      clonedElement.remove();
     }
   };
 
   return (
     <div>
-      <Grid container>
-        <Grid item xs={12}>
-          <Typography variant="h4" align="center">
-            Lista de Funcionários
-          </Typography>
-          <Button onClick={generatePDF}>
-            <PictureAsPdfIcon
-              sx={{ color: "#b30b00", marginRight: "20px", fontSize: 48 }}
-            />
-          </Button>
-        </Grid>
-      </Grid>
-      <Container id={"print"}>
-        <Box sx={{ pageBreakAfter: "always" }}>
-          <Container sx={{ textAlign: "center", marginBottom: 5 }}>
-            <Image
-              src="https://cdn.anapolis.go.gov.br/img/logos/sem_fundo/azuis/educacao.png"
-              alt="logo"
-              height={50}
-              width={250}
-            />
-          </Container>
-          <Typography align="center" variant="h5">
-            {user.nome}
-          </Typography>
-          <Typography align="center" variant="h5">
-            Lista de Funcionários - Eleição Diretores Biênio 2024/25
-          </Typography>
-          {funcionarios.map((funcionario, i) => (
-            <GetContainer funcionario={funcionario} key={`tableFunc-${i}`} />
-          ))}
-        </Box>
+      <Button
+        size="large"
+        onClick={generatePDF}
+        variant="contained"
+        startIcon={<DescriptionIcon style={{ fontSize: 48 }} />}
+      >
+        ATA DE FUNCIONÁRIOS
+      </Button>
+      <Container id={"print"} sx={{ display: "none" }}>
+        {arrayFuncionarios.map((pagina, i) => {
+          return (
+            <Box
+              key={`pagefuncionario-${i}`}
+              sx={{ pageBreakAfter: "always", padding: 1 }}
+            >
+              <Container sx={{ textAlign: "center" }}>
+                <Image
+                  src="https://cdn.anapolis.go.gov.br/img/logos/sem_fundo/azuis/educacao.png"
+                  alt="logo"
+                  height={50}
+                  width={250}
+                />
+              </Container>
+              <Typography align="center" fontSize={"16px"}>
+                {user.nome}
+              </Typography>
+              <Typography align="center" fontSize={"16px"}>
+                Lista de Funcionários - Eleição Diretores Biênio 2024/25
+              </Typography>
+              {pagina.map((funcionario, i) => (
+                <GetContainer
+                  funcionario={funcionario}
+                  key={`tableFunc-${i}`}
+                />
+              ))}
+            </Box>
+          );
+        })}
       </Container>
     </div>
   );
