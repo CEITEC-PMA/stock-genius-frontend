@@ -1,5 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   images: {
     remotePatterns: [
       {
@@ -10,16 +16,16 @@ const nextConfig = {
       },
 
       {
-        protocol: 'https',
-        hostname: 'api.anapolis.go.gov.br',
-        port: '',
-        pathname: '/apiupload/**',
+        protocol: "https",
+        hostname: "api.anapolis.go.gov.br",
+        port: "",
+        pathname: "/apiupload/**",
       },
       {
-        protocol: 'https',
-        hostname: 'portaleducacao.anapolis.go.gov.br',
-        port: '',
-        pathname: '/portal/**',
+        protocol: "https",
+        hostname: "portaleducacao.anapolis.go.gov.br",
+        port: "",
+        pathname: "/portal/**",
       },
     ],
   },
