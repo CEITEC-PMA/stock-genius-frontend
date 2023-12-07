@@ -223,7 +223,7 @@ export default function Quorum() {
 
                 <div id="content-id">
 
-                    <Box display="flex" flexDirection="column" component={Paper}>
+                    <Box display="flex" flexDirection="column" component={Paper} mx={1}>
 
                         <Box textAlign='center' mt={2} >
                             <Image
@@ -258,7 +258,7 @@ export default function Quorum() {
                             </Typography>
                         </Box>
 
-                        <Box mt={1} component={Paper} textAlign='center' >
+                        <Box mt={1} component={Paper} textAlign='center' mx={1}  >
 
                             <TabelaQuorumComparecimento
                                 qtdAlunosConstantes={qtdAlunosConstantes}
