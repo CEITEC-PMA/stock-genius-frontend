@@ -31,7 +31,7 @@ export default function TabelaQuorumComparecimento({
     qtdFuncionarosCompareceram
 }: ITabelaQuorumComparecimento) {
 
-    console.log(qtdRespAlunosVotantesConstantes)
+    console.log(qtdAlunosCompareceram)
 
     return (
         <Table sx={{ border: '1px solid black' }}>
@@ -58,7 +58,7 @@ export default function TabelaQuorumComparecimento({
 
                 <TableRow>
 
-                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}><Typography> {qtdAlunosConstantes} de {qtdAlunosCompareceram}</Typography> </TableCell>
+                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}><Typography>{qtdAlunosCompareceram} de {qtdAlunosConstantes}</Typography> </TableCell>
                     <TableCell sx={{
                         border: '1px solid black', textAlign: 'center',
                         bgcolor: ((qtdAlunosCompareceram / qtdAlunosConstantes * 100) < 50) ? 'red' : 'white',
