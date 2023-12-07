@@ -16,9 +16,10 @@ import generatePDF, { Resolution, Margin, Options } from 'react-to-pdf';
 import { Box, Button, Container, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import { resultadoVoto } from '@/utils/resultado.eleicao.mock';
 import Link from 'next/link';
-import { resultadoVotoTypes } from '@/utils/types/result.eleicao.types';
+//import { resultadoVotoTypes } from '@/utils/types/resultadoVotosEleicaoTypes';
 import TabelaMembros from '@/components/tabelas/tabelaMembros';
 import TabelaEleitores from '@/components/tabelas/TabelaEleitores';
+import { resultadoVotosEleicaoTypes } from '@/utils/types/resultadoVotosEleicaoTypes';
 
 
 
@@ -26,7 +27,7 @@ export default function Psa() {
 
 
 
-    const [resultadoVoto, setResultadoVoto] = useState<resultadoVotoTypes>({} as resultadoVotoTypes)
+    const [resultadoVoto, setResultadoVoto] = useState<resultadoVotosEleicaoTypes>({} as resultadoVotosEleicaoTypes)
     const [isLoading, setIsloading] = useState(true);
     const { user } = useUserContext();
 

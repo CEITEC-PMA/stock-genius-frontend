@@ -64,6 +64,8 @@ const percentualVotos = (qtdeVotos: NumerosVotacao) => {
 
   const arrayDeCandidatos = Object.keys(votosAlunos);
 
+  //console.log(arrayDeCandidatos)
+
   const qtdeVotosCandidato = arrayDeCandidatos.map((candidato) => {
     const qtdeVotosRespAlunosVotantes = votosRespAlunosVotantes[candidato] || 0;
     const qtdeVotosRespAlunosNaoVotantes =
@@ -75,6 +77,14 @@ const percentualVotos = (qtdeVotos: NumerosVotacao) => {
       qtdeVotosRespAlunosNaoVotantes +
       qtdeVotosAlunos +
       qtdeVotosRespAlunosVotantes;
+
+
+    const somaPaisAlunosFuncionarios = somaPaisAlunos + qtdeVotosFuncionarios
+
+    const percentualAlunos = qtdeVotos.alunosVotaram > 0 ? ((qtdeVotosAlunos * 50) / qtdeVotos.quantidadeAlunosVotantes) : 0;
+
+    const percentualRespAlunosNaoVotantes = qtdeVotos.quantidadeAlunosNaoVotantes > 0 ? ((qtdeVotosRespAlunosNaoVotantes * 50) / qtdeVotos.quantidadeAlunosNaoVotantes) : 0;
+    console.log(percentualAlunos)
 
     const percentualRespAlunos =
       (somaPaisAlunos * 50) /
@@ -94,7 +104,12 @@ const percentualVotos = (qtdeVotos: NumerosVotacao) => {
       candidato,
       somaPaisAlunos,
       qtdeVotosFuncionarios,
+      percentualAlunos,
       percentualTotal,
+      percentualRespAlunosNaoVotantes,
+      somaPaisAlunosFuncionarios,
+      qtdeVotosRespAlunosVotantes,
+      qtdeVotosRespAlunosNaoVotantes,
     };
   });
   return qtdeVotosCandidato;
