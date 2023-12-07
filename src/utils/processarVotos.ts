@@ -1,42 +1,6 @@
-import { ResultadoVoto } from "./types/resultado.types";
+import { NumerosVotacao } from "./types/numerosVotacao.type";
 
-const qtdeVotos = {
-  quantidadeAlunosVotantes: 100,
-  quantidadeAlunosNaoVotantes: 100,
-  quantidadeFuncionarios: 100,
-  alunosVotaram: 100,
-  funcionariosVotaram: 49,
-  respAlunosVotantesVotaram: 100,
-  respAlunosNaoVotantesVotaram: 100,
-  votos: {
-    votosRespAlunosVotantes: {
-      candidato_um: 35,
-      candidato_dois: 50,
-      branco: 10,
-      nulo: 5,
-    },
-    votosRespAlunosNaoVotantes: {
-      candidato_um: 25,
-      candidato_dois: 50,
-      branco: 15,
-      nulo: 10,
-    },
-    votosAlunos: {
-      candidato_um: 40,
-      candidato_dois: 50,
-      branco: 6,
-      nulo: 4,
-    },
-    votosFuncionarios: {
-      candidato_um: 40,
-      candidato_dois: 50,
-      branco: 7,
-      nulo: 3,
-    },
-  },
-};
-
-export const passouQuorum = (qtdeVotos: ResultadoVoto) => {
+const passouQuorum = (qtdeVotos: NumerosVotacao) => {
   const {
     quantidadeFuncionarios,
     funcionariosVotaram,
@@ -69,15 +33,15 @@ export const passouQuorum = (qtdeVotos: ResultadoVoto) => {
 
   if (!quorumFunc.result) {
     resultGeral = false;
-    quorunsNaoAtingidos.push("Quórum de funcionários não atingido.");
+    quorunsNaoAtingidos.push("Quórum de funcionários não atingido");
   }
   if (!quorumAlunos.result) {
     resultGeral = false;
-    quorunsNaoAtingidos.push("Quórum de alunos não atingido.");
+    quorunsNaoAtingidos.push("Quórum de alunos não atingido");
   }
   if (!quorumPais.result) {
     resultGeral = false;
-    quorunsNaoAtingidos.push("Quórum de pais/responsáveis não atingido.");
+    quorunsNaoAtingidos.push("Quórum de pais/responsáveis não atingido");
   }
 
   return {
@@ -89,7 +53,7 @@ export const passouQuorum = (qtdeVotos: ResultadoVoto) => {
   };
 };
 
-export const percentualVotos = (qtdeVotos: ResultadoVoto) => {
+const percentualVotos = (qtdeVotos: NumerosVotacao) => {
   const { votos } = qtdeVotos;
   const {
     votosRespAlunosVotantes,
@@ -103,11 +67,11 @@ export const percentualVotos = (qtdeVotos: ResultadoVoto) => {
   //console.log(arrayDeCandidatos)
 
   const qtdeVotosCandidato = arrayDeCandidatos.map((candidato) => {
-
-    const qtdeVotosRespAlunosVotantes = votosRespAlunosVotantes[candidato];
-    const qtdeVotosRespAlunosNaoVotantes = votosRespAlunosNaoVotantes[candidato];
-    const qtdeVotosAlunos = votosAlunos[candidato];
-    const qtdeVotosFuncionarios = votosFuncionarios[candidato];
+    const qtdeVotosRespAlunosVotantes = votosRespAlunosVotantes[candidato] || 0;
+    const qtdeVotosRespAlunosNaoVotantes =
+      votosRespAlunosNaoVotantes[candidato] || 0;
+    const qtdeVotosAlunos = votosAlunos[candidato] || 0;
+    const qtdeVotosFuncionarios = votosFuncionarios[candidato] || 0;
 
     const somaPaisAlunos =
       qtdeVotosRespAlunosNaoVotantes +
@@ -134,9 +98,10 @@ export const percentualVotos = (qtdeVotos: ResultadoVoto) => {
     const percentualTotal = percentualRespAlunos + percentualFunc;
 
     return {
-      //candidato,
       qtdeVotosAlunos,
-      percentualFunc,
+      qtdeVotosRespAlunosVotantes,
+      qtdeVotosRespAlunosNaoVotantes,
+      candidato,
       somaPaisAlunos,
       qtdeVotosFuncionarios,
       percentualAlunos,
@@ -150,9 +115,7 @@ export const percentualVotos = (qtdeVotos: ResultadoVoto) => {
   return qtdeVotosCandidato;
 };
 
-console.log(percentualVotos)
-
-export const resultadoFinal = (qtdeVotos: ResultadoVoto) => {
+export const resultadoFinal = (qtdeVotos: NumerosVotacao) => {
   const confirmaQuorum = passouQuorum(qtdeVotos);
   const confirmaPercentual = percentualVotos(qtdeVotos);
 
@@ -167,17 +130,16 @@ export const resultadoFinal = (qtdeVotos: ResultadoVoto) => {
 
   const initialValue = 0;
   const somaPercentualCandidatos = candidatosDisputando.reduce(
-    (accumulator, currentValue) => accumulator + currentValue.percentualTotal,
+    (accumulator, currentValue) =>
+      accumulator + (currentValue.percentualTotal || 0),
     initialValue
   );
-
-  let totalSoma = false;
 
   if (somaPercentualCandidatos <= 50) {
     candidatoApto = false;
     motivosIndeferimento.push({
       tipo: "Percentual",
-      motivos: ["Percentual não atingido."],
+      motivos: ["Percentual mínimo não atingido"],
     });
   }
 
@@ -188,10 +150,9 @@ export const resultadoFinal = (qtdeVotos: ResultadoVoto) => {
       motivos: confirmaQuorum.quorunsNaoAtingidos,
     });
   }
+  let percentualMaior = 0;
 
   if (confirmaQuorum.resultGeral && somaPercentualCandidatos > 50) {
-    let percentualMaior = 0;
-
     confirmaPercentual.forEach((percentual) => {
       if (percentual.percentualTotal > percentualMaior) {
         percentualMaior = percentual.percentualTotal;
@@ -199,7 +160,12 @@ export const resultadoFinal = (qtdeVotos: ResultadoVoto) => {
       }
     });
   }
-  return { candidatoApto, candidatoEleito, motivosIndeferimento };
+  return {
+    confirmaQuorum,
+    confirmaPercentual,
+    candidatoApto,
+    candidatoEleito,
+    percentualMaior,
+    motivosIndeferimento,
+  };
 };
-
-// console.log(JSON.stringify(resultadoFinal(qtdeVotos)));

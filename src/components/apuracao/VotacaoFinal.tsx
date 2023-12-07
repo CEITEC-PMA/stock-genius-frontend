@@ -1,10 +1,9 @@
-"use client";
-import { apiUrl } from "@/utils/api";
-import { colors, colors1 } from "@/utils/colors";
+import { colors } from "@/utils/colors";
 import { Candidato } from "@/utils/types/candidato.types";
 import { NumerosVotacao } from "@/utils/types/numerosVotacao.type";
 import { ResultadoFinalEleicao } from "@/utils/types/resultadoFinal.types";
-import React, { useEffect, useState } from "react";
+import { Typography } from "@mui/material";
+import React from "react";
 import {
   Cell,
   Legend,
@@ -15,7 +14,12 @@ import {
   Tooltip,
 } from "recharts";
 
-export default function VotacaoFuncionarios(props: {
+type MotivoRenderizado = {
+  tipo: string;
+  motivos: string[];
+};
+
+export default function VotacaoFinal(props: {
   candidatos: Candidato[];
   numerosVotacao: NumerosVotacao;
   resultadoEleicao: ResultadoFinalEleicao;
@@ -24,23 +28,9 @@ export default function VotacaoFuncionarios(props: {
   const { numerosVotacao } = props;
   const { resultadoEleicao } = props;
 
-  const data01 = [
-    {
-      name: "Funcionários que não votaram",
-      value:
-        numerosVotacao.quantidadeFuncionarios -
-        numerosVotacao.funcionariosVotaram,
-    },
-    {
-      name: "Funcionários que já votaram",
-      value: numerosVotacao.funcionariosVotaram,
-    },
-  ];
-
-  const data02 = candidatos.map((candidato, i) => {
+  const data01 = candidatos.map((candidato, i) => {
     const votosCandidato =
-      (resultadoEleicao?.confirmaPercentual[i].qtdeVotosFuncionarios * 100) /
-      numerosVotacao.funcionariosVotaram;
+      resultadoEleicao?.confirmaPercentual[i].percentualTotal;
 
     const votosCandidatoArredondado = parseFloat(votosCandidato.toFixed(2));
     const nomeCandidato = resultadoEleicao?.confirmaPercentual[i].candidato;
@@ -51,13 +41,36 @@ export default function VotacaoFuncionarios(props: {
     };
   });
 
+  let motivosRenderizados: MotivoRenderizado[] = [];
+
+  if (
+    resultadoEleicao.hasOwnProperty("motivosIndeferimento") &&
+    Array.isArray(resultadoEleicao.motivosIndeferimento) &&
+    resultadoEleicao.motivosIndeferimento.length > 0
+  ) {
+    motivosRenderizados = resultadoEleicao.motivosIndeferimento.map(
+      (motivo) => {
+        const tipo = motivo.tipo;
+        const motivos = motivo.motivos;
+
+        return {
+          tipo,
+          motivos,
+        };
+      }
+    );
+  }
+
   return (
     <ResponsiveContainer width="100%" height="100%">
       <div
         style={{
           display: "flex",
+          flexDirection: "column",
           justifyContent: "space-around",
           alignContent: "center",
+          justifyItems: "center",
+          alignItems: "center",
         }}
       >
         <div
@@ -68,9 +81,9 @@ export default function VotacaoFuncionarios(props: {
           }}
         >
           <Text x={0} y={15} width={300} textAnchor="middle">
-            Total de Funcionários
+            Total geral de votos (%)
           </Text>
-          <PieChart width={400} height={400}>
+          <PieChart width={380} height={380}>
             <Pie
               data={data01}
               dataKey="value"
@@ -81,38 +94,6 @@ export default function VotacaoFuncionarios(props: {
               label
             >
               {data01.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={colors1[index % colors.length]}
-                />
-              ))}
-            </Pie>
-            <Legend verticalAlign="bottom" height={36} />
-            <Tooltip formatter={(value, name, props) => [value, name]} />
-          </PieChart>
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Text x={0} y={15} width={300} textAnchor="middle">
-            Votos dos funcionários (%)
-          </Text>
-          <PieChart width={400} height={400}>
-            <Pie
-              data={data02}
-              dataKey="value"
-              cx="50%"
-              cy="50%"
-              outerRadius={100}
-              fill="#8884d8"
-              label
-            >
-              {data02.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
                   fill={colors[index % colors.length]}
@@ -127,6 +108,27 @@ export default function VotacaoFuncionarios(props: {
               ]}
             />
           </PieChart>
+        </div>
+        <div style={{ marginTop: "10px" }}>
+          {resultadoEleicao.candidatoApto && (
+            <Typography>
+              Com {resultadoEleicao.percentualMaior.toFixed(2)}% dos votos, o/a
+              candidato(a) vencedor foi {resultadoEleicao.candidatoEleito}!
+            </Typography>
+          )}
+          {!resultadoEleicao.candidatoApto && (
+            <Typography>
+              A eleição não teve um candidato apto a vencê-la. Estes foram os
+              motivos:{" "}
+              {motivosRenderizados.map((motivo, index) => (
+                <React.Fragment key={index}>
+                  <span>{motivo.tipo}: </span>
+                  <span>{motivo.motivos.join(", ")}</span>
+                  <br />
+                </React.Fragment>
+              ))}
+            </Typography>
+          )}
         </div>
       </div>
     </ResponsiveContainer>

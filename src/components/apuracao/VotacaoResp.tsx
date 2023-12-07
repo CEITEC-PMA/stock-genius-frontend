@@ -1,6 +1,8 @@
 "use client";
+import { colors, colors1 } from "@/utils/colors";
 import { Candidato } from "@/utils/types/candidato.types";
-import { ResultadoVoto } from "@/utils/types/resultado.types";
+import { NumerosVotacao } from "@/utils/types/numerosVotacao.type";
+import { ResultadoFinalEleicao } from "@/utils/types/resultadoFinal.types";
 import React from "react";
 import {
   Cell,
@@ -14,116 +16,68 @@ import {
 
 export default function VotacaoResp(props: {
   candidatos: Candidato[];
-  resultadoVoto: ResultadoVoto;
+  numerosVotacao: NumerosVotacao;
+  resultadoEleicao: ResultadoFinalEleicao;
 }) {
   const { candidatos } = props;
-  const { resultadoVoto } = props;
+  const { numerosVotacao } = props;
+  const { resultadoEleicao } = props;
 
   const data01 = [
     {
-      name: "Alunos que não votaram",
+      name: "Responsáveis de alunos-não-votantes que não votaram",
       value:
-        resultadoVoto.quantidadeAlunosVotantes - resultadoVoto.alunosVotaram,
+        numerosVotacao.quantidadeAlunosNaoVotantes -
+        numerosVotacao.respAlunosNaoVotantesVotaram,
     },
     {
-      name: "Alunos que já votaram",
-      value: resultadoVoto.alunosVotaram,
+      name: "Responsáveis de alunos-não-votantes que já votaram",
+      value: numerosVotacao.respAlunosNaoVotantesVotaram,
     },
   ];
 
-  const data02 = [
-    {
-      name: `${candidatos[0]?.nome}`,
-      value: parseFloat(
-        (
-          (resultadoVoto.votos.votosAlunos.candidato_um * 100) /
-          resultadoVoto.alunosVotaram
-        ).toFixed(2)
-      ),
-    },
-    {
-      name: `${candidatos[1]?.nome}`,
-      value: parseFloat(
-        (
-          (resultadoVoto.votos.votosAlunos.candidato_dois * 100) /
-          resultadoVoto.alunosVotaram
-        ).toFixed(2)
-      ),
-    },
-    {
-      name: `${candidatos[2]?.nome}`,
-      value: parseFloat(
-        (
-          (resultadoVoto.votos.votosAlunos.branco * 100) /
-          resultadoVoto.alunosVotaram
-        ).toFixed(2)
-      ),
-    },
-    {
-      name: `${candidatos[3]?.nome}`,
-      value: parseFloat(
-        (
-          (resultadoVoto.votos.votosAlunos.nulo * 100) /
-          resultadoVoto.alunosVotaram
-        ).toFixed(2)
-      ),
-    },
-  ];
+  const data02 = candidatos.map((candidato, i) => {
+    const votosCandidato =
+      (resultadoEleicao?.confirmaPercentual[i].qtdeVotosRespAlunosNaoVotantes *
+        100) /
+      numerosVotacao.respAlunosNaoVotantesVotaram;
+
+    const votosCandidatoArredondado = parseFloat(votosCandidato.toFixed(2));
+    const nomeCandidato = resultadoEleicao?.confirmaPercentual[i].candidato;
+
+    return {
+      name: nomeCandidato,
+      value: votosCandidatoArredondado,
+    };
+  });
 
   const data03 = [
     {
-      name: "Pais de alunos-não-votantes que não votaram",
+      name: "Responsáveis de alunos-votantes que não votaram",
       value:
-        resultadoVoto.quantidadeAlunosVotantes -
-        resultadoVoto.respAlunosVotantesVotaram,
+        numerosVotacao.quantidadeAlunosVotantes -
+        numerosVotacao.respAlunosVotantesVotaram,
     },
     {
-      name: "Pais de alunos-não-votantes que já votaram",
-      value: resultadoVoto.respAlunosVotantesVotaram,
+      name: "Responsáveis de alunos-votantes que já votaram",
+      value: numerosVotacao.respAlunosVotantesVotaram,
     },
   ];
 
-  const data04 = [
-    {
-      name: `${candidatos[0]?.nome}`,
-      value: parseFloat(
-        (
-          (resultadoVoto.votos.votosRespAlunosVotantes.candidato_um * 100) /
-          resultadoVoto.respAlunosVotantesVotaram
-        ).toFixed(2)
-      ),
-    },
-    {
-      name: `${candidatos[1]?.nome}`,
-      value: parseFloat(
-        (
-          (resultadoVoto.votos.votosRespAlunosVotantes.candidato_dois * 100) /
-          resultadoVoto.respAlunosVotantesVotaram
-        ).toFixed(2)
-      ),
-    },
-    {
-      name: `${candidatos[2]?.nome}`,
-      value: parseFloat(
-        (
-          (resultadoVoto.votos.votosRespAlunosVotantes.branco * 100) /
-          resultadoVoto.respAlunosVotantesVotaram
-        ).toFixed(2)
-      ),
-    },
-    {
-      name: `${candidatos[3]?.nome}`,
-      value: parseFloat(
-        (
-          (resultadoVoto.votos.votosRespAlunosVotantes.nulo * 100) /
-          resultadoVoto.respAlunosVotantesVotaram
-        ).toFixed(2)
-      ),
-    },
-  ];
+  const data04 = candidatos.map((candidato, i) => {
+    const votosCandidato =
+      (resultadoEleicao?.confirmaPercentual[i].qtdeVotosRespAlunosVotantes *
+        100) /
+      numerosVotacao.respAlunosVotantesVotaram;
 
-  const colors = ["#8884d8", "#83a6ed", "#8dd1e1", "#82ca9d", "#a4de6c"];
-  const colors2 = ["#F4DEB2", "#227487", "#4EA3B7", "#104A57", "#00A9B5"];
+    const votosCandidatoArredondado = parseFloat(votosCandidato.toFixed(2));
+    const nomeCandidato = resultadoEleicao?.confirmaPercentual[i].candidato;
+
+    return {
+      name: nomeCandidato,
+      value: votosCandidatoArredondado,
+    };
+  });
 
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -142,9 +96,9 @@ export default function VotacaoResp(props: {
           }}
         >
           <Text x={0} y={15} width={300} textAnchor="middle">
-            Total de pais de alunos votantes
+            Total de responsáveis de alunos-não-votantes
           </Text>
-          <PieChart width={400} height={400}>
+          <PieChart width={380} height={380}>
             <Pie
               data={data01}
               dataKey="value"
@@ -157,7 +111,7 @@ export default function VotacaoResp(props: {
               {data01.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
-                  fill={colors[index % colors.length]}
+                  fill={colors1[index % colors.length]}
                 />
               ))}
             </Pie>
@@ -174,41 +128,9 @@ export default function VotacaoResp(props: {
           }}
         >
           <Text x={0} y={15} width={300} textAnchor="middle">
-            Total de pais de alunos-não-votantes
+            Votos dos responsáveis de alunos-não-votantes (%)
           </Text>
-          <PieChart width={400} height={400}>
-            <Pie
-              data={data03}
-              dataKey="value"
-              cx="50%"
-              cy="50%"
-              outerRadius={100}
-              fill="#8884d8"
-              label
-            >
-              {data03.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={colors2[index % colors2.length]}
-                />
-              ))}
-            </Pie>
-            <Legend verticalAlign="bottom" height={36} />
-            <Tooltip formatter={(value, name, props) => [value, name]} />
-          </PieChart>
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Text x={0} y={15} width={300} textAnchor="middle">
-            Votos dos pais de alunos votantes (%)
-          </Text>
-          <PieChart width={400} height={400}>
+          <PieChart width={380} height={380}>
             <Pie
               data={data02}
               dataKey="value"
@@ -235,42 +157,78 @@ export default function VotacaoResp(props: {
           </PieChart>
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Text x={0} y={15} width={300} textAnchor="middle">
-            Votos dos pais de alunos-não-votantes (%)
-          </Text>
-          <PieChart width={400} height={400}>
-            <Pie
-              data={data04}
-              dataKey="value"
-              cx="50%"
-              cy="50%"
-              outerRadius={100}
-              fill="#8884d8"
-              label
+        {numerosVotacao.quantidadeAlunosVotantes !== 0 && (
+          <>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
             >
-              {data04.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={colors2[index % colors2.length]}
+              <Text x={0} y={15} width={300} textAnchor="middle">
+                Total de responsáveis de alunos-votantes
+              </Text>
+              <PieChart width={380} height={380}>
+                <Pie
+                  data={data03}
+                  dataKey="value"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={100}
+                  fill="#8884d8"
+                  label
+                >
+                  {data03.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={colors1[index % colors1.length]}
+                    />
+                  ))}
+                </Pie>
+                <Legend verticalAlign="bottom" height={36} />
+                <Tooltip formatter={(value, name, props) => [value, name]} />
+              </PieChart>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Text x={0} y={15} width={300} textAnchor="middle">
+                Votos dos responsáveis de alunos-votantes (%)
+              </Text>
+              <PieChart width={380} height={380}>
+                <Pie
+                  data={data04}
+                  dataKey="value"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={100}
+                  fill="#8884d8"
+                  label
+                >
+                  {data04.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={colors[index % colors.length]}
+                    />
+                  ))}
+                </Pie>
+                <Legend verticalAlign="bottom" height={36} />
+                <Tooltip
+                  formatter={(value, name, props) => [
+                    `${Number(value).toFixed(2)}%`,
+                    name,
+                  ]}
                 />
-              ))}
-            </Pie>
-            <Legend verticalAlign="bottom" height={36} />
-            <Tooltip
-              formatter={(value, name, props) => [
-                `${Number(value).toFixed(2)}%`,
-                name,
-              ]}
-            />
-          </PieChart>
-        </div>
+              </PieChart>
+            </div>
+          </>
+        )}
       </div>
     </ResponsiveContainer>
   );

@@ -11,10 +11,10 @@ import useTimeCheck from "@/hooks/useTimeCheck";
 import GroupIcon from "@mui/icons-material/Group";
 import HowToVoteIcon from "@mui/icons-material/HowToVote";
 import PollIcon from "@mui/icons-material/Poll";
-import ReplyIcon from '@mui/icons-material/Reply';
-import DescriptionIcon from '@mui/icons-material/Description';
+import ReplyIcon from "@mui/icons-material/Reply";
+import DescriptionIcon from "@mui/icons-material/Description";
 import BadgeIcon from "@mui/icons-material/Badge";
-
+import { usePathname } from "next/navigation";
 
 //import { mainListItems } from "./ListItems";
 interface DrawerProps {
@@ -29,6 +29,7 @@ export default function DrawerComponent({
   drawerWidth,
 }: DrawerProps) {
   const { user } = useUserContext();
+  const pathname = usePathname();
   const Drawer = styled(MuiDrawer, {
     shouldForwardProp: (prop) => prop !== "open",
   })(({ theme, open }) => ({
@@ -79,52 +80,79 @@ export default function DrawerComponent({
           <ListItems
             label="Registrar Candidato"
             icon={<PersonAddAlt1 />}
-            to="/dashboard/funcionarios"
+            to="/dashboard/candidato/register"
+            isActive={pathname === "/dashboard/candidato/register"}
           />
         )}
 
-        <ListItems
+        {/* <ListItems
           label="Liberar voto"
           icon={<HowToVoteIcon />}
           to="/dashboard/liberavoto"
-        />
+          isActive={
+            pathname === "/dashboard/liberavoto" ||
+            pathname.startsWith("/dashboard/votacao")
+          }
+        /> */}
 
         <ListItems
           label="Lista de Candidatos"
           icon={<AccountBox />}
           to="/dashboard/data"
+          isActive={
+            pathname === "/dashboard/data" ||
+            pathname.startsWith("/dashboard/candidato/checklist/")
+          }
         />
 
-        <ListItems
-          label="Lista de Alunos"
+        {/* <ListItems
+          label="Alunos"
           icon={<Face6Icon />}
           to="/dashboard/alunos"
+          isActive={pathname === "/dashboard/alunos"}
         />
         <ListItems
-          label="Lista de Funcionários"
+          label="Funcionários"
           icon={<BadgeIcon />}
           to="/dashboard/funcionarios"
-        />
+          isActive={pathname === "/dashboard/funcionarios"}
+        /> */}
 
         <ListItems
-          label="Atas"
+          label="Listas e Atas"
           icon={<DescriptionIcon />}
           to="/dashboard/atas"
+          isActive={pathname === "/dashboard/atas"}
         />
 
-        {user.role?.includes("super-adm") && (
+        {/* {user.role?.includes("super-adm") ? (
           <ListItems
             label="Apuração dos votos"
             icon={<PollIcon />}
             to="/dashboard/buscaApuracao"
+            isActive={
+              pathname === "/dashboard/buscaApuracao" ||
+              pathname.startsWith("/dashboard/apuracao/")
+            }
           />
-        )}
+        ) : (
+          <ListItems
+            label="Apuração dos votos"
+            icon={<PollIcon />}
+            to={`/dashboard/apuracao/${user._id}`}
+            isActive={
+              pathname === "/dashboard/buscaApuracao" ||
+              pathname.startsWith("/dashboard/apuracao/")
+            }
+          />
+        )} */}
 
         {user.role?.includes("super-adm") && (
           <ListItems
             label="Lista Completa - ADM"
             icon={<GroupIcon />}
             to="/dashboard/dataAdm"
+            isActive={pathname === "/dashboard/dataAdm"}
           />
         )}
 
@@ -133,6 +161,7 @@ export default function DrawerComponent({
             label="Redefinição de senha"
             icon={<RotateLeftIcon />}
             to="/dashboard/settings"
+            isActive={pathname === "/dashboard/settings"}
           />
         )}
       </List>

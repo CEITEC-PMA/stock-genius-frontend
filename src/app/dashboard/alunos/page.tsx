@@ -242,9 +242,9 @@ export default function Alunos() {
             >
               Adicionar novo aluno
             </Button>
-            <IconButton onClick={downloadPdf}>
+            {/* <IconButton onClick={downloadPdf}>
               <PictureAsPdfIcon fontSize="large" sx={{ color: "#b30b00" }} />
-            </IconButton>
+            </IconButton> */}
           </Box>
         )}
 
