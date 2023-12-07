@@ -223,7 +223,7 @@ export default function Quorum() {
 
                 <div id="content-id">
 
-                    <Box display="flex" flexDirection="column" component={Paper}>
+                    <Box display="flex" flexDirection="column" component={Paper} mx={1}>
 
                         <Box textAlign='center' mt={2} >
                             <Image
