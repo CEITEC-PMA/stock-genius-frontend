@@ -48,8 +48,6 @@ export default function Atas() {
   const alunosVotantesPaginas = processarPaginas(alunosVotantes);
   const alunosNaoVotantesPaginas = processarPaginas(alunosNaoVotantes);
 
-  console.log(alunosVotantesPaginas);
-
   useEffect(() => {
     const votantes = alunos.filter((alunos) => alunos.votante);
     const naoVotantes = alunos.filter((alunos) => !alunos.votante);

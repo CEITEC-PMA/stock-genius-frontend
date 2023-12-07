@@ -8,13 +8,18 @@ export type ResultadoFinalEleicao = {
 };
 
 export type ConfirmaPercentual = {
-  qtdeVotosAlunos: number;
-  qtdeVotosRespAlunosVotantes: number;
-  qtdeVotosRespAlunosNaoVotantes: number;
+  qtdeVotosAlunos: QtdeVotos;
+  qtdeVotosRespAlunosVotantes: QtdeVotos;
+  qtdeVotosRespAlunosNaoVotantes: QtdeVotos;
   candidato: string;
   somaPaisAlunos: number;
-  qtdeVotosFuncionarios: number;
+  qtdeVotosFuncionarios: QtdeVotos;
   percentualTotal: number;
+};
+
+export type QtdeVotos = {
+  numero_votos: number;
+  nome_candidato: null | string;
 };
 
 export type ConfirmaQuorum = {
@@ -26,7 +31,7 @@ export type ConfirmaQuorum = {
 };
 
 export type Quorum = {
-  percentual: number | null;
+  percentual: number;
   result: boolean;
 };
 
