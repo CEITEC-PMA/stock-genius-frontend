@@ -65,25 +65,55 @@ const percentualVotos = (qtdeVotos: NumerosVotacao) => {
   const arrayDeCandidatos = Object.keys(votosAlunos);
 
   const qtdeVotosCandidato = arrayDeCandidatos.map((candidato) => {
-    const qtdeVotosRespAlunosVotantes = votosRespAlunosVotantes[candidato] || 0;
-    const qtdeVotosRespAlunosNaoVotantes =
-      votosRespAlunosNaoVotantes[candidato] || 0;
-    const qtdeVotosAlunos = votosAlunos[candidato] || 0;
-    const qtdeVotosFuncionarios = votosFuncionarios[candidato] || 0;
+    const qtdeVotosRespAlunosVotantes = votosRespAlunosVotantes[candidato] || {
+      numero_votos: 0,
+      nome_candidato: null,
+    };
+    const qtdeVotosRespAlunosVotantesNumeric = qtdeVotosRespAlunosVotantes as {
+      numero_votos: number;
+      nome_candidato: string | null;
+    };
+
+    const qtdeVotosRespAlunosNaoVotantes = votosRespAlunosNaoVotantes[
+      candidato
+    ] || { numero_votos: 0, nome_candidato: null };
+    const qtdeVotosRespAlunosNaoVotantesNumeric =
+      qtdeVotosRespAlunosNaoVotantes as {
+        numero_votos: number;
+        nome_candidato: string | null;
+      };
+
+    const qtdeVotosAlunos = votosAlunos[candidato] || {
+      numero_votos: 0,
+      nome_candidato: null,
+    };
+    const qtdeVotosAlunosNumeric = qtdeVotosAlunos as {
+      numero_votos: number;
+      nome_candidato: string | null;
+    };
+
+    const qtdeVotosFuncionarios = votosFuncionarios[candidato] || {
+      numero_votos: 0,
+      nome_candidato: null,
+    };
+    const qtdeVotosFuncionariosNumeric = qtdeVotosFuncionarios as {
+      numero_votos: number;
+      nome_candidato: string | null;
+    };
 
     const somaPaisAlunos =
-      qtdeVotosRespAlunosNaoVotantes +
-      qtdeVotosAlunos +
-      qtdeVotosRespAlunosVotantes;
+      qtdeVotosRespAlunosNaoVotantesNumeric.numero_votos +
+      qtdeVotosAlunosNumeric.numero_votos +
+      qtdeVotosRespAlunosVotantesNumeric.numero_votos;
 
     const percentualRespAlunos =
       (somaPaisAlunos * 50) /
       (qtdeVotos.quantidadeAlunosNaoVotantes +
-        qtdeVotos.quantidadeAlunosVotantes +
-        qtdeVotos.quantidadeAlunosVotantes);
+        qtdeVotos.quantidadeAlunosVotantes * 2);
 
     const percentualFunc =
-      (qtdeVotosFuncionarios * 50) / qtdeVotos.quantidadeFuncionarios;
+      (qtdeVotosFuncionariosNumeric.numero_votos * 50) /
+      qtdeVotos.quantidadeFuncionarios;
 
     const percentualTotal = percentualRespAlunos + percentualFunc;
 
@@ -95,6 +125,8 @@ const percentualVotos = (qtdeVotos: NumerosVotacao) => {
       somaPaisAlunos,
       qtdeVotosFuncionarios,
       percentualTotal,
+      nome_candidato: qtdeVotosAlunosNumeric.nome_candidato,
+      numero_votos: qtdeVotosAlunosNumeric.numero_votos,
     };
   });
   return qtdeVotosCandidato;
@@ -139,9 +171,12 @@ export const resultadoFinal = (qtdeVotos: NumerosVotacao) => {
 
   if (confirmaQuorum.resultGeral && somaPercentualCandidatos > 50) {
     confirmaPercentual.forEach((percentual) => {
-      if (percentual.percentualTotal > percentualMaior) {
+      if (
+        percentual.percentualTotal > percentualMaior &&
+        percentual.qtdeVotosFuncionarios.nome_candidato !== null
+      ) {
         percentualMaior = percentual.percentualTotal;
-        candidatoEleito = percentual.candidato;
+        candidatoEleito = percentual.qtdeVotosFuncionarios.nome_candidato;
       }
     });
   }

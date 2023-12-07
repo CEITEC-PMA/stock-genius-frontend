@@ -39,11 +39,31 @@ export default function VotacaoFuncionarios(props: {
 
   const data02 = candidatos.map((candidato, i) => {
     const votosCandidato =
-      (resultadoEleicao?.confirmaPercentual[i].qtdeVotosFuncionarios * 100) /
+      (resultadoEleicao?.confirmaPercentual[i].qtdeVotosFuncionarios
+        .numero_votos *
+        100) /
       numerosVotacao.funcionariosVotaram;
 
     const votosCandidatoArredondado = parseFloat(votosCandidato.toFixed(2));
-    const nomeCandidato = resultadoEleicao?.confirmaPercentual[i].candidato;
+    const nomeCandidato =
+      resultadoEleicao?.confirmaPercentual[i].qtdeVotosFuncionarios
+        .nome_candidato;
+
+    console.log(
+      (resultadoEleicao?.confirmaPercentual[i].qtdeVotosFuncionarios
+        .numero_votos *
+        100) /
+        numerosVotacao.funcionariosVotaram,
+      "conta total"
+    );
+
+    console.log(
+      resultadoEleicao?.confirmaPercentual[i].qtdeVotosFuncionarios
+        .numero_votos,
+      "numero de votos"
+    );
+
+    console.log(numerosVotacao.funcionariosVotaram, "funcionarios votaram");
 
     return {
       name: nomeCandidato,

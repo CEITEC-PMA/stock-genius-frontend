@@ -20,6 +20,8 @@ import { resultadoFinal } from "@/utils/processarVotos";
 import VotacaoFinal from "@/components/apuracao/VotacaoFinal";
 import PollIcon from "@mui/icons-material/Poll";
 import { ResultadoFinalEleicao } from "@/utils/types/resultadoFinal.types";
+import { useUserContext } from "@/userContext";
+import Unauthorized from "@/components/unauthorized";
 
 export default function Apuracao({ params }: { params: { id: string } }) {
   const theme = useTheme();
@@ -30,6 +32,7 @@ export default function Apuracao({ params }: { params: { id: string } }) {
   const { id } = params;
   const [zona, setZona] = useState<Zona | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { user } = useUserContext();
   const [numerosVotacao, setNumerosVotacao] = useState<
     NumerosVotacao | undefined
   >(undefined);
@@ -46,7 +49,7 @@ export default function Apuracao({ params }: { params: { id: string } }) {
           result: false,
         },
         quorumPais: {
-          percentual: null,
+          percentual: 0,
           result: false,
         },
         quorunsNaoAtingidos: [""],
@@ -54,39 +57,87 @@ export default function Apuracao({ params }: { params: { id: string } }) {
       },
       confirmaPercentual: [
         {
-          qtdeVotosAlunos: 0,
-          qtdeVotosRespAlunosVotantes: 0,
-          qtdeVotosRespAlunosNaoVotantes: 0,
+          qtdeVotosAlunos: {
+            numero_votos: 0,
+            nome_candidato: "",
+          },
+          qtdeVotosRespAlunosVotantes: {
+            numero_votos: 0,
+            nome_candidato: "",
+          },
+          qtdeVotosRespAlunosNaoVotantes: {
+            numero_votos: 0,
+            nome_candidato: "",
+          },
           candidato: "candidato_um",
           somaPaisAlunos: 0,
-          qtdeVotosFuncionarios: 0,
+          qtdeVotosFuncionarios: {
+            numero_votos: 0,
+            nome_candidato: "",
+          },
           percentualTotal: 0,
         },
         {
-          qtdeVotosAlunos: 0,
-          qtdeVotosRespAlunosVotantes: 0,
-          qtdeVotosRespAlunosNaoVotantes: 0,
+          qtdeVotosAlunos: {
+            numero_votos: 0,
+            nome_candidato: "",
+          },
+          qtdeVotosRespAlunosVotantes: {
+            numero_votos: 0,
+            nome_candidato: "",
+          },
+          qtdeVotosRespAlunosNaoVotantes: {
+            numero_votos: 0,
+            nome_candidato: "",
+          },
           candidato: "candidato_dois",
           somaPaisAlunos: 0,
-          qtdeVotosFuncionarios: 0,
+          qtdeVotosFuncionarios: {
+            numero_votos: 0,
+            nome_candidato: "",
+          },
           percentualTotal: 0,
         },
         {
-          qtdeVotosAlunos: 0,
-          qtdeVotosRespAlunosVotantes: 0,
-          qtdeVotosRespAlunosNaoVotantes: 0,
-          candidato: "branco",
+          qtdeVotosAlunos: {
+            numero_votos: 0,
+            nome_candidato: "",
+          },
+          qtdeVotosRespAlunosVotantes: {
+            numero_votos: 0,
+            nome_candidato: "",
+          },
+          qtdeVotosRespAlunosNaoVotantes: {
+            numero_votos: 0,
+            nome_candidato: "",
+          },
+          candidato: "Branco",
           somaPaisAlunos: 0,
-          qtdeVotosFuncionarios: 0,
+          qtdeVotosFuncionarios: {
+            numero_votos: 0,
+            nome_candidato: "Branco",
+          },
           percentualTotal: 0,
         },
         {
-          qtdeVotosAlunos: 0,
-          qtdeVotosRespAlunosVotantes: 0,
-          qtdeVotosRespAlunosNaoVotantes: 0,
-          candidato: "nulo",
+          qtdeVotosAlunos: {
+            numero_votos: 0,
+            nome_candidato: "",
+          },
+          qtdeVotosRespAlunosVotantes: {
+            numero_votos: 0,
+            nome_candidato: "",
+          },
+          qtdeVotosRespAlunosNaoVotantes: {
+            numero_votos: 0,
+            nome_candidato: "",
+          },
+          candidato: "Nulo",
           somaPaisAlunos: 0,
-          qtdeVotosFuncionarios: 0,
+          qtdeVotosFuncionarios: {
+            numero_votos: 0,
+            nome_candidato: "Nulo",
+          },
           percentualTotal: 0,
         },
       ],
@@ -195,172 +246,181 @@ export default function Apuracao({ params }: { params: { id: string } }) {
     }
   }, [numerosVotacao]);
 
-  return (
-    <Box margin="0" padding="0" height={`calc(100vh - 66px)`} overflow="hidden">
-      <Typography
-        variant={smDown ? "h6" : mdDown ? "h5" : "h5"}
-        textAlign="center"
-        marginTop={2}
-        color=" #0f4c81"
-      >
-        ELEIÇÕES MUNICIPAIS DE DIRETORES BIÊNIO 2024/25 -{" "}
-        {isLoading ? "Carregando..." : zona?.nome}
-      </Typography>
+  if (user.role && user.role.includes("super-adm")) {
+    return (
       <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="flex-start"
-        height="100%"
+        margin="0"
+        padding="0"
+        height={`calc(100vh - 66px)`}
+        overflow="hidden"
       >
         <Typography
-          variant="h6"
+          variant={smDown ? "h6" : mdDown ? "h5" : "h5"}
           textAlign="center"
-          marginTop={0.2}
-          color=" #000"
+          marginTop={2}
+          color=" #0f4c81"
         >
-          Apuração da votação
+          ELEIÇÕES MUNICIPAIS DE DIRETORES BIÊNIO 2024/25 -{" "}
+          {isLoading ? "Carregando..." : zona?.nome}
         </Typography>
         <Box
           display="flex"
-          width="100%"
-          marginTop="5px"
+          flexDirection="column"
           alignItems="center"
-          justifyContent="center"
-          gap={2.5}
+          justifyContent="flex-start"
+          height="100%"
         >
-          <Box>
-            {numerosVotacao?.quantidadeAlunosVotantes !== 0 && (
+          <Typography
+            variant="h6"
+            textAlign="center"
+            marginTop={0.2}
+            color=" #000"
+          >
+            Apuração da votação
+          </Typography>
+          <Box
+            display="flex"
+            width="100%"
+            marginTop="5px"
+            alignItems="center"
+            justifyContent="center"
+            gap={2.5}
+          >
+            <Box>
+              {numerosVotacao?.quantidadeAlunosVotantes !== 0 && (
+                <Button
+                  variant="contained"
+                  startIcon={<Face6Icon style={{ fontSize: 24 }} />}
+                  onClick={() => handleTipo("Alunos")}
+                  style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
+                >
+                  Alunos
+                </Button>
+              )}
+            </Box>
+            <Box>
               <Button
                 variant="contained"
-                startIcon={<Face6Icon style={{ fontSize: 24 }} />}
-                onClick={() => handleTipo("Alunos")}
+                startIcon={<EscalatorWarningIcon style={{ fontSize: 24 }} />}
+                onClick={() => handleTipo("Responsáveis")}
                 style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
               >
-                Alunos
+                Responsáveis
               </Button>
-            )}
+            </Box>
+            <Box>
+              <Button
+                variant="contained"
+                startIcon={<BadgeIcon style={{ fontSize: 24 }} />}
+                onClick={() => handleTipo("Funcionários")}
+                style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
+              >
+                Funcionários
+              </Button>
+            </Box>
+            <Box>
+              <Button
+                variant="contained"
+                startIcon={<PollIcon style={{ fontSize: 24 }} />}
+                onClick={() => handleTipo("Resultado Final")}
+                style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
+              >
+                Resultado Final
+              </Button>
+            </Box>
           </Box>
-          <Box>
-            <Button
-              variant="contained"
-              startIcon={<EscalatorWarningIcon style={{ fontSize: 24 }} />}
-              onClick={() => handleTipo("Responsáveis")}
-              style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
-            >
-              Responsáveis
-            </Button>
-          </Box>
-          <Box>
-            <Button
-              variant="contained"
-              startIcon={<BadgeIcon style={{ fontSize: 24 }} />}
-              onClick={() => handleTipo("Funcionários")}
-              style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
-            >
-              Funcionários
-            </Button>
-          </Box>
-          <Box>
-            <Button
-              variant="contained"
-              startIcon={<PollIcon style={{ fontSize: 24 }} />}
-              onClick={() => handleTipo("Resultado Final")}
-              style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
-            >
-              Resultado Final
-            </Button>
-          </Box>
+          {tipoResultado === "Alunos" && (
+            <>
+              <Typography
+                variant="h5"
+                textAlign="center"
+                marginTop={0.8}
+                marginBottom={0.8}
+                color="#000"
+              >
+                Alunos
+              </Typography>
+              {numerosVotacao ? (
+                <VotacaoAlunos
+                  candidatos={candidatos}
+                  numerosVotacao={numerosVotacao}
+                  resultadoEleicao={resultadoEleicao}
+                />
+              ) : (
+                <p>Carregando resultados...</p>
+              )}
+            </>
+          )}
+          {tipoResultado === "Responsáveis" && (
+            <>
+              <Typography
+                variant="h5"
+                textAlign="center"
+                marginTop={0.8}
+                marginBottom={0.8}
+                color="#000"
+              >
+                Responsáveis
+              </Typography>
+              {numerosVotacao ? (
+                <VotacaoResp
+                  candidatos={candidatos}
+                  numerosVotacao={numerosVotacao}
+                  resultadoEleicao={resultadoEleicao}
+                />
+              ) : (
+                <p>Carregando...</p>
+              )}
+            </>
+          )}
+          {tipoResultado === "Funcionários" && (
+            <>
+              <Typography
+                variant="h5"
+                textAlign="center"
+                marginTop={0.8}
+                marginBottom={0.8}
+                color="#000"
+              >
+                Funcionários
+              </Typography>
+              {numerosVotacao ? (
+                <VotacaoFuncionarios
+                  candidatos={candidatos}
+                  numerosVotacao={numerosVotacao}
+                  resultadoEleicao={resultadoEleicao}
+                />
+              ) : (
+                <p>Carregando...</p>
+              )}
+            </>
+          )}
+          {tipoResultado === "Resultado Final" && (
+            <>
+              <Typography
+                variant="h5"
+                textAlign="center"
+                marginTop={0.8}
+                marginBottom={0.8}
+                color="#000"
+              >
+                Resultado Final
+              </Typography>
+              {numerosVotacao ? (
+                <VotacaoFinal
+                  candidatos={candidatos}
+                  numerosVotacao={numerosVotacao}
+                  resultadoEleicao={resultadoEleicao}
+                />
+              ) : (
+                <p>Carregando...</p>
+              )}
+            </>
+          )}
         </Box>
-        {tipoResultado === "Alunos" && (
-          <>
-            <Typography
-              variant="h5"
-              textAlign="center"
-              marginTop={0.8}
-              marginBottom={0.8}
-              color="#000"
-            >
-              Alunos
-            </Typography>
-            {numerosVotacao ? (
-              <VotacaoAlunos
-                candidatos={candidatos}
-                numerosVotacao={numerosVotacao}
-                resultadoEleicao={resultadoEleicao}
-              />
-            ) : (
-              <p>Carregando resultados...</p>
-            )}
-          </>
-        )}
-        {tipoResultado === "Responsáveis" && (
-          <>
-            <Typography
-              variant="h5"
-              textAlign="center"
-              marginTop={0.8}
-              marginBottom={0.8}
-              color="#000"
-            >
-              Responsáveis
-            </Typography>
-            {numerosVotacao ? (
-              <VotacaoResp
-                candidatos={candidatos}
-                numerosVotacao={numerosVotacao}
-                resultadoEleicao={resultadoEleicao}
-              />
-            ) : (
-              <p>Carregando...</p>
-            )}
-          </>
-        )}
-        {tipoResultado === "Funcionários" && (
-          <>
-            <Typography
-              variant="h5"
-              textAlign="center"
-              marginTop={0.8}
-              marginBottom={0.8}
-              color="#000"
-            >
-              Funcionários
-            </Typography>
-            {numerosVotacao ? (
-              <VotacaoFuncionarios
-                candidatos={candidatos}
-                numerosVotacao={numerosVotacao}
-                resultadoEleicao={resultadoEleicao}
-              />
-            ) : (
-              <p>Carregando...</p>
-            )}
-          </>
-        )}
-        {tipoResultado === "Resultado Final" && (
-          <>
-            <Typography
-              variant="h5"
-              textAlign="center"
-              marginTop={0.8}
-              marginBottom={0.8}
-              color="#000"
-            >
-              Resultado Final
-            </Typography>
-            {numerosVotacao ? (
-              <VotacaoFinal
-                candidatos={candidatos}
-                numerosVotacao={numerosVotacao}
-                resultadoEleicao={resultadoEleicao}
-              />
-            ) : (
-              <p>Carregando...</p>
-            )}
-          </>
-        )}
       </Box>
-    </Box>
-  );
+    );
+  } else {
+    return <Unauthorized />;
+  }
 }

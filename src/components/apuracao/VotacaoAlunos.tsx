@@ -35,11 +35,13 @@ export default function VotacaoAlunos(props: {
 
   const data02 = candidatos.map((candidato, i) => {
     const votosCandidato =
-      (resultadoEleicao?.confirmaPercentual[i].qtdeVotosAlunos * 100) /
+      (resultadoEleicao?.confirmaPercentual[i].qtdeVotosAlunos.numero_votos *
+        100) /
       numerosVotacao.alunosVotaram;
 
     const votosCandidatoArredondado = parseFloat(votosCandidato.toFixed(2));
-    const nomeCandidato = resultadoEleicao?.confirmaPercentual[i].candidato;
+    const nomeCandidato =
+      resultadoEleicao?.confirmaPercentual[i].qtdeVotosAlunos.nome_candidato;
 
     return {
       name: nomeCandidato,

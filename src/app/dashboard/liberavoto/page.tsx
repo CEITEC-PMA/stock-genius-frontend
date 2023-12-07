@@ -140,7 +140,7 @@ export default function LiberaVoto() {
                 options={alunos}
                 getOptionLabel={(aluno: Aluno) => aluno.nome}
                 onInputChange={(e, newValue) => setBusca(newValue)}
-                sx={{ width: 300 }}
+                sx={{ width: 500, backgroundColor: "#fff" }}
                 renderInput={(params) => (
                   <TextField {...params} label="Alunos" />
                 )}
@@ -156,7 +156,7 @@ export default function LiberaVoto() {
                 getOptionLabel={(funcionario: Funcionario) => funcionario.nome}
                 inputValue={busca}
                 onInputChange={(_, newValue) => setBusca(newValue)}
-                sx={{ width: 300 }}
+                sx={{ width: 500, backgroundColor: "#fff" }}
                 renderInput={(params) => (
                   <TextField {...params} label="Funcionarios" />
                 )}
