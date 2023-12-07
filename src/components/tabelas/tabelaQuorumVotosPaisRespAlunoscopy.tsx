@@ -42,7 +42,7 @@ export default function TabelaQuorumVotosPaisRespAlunosCopy({ dadosQuorum }: ITA
                             <TableCell sx={{ border: '1px solid black', width: '20%', textAlign: 'center' }}><Typography>Diretor</Typography>  </TableCell>
                             <TableCell sx={{ border: '1px solid black', width: '20%', textAlign: 'center' }}><Typography>Votos de Alunos</Typography>  </TableCell>
                             <TableCell sx={{ border: '1px solid black', width: '20%', textAlign: 'center' }}><Typography>Votos responsaveis por alunos votantes</Typography>  </TableCell>
-                            <TableCell sx={{ border: '1px solid black', width: '20%', textAlign: 'center' }}><Typography>Vostos responsaveis por alunos não votantes</Typography>  </TableCell>
+                            <TableCell sx={{ border: '1px solid black', width: '20%', textAlign: 'center' }}><Typography>Votos responsaveis por alunos não votantes</Typography>  </TableCell>
                             <TableCell sx={{ border: '1px solid black', width: '20%', textAlign: 'center' }}><Typography>Total Votos</Typography>  </TableCell>
                         </TableRow>
                     </TableHead>
