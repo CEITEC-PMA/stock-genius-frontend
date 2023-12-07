@@ -80,7 +80,7 @@ export default function Atas() {
     }
   }, [user._id]);
   return (
-    <Box>
+    <Box mb={8}>
       <Box>
         <Box textAlign="center" my={8} mb={12}>
           <Typography variant="h3">LISTAS DE ASSINATURA</Typography>
