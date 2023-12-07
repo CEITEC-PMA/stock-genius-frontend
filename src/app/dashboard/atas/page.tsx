@@ -124,7 +124,7 @@ export default function Atas() {
           {/* {alunosNaoVotantes.length ? <AtaAlunosNaoVotantes /> : null} */}
         </Box>
       </Box>
-      {/* <Box
+      <Box
         alignContent="center"
         display="flex"
         flexDirection="column"
@@ -158,7 +158,7 @@ export default function Atas() {
               size="large"
               variant="contained"
               startIcon={<ArticleIcon style={{ fontSize: 48 }} />}
-              // onClick={handleAluno}
+            // onClick={handleAluno}
             >
               Ata Mesa Coletora Responsáveis e Alunos
             </Button>
@@ -168,13 +168,13 @@ export default function Atas() {
               size="large"
               variant="contained"
               startIcon={<DocumentScannerIcon style={{ fontSize: 48 }} />}
-              // onClick={handleAluno}
+            // onClick={handleAluno}
             >
               Quórum Comparecimento de Eleitores
             </Button>
           </Link>
         </Box>
-      </Box> */}
+      </Box>
     </Box>
   );
 }

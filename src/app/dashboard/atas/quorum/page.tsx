@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { useUserContext } from "@/userContext";
 import { apiUrl } from "@/utils/api";
-import { resultadoVotoTypes } from '@/utils/types/resultadoVotosEleicaoTypes';
+import { resultadoVotosEleicaoTypes } from '@/utils/types/resultadoVotosEleicaoTypes';
 import { useRef } from 'react';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
@@ -13,53 +13,63 @@ import ReplyIcon from '@mui/icons-material/Reply'
 import Paper from '@mui/material/Paper';
 
 import generatePDF, { Resolution, Margin, Options } from 'react-to-pdf';
-import { Box, Button, Container, Typography } from '@mui/material';
+import { Box, Button, Container, Table, Typography } from '@mui/material';
 import { resultadoVoto } from '@/utils/resultado.eleicao.mock';
 import Link from 'next/link';
 import { Candidato } from '@/utils/types/candidato.types';
+import TabelaQuorumComparecimento from '@/components/tabelas/tabelaQuorumComparecimento';
+//import { passouQuorum, percentualVotos, resultadoFinal } from '@/utils/processarVotos';
+import TabelaQuorumVotosPaisRespAlunos from '@/components/tabelas/tabelaQuorumVotosPaisRespAlunos';
+import TabelaQuorumVotosPaisRespAlunosCopy from '@/components/tabelas/tabelaQuorumVotosPaisRespAlunoscopy';
+import TabelaQuorumServidores from '@/components/tabelas/tabelaQuorumVotosServidores';
+import TabelaResultadoFinal from '@/components/tabelas/taelaResultadoFinal';
+import TabelaQuorumServidoresCopy from '@/components/tabelas/tabelaQuorumVotosServidoresCopy';
+import TabelaResultadoFinalCopy from '@/components/tabelas/taelaResultadoFinalCopy';
+import { DadosQuorum } from '@/utils/types/dadosQuorum.types';
 
 
 export default function Quorum() {
 
-    const [resultadoVoto, setResultadoVoto] = useState<resultadoVotoTypes>({
-        quantidadeAlunosVotantes: 50,
-        quantidadeAlunosNaoVotantes: 0,
-        quantidadeFuncionarios: 0,
+    const [resultadoVoto, setResultadoVoto] = useState<resultadoVotosEleicaoTypes>({
         alunosVotaram: 0,
         funcionariosVotaram: 0,
-        respAlunosVotantesVotaram: 0,
+        quantidadeAlunosNaoVotantes: 0,
+        quantidadeAlunosVotantes: 0,
+        quantidadeFuncionarios: 0,
         respAlunosNaoVotantesVotaram: 0,
+        respAlunosVotantesVotaram: 0,
         votos: {
-            votosRespAlunosVotantes: {
-                candidato_um: 0,
-                candidato_dois: 0,
-                branco: 0,
-                nulo: 0,
-            },
-            votosRespAlunosNaoVotantes: {
-                candidato_um: 0,
-                candidato_dois: 0,
-                branco: 0,
-                nulo: 0,
-            },
             votosAlunos: {
-                candidato_um: 0,
-                candidato_dois: 0,
                 branco: 0,
-                nulo: 0,
+                candidato_dois: 0,
+                candidato_um: 0,
+                nulo: 0
             },
             votosFuncionarios: {
-                candidato_um: 0,
-                candidato_dois: 0,
                 branco: 0,
-                nulo: 0,
+                candidato_dois: 0,
+                candidato_um: 0,
+                nulo: 0
             },
+            votosRespAlunosNaoVotantes: {
+                branco: 0,
+                candidato_dois: 0,
+                candidato_um: 0,
+                nulo: 0
+            },
+            votosRespAlunosVotantes: {
+                branco: 0,
+                candidato_dois: 0,
+                candidato_um: 0,
+                nulo: 0
+            }
         }
-    } as resultadoVotoTypes)
+    } as resultadoVotosEleicaoTypes)
 
 
     const [candidatos, setCandidatos] = useState<Candidato[]>([]);
     const [isLoading, setIsloading] = useState(true);
+    const [dadosQuorum, setDadosQuorum] = useState<DadosQuorum[]>([])
     const { user } = useUserContext();
 
     const options: Options = {
@@ -144,6 +154,38 @@ export default function Quorum() {
     }, [user._id]);
     console.log(candidatos)
 
+
+    // fetch quorum
+    useEffect(() => {
+        //fetch
+        const token = localStorage.getItem("token");
+        if (user._id) {
+            const getDadosQuorum = async () => {
+                const response = await fetch(
+                    `${apiUrl}/api/v1/voto/dadosQuorum`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                const responseJson = await response.json();
+                setDadosQuorum(responseJson.resposta);
+            };
+            getDadosQuorum();
+        }
+    }, [user._id]);
+    console.log(dadosQuorum)
+
+    const diretores = candidatos.map((diretor) => {
+        return (diretor.nome)
+    })
+    //console.log(diretores)
+
+    let imagemDiretor = candidatos.map((diretor) => {
+        return diretor.foto
+    })
+
     // Alunos Votantes
     const qtdAlunosConstantes = resultadoVoto.quantidadeAlunosVotantes;
     const qtdAlunosCompareceram = resultadoVoto.alunosVotaram;
@@ -154,7 +196,7 @@ export default function Quorum() {
     const qtdRespAlunosVotantesCompareceram = resultadoVoto.respAlunosVotantesVotaram;
     const qtdRespAlunosVotantesNaoCompareceram = qtdRespAlunosVotantesConstantes - qtdRespAlunosVotantesCompareceram
 
-    console.log(qtdRespAlunosVotantesNaoCompareceram)
+
 
     // Responsáveis por Alunos Não Votantes
     const qtdRespAlunosNaoVotantesConstantes = resultadoVoto.quantidadeAlunosNaoVotantes;
@@ -166,8 +208,17 @@ export default function Quorum() {
     const qtdFuncionarosCompareceram = resultadoVoto.funcionariosVotaram;
     const qtdFucionariosNaoCompareceram = qtdFuncionariosConstantes - qtdFuncionarosCompareceram
 
+    // const diretorApto = resultadoFinal(resultadoVoto)
+    // console.log(diretorApto)
+
+    //console.log(candidatos)
 
 
+
+
+
+
+    //console.log(totalVotos)
 
 
 
@@ -225,271 +276,26 @@ export default function Quorum() {
 
                         <Box mt={1} component={Paper} textAlign='center' >
 
-                            <Grid container direction="column" padding={2}   >
-                                <Grid container item direction="row" textAlign='center'   >
-                                    <Grid item xs={3}  >
-                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'   >
-                                            <Typography >Alunos Votantes - 50%</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={3}>
-                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                            <Typography >Pais/Responsaveis - Alunos Não Votantes 20%</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={3} >
-                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center' >
-                                            <Typography >Pais/Responsaveis - Alunos Votantes </Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={3} >
-                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center' >
-                                            <Typography >Professores e Servidores Administrativos 50%</Typography>
-                                        </Box>
-                                    </Grid>
+                            <TabelaQuorumComparecimento
+                                qtdAlunosConstantes={qtdAlunosConstantes}
+                                qtdAlunosCompareceram={qtdAlunosCompareceram}
+                                qtdRespAlunosNaoVotantesConstantes={qtdRespAlunosNaoVotantesConstantes}
+                                qtdRespAlunosNaoVotantesCompareceram={qtdRespAlunosNaoVotantesCompareceram}
+                                qtdRespAlunosVotantesConstantes={qtdRespAlunosVotantesCompareceram}
+                                qtdFuncionariosConstantes={qtdFuncionariosConstantes}
+                                qtdFuncionarosCompareceram={qtdFuncionarosCompareceram}
+                                qtdRespAlunosVotantesCompareceram={qtdRespAlunosVotantesCompareceram}
 
-
-
-                                    <Grid container item direction="row" textAlign='center'>
-                                        <Grid item xs={2} >
-                                            <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'  >
-                                                <Typography >Qtd Alunos Votantes</Typography>
-                                            </Box>
-                                        </Grid>
-                                        <Grid item xs={1}>
-                                            <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                                <Typography >Percentual</Typography>
-                                            </Box>
-                                        </Grid>
-                                        <Grid item xs={2} >
-                                            <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center' >
-                                                <Typography >Qtd Pais/Responsáveis (ANV)</Typography>
-                                            </Box>
-                                        </Grid>
-                                        <Grid item xs={1}>
-                                            <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                                <Typography >Percentual</Typography>
-                                            </Box>
-                                        </Grid>
-
-                                        <Grid item xs={2} >
-                                            <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                                <Typography >Qtd Pais/Responsáveis (AV)</Typography>
-                                            </Box>
-                                        </Grid>
-                                        <Grid item xs={1}>
-                                            <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                                <Typography >Percentual</Typography>
-                                            </Box>
-                                        </Grid>
-
-                                        <Grid item xs={2} >
-                                            <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                                <Typography >Qtd (PSA)</Typography>
-                                            </Box>
-                                        </Grid>
-                                        <Grid item xs={1}>
-                                            <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                                <Typography >Percentual</Typography>
-                                            </Box>
-                                        </Grid>
-                                    </Grid>
-
-                                    <Grid container item direction="row" textAlign='center'>
-                                        <Grid item xs={2} >
-                                            <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'  >
-                                                <Typography >{qtdAlunosCompareceram} de {qtdAlunosConstantes}</Typography>
-                                            </Box>
-                                        </Grid>
-                                        <Grid item xs={1}>
-                                            <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                                <Typography >{Math.round((qtdAlunosCompareceram / qtdAlunosConstantes) * 100)}%</Typography>
-                                            </Box>
-                                        </Grid>
-                                        <Grid item xs={2} >
-                                            <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center' >
-                                                <Typography >{qtdRespAlunosNaoVotantesCompareceram} de {qtdRespAlunosNaoVotantesConstantes}</Typography>
-                                            </Box>
-                                        </Grid>
-                                        <Grid item xs={1}>
-                                            <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                                <Typography >{Math.round((qtdRespAlunosNaoVotantesCompareceram / qtdRespAlunosNaoVotantesConstantes) * 100)}%</Typography>
-                                            </Box>
-                                        </Grid>
-
-                                        <Grid item xs={2} >
-                                            <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                                <Typography >{qtdRespAlunosVotantesCompareceram} de {qtdRespAlunosVotantesConstantes}</Typography>
-                                            </Box>
-                                        </Grid>
-                                        <Grid item xs={1}>
-                                            <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                                <Typography >{Math.round((qtdRespAlunosVotantesCompareceram / qtdRespAlunosVotantesConstantes) * 100)}%</Typography>
-                                            </Box>
-                                        </Grid>
-
-                                        <Grid item xs={2} >
-                                            <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                                <Typography >{qtdFuncionarosCompareceram} de {qtdFuncionariosConstantes}</Typography>
-                                            </Box>
-                                        </Grid>
-                                        <Grid item xs={1}>
-                                            <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                                <Typography >{Math.round((qtdFuncionarosCompareceram / qtdFuncionariosConstantes) * 100)}%</Typography>
-                                            </Box>
-                                        </Grid>
-                                    </Grid>
-
-
-
-                                </Grid>
-                            </Grid>
+                                dadosQuorum={dadosQuorum}
+                            />
 
                             {/* ________________________________________________________________________________ */}
 
                             <Box my={2}>
                                 <Typography>Votos de Pais / Responsáveis e alunos</Typography>
                             </Box>
+                            <TabelaQuorumVotosPaisRespAlunosCopy dadosQuorum={dadosQuorum} />
 
-                            <Grid container direction="column" padding={2}  >
-                                <Grid container item direction="row" textAlign='center'  >
-                                    <Grid item xs={4} >
-                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center' >
-                                            <Typography >Diretor</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                            <Typography >Voto de Alunos</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid container direction="column" item xs={4}  >
-                                        <Grid item>
-                                            <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center' >
-                                                <Typography >Voto Pais e Responsáveis</Typography>
-                                            </Box>
-                                        </Grid>
-                                        <Grid container item direction="row" >
-                                            <Grid item xs={6} >
-                                                <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center' >
-                                                    <Typography >Resp por Alunos Votantes </Typography>
-                                                </Box>
-                                            </Grid>
-                                            <Grid item xs={6} >
-                                                <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center' >
-                                                    <Typography >Resp por Alunos Não Votantes</Typography>
-                                                </Box>
-                                            </Grid>
-
-                                        </Grid>
-
-                                    </Grid>
-                                    <Grid item xs={2} >
-                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                            <Typography >Total de Votos (Alunos e Responsáveis) </Typography>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
-
-                                <Grid container item direction="row" textAlign='center' >
-                                    <Grid item xs={4}>
-                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                            <Typography >JAQUELINE PONTIERI DA COSTA SANTOS </Typography>
-                                        </Box>
-                                    </Grid>
-
-                                    <Grid item xs={2}>
-                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                            <Typography >41 </Typography>
-                                        </Box>
-                                    </Grid>
-
-                                    <Grid item xs={2}>
-                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                            <Typography >33 </Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                            <Typography >104 </Typography>
-                                        </Box>
-                                    </Grid>
-
-                                    <Grid item xs={2}>
-                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                            <Typography >178 </Typography>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
-
-                                <Grid container item direction="row" textAlign='center' >
-                                    <Grid item xs={4}>
-                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                            <Typography >Nulo </Typography>
-                                        </Box>
-                                    </Grid>
-
-                                    <Grid item xs={2}>
-                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                            <Typography >1 </Typography>
-                                        </Box>
-                                    </Grid>
-
-                                    <Grid item xs={2}>
-                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                            <Typography >0 </Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                            <Typography >4 </Typography>
-                                        </Box>
-                                    </Grid>
-
-                                    <Grid item xs={2}>
-                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                            <Typography >5 </Typography>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
-
-                                <Grid container item direction="row" textAlign='center' >
-                                    <Grid item xs={4}>
-                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                            <Typography >Branco </Typography>
-                                        </Box>
-                                    </Grid>
-
-                                    <Grid item xs={2}>
-                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                            <Typography >0 </Typography>
-                                        </Box>
-                                    </Grid>
-
-                                    <Grid item xs={2}>
-                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                            <Typography >0 </Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                            <Typography >0 </Typography>
-                                        </Box>
-                                    </Grid>
-
-                                    <Grid item xs={2}>
-                                        <Box padding={2} border={1} height='100%' display='flex' alignItems='center' justifyContent='center'>
-                                            <Typography >0 </Typography>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
-
-                                <Grid container item direction="row" textAlign='center' >
-                                    <Box padding={2} border={1} height='100%' width='100%' display='flex' alignItems='center' justifyContent='center'>
-                                        <Typography >TOTAL VOTOS VÁLIDOS SEGMENTO PAIS / RESPONSÁVEIS E ALUNOS: 180 </Typography>
-                                    </Box>
-                                </Grid>
-                            </Grid>
 
                             {/* _______________________________________________________________________________________     */}
 
@@ -497,65 +303,7 @@ export default function Quorum() {
                                 <Typography>Votos de Professores e Servidores Aministrativos</Typography>
                             </Box>
 
-                            <Grid container direction="column" padding={2} >
-
-                                <Grid container item direction="row" textAlign='center'>
-                                    <Grid item xs={8} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >Diretor</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={4}>
-                                        <Box padding={2} border={1} height='100%'>
-                                            <Typography >Total Votos (Funcionários)</Typography>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
-
-                                <Grid container item direction="row" textAlign='center'>
-                                    <Grid item xs={8} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >JAQUELINE PONTIERI DA COSTA SANTOS</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={4}>
-                                        <Box padding={2} border={1} height='100%'>
-                                            <Typography >21</Typography>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
-
-                                <Grid container item direction="row" textAlign='center'>
-                                    <Grid item xs={8} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >Nulo</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={4}>
-                                        <Box padding={2} border={1} height='100%'>
-                                            <Typography >0</Typography>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
-
-                                <Grid container item direction="row" textAlign='center'>
-                                    <Grid item xs={8} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >Branco</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={4}>
-                                        <Box padding={2} border={1} height='100%'>
-                                            <Typography >2</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid container item direction="row" textAlign='center' >
-                                        <Box padding={2} border={1} height='100%' width='100%' display='flex' alignItems='center' justifyContent='center'>
-                                            <Typography >TOTAL VOTOS VÁLIDOS SEGMENTO PROFESSORES ADMINISTRATIVO: 23 </Typography>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
+                            <TabelaQuorumServidoresCopy dadosQuorum={dadosQuorum} />
 
                             {/* _________________________________________________________________________________________ */}
 
@@ -563,58 +311,10 @@ export default function Quorum() {
                                 <Typography>Resultado Final</Typography>
                             </Box>
 
-                            <Grid container direction="column" padding={2} >
-
-                                <Grid container item direction="row" textAlign='center'>
-                                    <Grid item xs={4} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >Diretor</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        <Box padding={2} border={1} height='100%'>
-                                            <Typography >Imgem</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={4} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >Total de Votos (Pais, Alunos e Funcionários)</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={2} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >Percentual Total Por Candidado</Typography>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
-
-                                <Grid container item direction="row" textAlign='center'>
-                                    <Grid item xs={4} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >JAQUELINE PONTIERI DA COSTA SANTOS</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        <Box padding={2} border={1} height='100%'>
-                                            <Typography ></Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={4} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >199</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={2} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >66.44%</Typography>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-
-
+                            <TabelaResultadoFinalCopy dadosQuorum={dadosQuorum} />
                         </Box>
                     </Box>
+
                 </div>
 
             </Container>
