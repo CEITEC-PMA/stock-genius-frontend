@@ -23,6 +23,7 @@ export default function EscolhaCandidato({
   const [digitou, setDigitou] = useState(false);
   const [opcaoInvalida, setOpcaoInvalida] = useState(false);
   const [enterPressionado, setEnterPressionado] = useState(false);
+  const [candidatoValido, setCandidatoValido] = useState(false);
 
   useEffect(() => {
     //fetch
@@ -66,12 +67,14 @@ export default function EscolhaCandidato({
       const candidatoSelecionado = candidatos.find(
         (candidato) => candidato.numero_candidato == event.key
       );
+
       if (candidatoSelecionado) {
         digitou.play();
         setDigitou(true);
+        setCandidatoValido(true);
         setOpcaoInvalida(false);
         setCandidatoEscolhido(candidatoSelecionado);
-      } else if (event.key === "Enter") {
+      } else if (event.key === "Enter" && candidatoValido) {
         if (!enterPressionado) {
           digitou.play();
           setDigitou(true);
