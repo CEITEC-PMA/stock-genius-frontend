@@ -78,7 +78,7 @@ export default function Atas() {
     }
   }, [user._id]);
   return (
-    <Box>
+    <Box mb={8}>
       <Box>
         <Box textAlign="center" my={8} mb={12}>
           <Typography variant="h3">LISTAS DE ASSINATURA</Typography>
@@ -122,7 +122,7 @@ export default function Atas() {
           {/* {alunosNaoVotantes.length ? <AtaAlunosNaoVotantes /> : null} */}
         </Box>
       </Box>
-      {/* <Box
+      <Box
         alignContent="center"
         display="flex"
         flexDirection="column"
@@ -156,7 +156,7 @@ export default function Atas() {
               size="large"
               variant="contained"
               startIcon={<ArticleIcon style={{ fontSize: 48 }} />}
-              // onClick={handleAluno}
+            // onClick={handleAluno}
             >
               Ata Mesa Coletora Responsáveis e Alunos
             </Button>
@@ -166,13 +166,13 @@ export default function Atas() {
               size="large"
               variant="contained"
               startIcon={<DocumentScannerIcon style={{ fontSize: 48 }} />}
-              // onClick={handleAluno}
+            // onClick={handleAluno}
             >
               Quórum Comparecimento de Eleitores
             </Button>
           </Link>
         </Box>
-      </Box> */}
+      </Box>
     </Box>
   );
 }

@@ -16,9 +16,10 @@ import generatePDF, { Resolution, Margin, Options } from 'react-to-pdf';
 import { Box, Button, Container, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import { resultadoVoto } from '@/utils/resultado.eleicao.mock';
 import Link from 'next/link';
-import { resultadoVotoTypes } from '@/utils/types/result.eleicao.types';
+//import { resultadoVotoTypes } from '@/utils/types/resultadoVotosEleicaoTypes';
 import TabelaMembros from '@/components/tabelas/tabelaMembros';
 import TabelaEleitores from '@/components/tabelas/TabelaEleitores';
+import { resultadoVotosEleicaoTypes } from '@/utils/types/resultadoVotosEleicaoTypes';
 
 
 
@@ -26,7 +27,7 @@ export default function Psa() {
 
 
 
-    const [resultadoVoto, setResultadoVoto] = useState<resultadoVotoTypes>({} as resultadoVotoTypes)
+    const [resultadoVoto, setResultadoVoto] = useState<resultadoVotosEleicaoTypes>({} as resultadoVotosEleicaoTypes)
     const [isLoading, setIsloading] = useState(true);
     const { user } = useUserContext();
 
@@ -117,13 +118,11 @@ export default function Psa() {
                     <Box component={Paper}>
                         <Box display="flex" flexDirection="column" mx={1} mb={1}>
 
-                            <Box bgcolor='gray' textAlign='center' mt={2} >
+                            <Box textAlign='center' mt={2} >
                                 <Image
                                     width={320}
                                     height={55}
-                                    src={
-                                        "https://portaleducacao.anapolis.go.gov.br/portal/wp-content/uploads/2021/04/LOGO-SECRETARIA-EDUCACAO-1.png"
-                                    }
+                                    src="https://cdn.anapolis.go.gov.br/img/logos/sem_fundo/azuis/educacao.png"
                                     alt="Logo"
                                 />
 

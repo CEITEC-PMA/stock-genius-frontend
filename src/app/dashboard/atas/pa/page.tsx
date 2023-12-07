@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from 'react'
 import { useUserContext } from "@/userContext";
 import { apiUrl } from "@/utils/api";
-import { resultadoVotoTypes } from '@/utils/types/result.eleicao.types';
+//import { resultadoVotoTypes } from '@/utils/types/resultadoVotosEleicaoTypes';
+import { resultadoVotosEleicaoTypes } from '@/utils/types/resultadoVotosEleicaoTypes';
 import { useRef } from 'react';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
@@ -16,12 +17,16 @@ import generatePDF, { Resolution, Margin, Options } from 'react-to-pdf';
 import { Box, Button, Container, Typography } from '@mui/material';
 import { resultadoVoto } from '@/utils/resultado.eleicao.mock';
 import Link from 'next/link';
+import TabelaMembros from '@/components/tabelas/tabelaMembros';
+import TabelaAlunosVotantes from '@/components/tabelas/tabelaAlunosVotantes';
+import TabelaResponsaveisAlunosVotantes from '@/components/tabelas/tabelaResponsaveisAlunosVotantes';
+import TabelaResponsaveisAlunosNaoVotantes from '@/components/tabelas/tabelaResponsaveisAlunosNaoVotantes';
 
 
 export default function PA() {
 
 
-    const [resultadoVoto, setResultadoVoto] = useState<resultadoVotoTypes>({} as resultadoVotoTypes)
+    const [resultadoVoto, setResultadoVoto] = useState<resultadoVotosEleicaoTypes>({} as resultadoVotosEleicaoTypes)
     const [isLoading, setIsloading] = useState(true);
     const { user } = useUserContext();
 
@@ -104,7 +109,7 @@ export default function PA() {
     const qtdRespAlunosVotantesNaoCompareceram = qtdRespAlunosVotantesConstantes - qtdRespAlunosVotantesCompareceram
 
     console.log(qtdRespAlunosVotantesNaoCompareceram)
-
+    qtdAlunosCompareceram
     // Responsáveis por Alunos Não Votantes
     const qtdRespAlunosNaoVotantesConstantes = resultadoVoto.quantidadeAlunosNaoVotantes;
     const qtdRespAlunosNaoVotantesCompareceram = resultadoVoto.respAlunosNaoVotantesVotaram;
@@ -125,13 +130,11 @@ export default function PA() {
 
                     <Box display="flex" flexDirection="column" component={Paper}>
 
-                        <Box bgcolor='gray' textAlign='center' mt={2} >
+                        <Box textAlign='center' mt={2} >
                             <Image
                                 width={320}
                                 height={55}
-                                src={
-                                    "https://portaleducacao.anapolis.go.gov.br/portal/wp-content/uploads/2021/04/LOGO-SECRETARIA-EDUCACAO-1.png"
-                                }
+                                src="https://cdn.anapolis.go.gov.br/img/logos/sem_fundo/azuis/educacao.png"
                                 alt="Logo"
                             />
 
@@ -150,385 +153,40 @@ export default function PA() {
 
                         </Box>
 
-                        <Box display="flex" justifyContent="center" flexDirection='column' alignItems='center' marginTop={4} gap={2}>
+                        <Box display="flex" justifyContent="center" flexDirection='column' alignItems='center' marginTop={4} mb={1} gap={2}>
                             <Typography variant='h5'>
                                 ATA DA MESA COLETORA - RESPONSAVEIS E ALUNOS (PA)
                             </Typography>
 
-                            <Typography>
+                            <Typography variant='h6'>
                                 Integram a mesa coletora de votos os seguintes membros
                             </Typography>
                         </Box>
 
-                        <Box mt={1} component={Paper} textAlign='center'>
+                        <Box mt={1} component={Paper} textAlign='center' mx={1} mb={1}>
+                            <Box>
+                                <TabelaMembros />
+                            </Box>
 
-                            <Grid container direction="column" padding={2} >
-                                <Grid container item direction="row" textAlign='center'>
-                                    <Grid item xs={3} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >Cargos</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <Box padding={2} border={1} height='100%'>
-                                            <Typography >Nome</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={3} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >Assinatura</Typography>
-                                        </Box>
-                                    </Grid>
-
-                                    <Grid container item direction="row" textAlign='center'>
-                                        <Grid item xs={3} >
-                                            <Box padding={2} border={1} height='100%' >
-                                                <Typography >Presidente</Typography>
-                                            </Box>
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            <Box padding={2} border={1} height='100%'>
-                                                <Typography ></Typography>
-                                            </Box>
-                                        </Grid>
-                                        <Grid item xs={3} >
-                                            <Box padding={2} border={1} height='100%' >
-                                                <Typography ></Typography>
-                                            </Box>
-                                        </Grid>
-                                    </Grid>
-
-                                    <Grid container item direction="row" textAlign='center'>
-                                        <Grid item xs={3} >
-                                            <Box padding={2} border={1} height='100%' >
-                                                <Typography >1° Mesário</Typography>
-                                            </Box>
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            <Box padding={2} border={1} height='100%' >
-                                                <Typography ></Typography>
-                                            </Box>
-                                        </Grid>
-                                        <Grid item xs={3} >
-                                            <Box padding={2} border={1} height='100%' >
-                                                <Typography ></Typography>
-                                            </Box>
-                                        </Grid>
-                                    </Grid>
-
-                                    <Grid container item direction="row" textAlign='center'>
-                                        <Grid item xs={3} >
-                                            <Box padding={2} border={1} height='100%' >
-                                                <Typography >2º Mesário</Typography>
-                                            </Box>
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            <Box padding={2} border={1} height='100%' >
-                                                <Typography ></Typography>
-                                            </Box>
-                                        </Grid>
-                                        <Grid item xs={3} >
-                                            <Box padding={2} border={1} height='100%'  >
-                                                <Typography ></Typography>
-                                            </Box>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
 
                             {/* ________________________________________________________________________________ */}
 
-                            <Box mt={10}>
-                                <Typography>Comparecimento de eleitores conforme lista de votantes</Typography>
+                            <Box mt={4} mb={2}>
+                                <Typography variant='h6'>Comparecimento de eleitores conforme lista de votantes</Typography>
                             </Box>
 
-                            <Grid container direction="column" padding={2} >
-                                <Grid container item direction="row" textAlign='center'>
-                                    <Grid item xs={4} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >Alunos Votantes</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={1}>
-                                        <Box padding={2} border={1} height='100%'>
-                                            <Typography >N°</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={1} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >%</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={6} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >Nº por extenso</Typography>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
+                            <Box mb={4}>
+                                <TabelaAlunosVotantes qtdAlunosConstantes={qtdAlunosConstantes} qtdAlunosCompareceram={qtdAlunosCompareceram} qtdAlunosNaoCompareceram={qtdAlunosNaoCompareceram} />
+                            </Box>
 
-                                <Grid container item direction="row" textAlign='center'>
-                                    <Grid item xs={4} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >Eleitores constantes na lista</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={1}>
-                                        <Box padding={2} border={1} height='100%'>
-                                            <Typography >{qtdAlunosConstantes}</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={1} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >100%</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={6} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography ></Typography>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
+                            <Box mb={4}>
+                                <TabelaResponsaveisAlunosVotantes qtdRespAlunosVotantesConstantes={qtdRespAlunosVotantesConstantes} qtdRespAlunosVotantesCompareceram={qtdRespAlunosVotantesCompareceram} qtdRespAlunosVotantesNaoCompareceram={qtdRespAlunosVotantesNaoCompareceram} />
 
-                                <Grid container item direction="row" textAlign='center'>
-                                    <Grid item xs={4} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >Eleitores que compareceram</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={1}>
-                                        <Box padding={2} border={1} height='100%'>
-                                            <Typography >{qtdAlunosCompareceram}</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={1} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >{Math.ceil((qtdAlunosCompareceram / qtdAlunosConstantes) * 100)}%</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={6} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography ></Typography>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
+                            </Box>
 
-                                <Grid container item direction="row" textAlign='center'>
-                                    <Grid item xs={4} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >Eleitores que não compareceram</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={1}>
-                                        <Box padding={2} border={1} height='100%'>
-                                            <Typography >{qtdAlunosNaoCompareceram}</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={1} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >{Math.floor((qtdAlunosNaoCompareceram / qtdAlunosConstantes) * 100)}%</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={6} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography ></Typography>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-
-                            {/* _______________________________________________________________________________________     */}
-
-
-                            <Grid container direction="column" padding={2} >
-                                <Grid container item direction="row" textAlign='center'>
-                                    <Grid item xs={4} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >Responsáveis por alunos votantes</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={1}>
-                                        <Box padding={2} border={1} height='100%'>
-                                            <Typography >N°</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={1} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >%</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={6} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >Nº por extenso</Typography>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
-
-                                <Grid container item direction="row" textAlign='center'>
-                                    <Grid item xs={4} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >Eleitores constantes na lista</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={1}>
-                                        <Box padding={2} border={1} height='100%'>
-                                            <Typography >{qtdRespAlunosVotantesConstantes}</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={1} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >100%</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={6} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography ></Typography>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
-
-                                <Grid container item direction="row" textAlign='center'>
-                                    <Grid item xs={4} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >Eleitores que compareceram</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={1}>
-                                        <Box padding={2} border={1} height='100%'>
-                                            <Typography >{qtdRespAlunosVotantesCompareceram}</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={1} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >{Math.ceil((qtdRespAlunosVotantesCompareceram / qtdRespAlunosVotantesConstantes) * 100)}%</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={6} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography ></Typography>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
-
-                                <Grid container item direction="row" textAlign='center'>
-                                    <Grid item xs={4} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >Eleitores que não compareceram</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={1}>
-                                        <Box padding={2} border={1} height='100%'>
-                                            <Typography >{qtdRespAlunosVotantesNaoCompareceram}</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={1} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >{Math.floor((qtdRespAlunosVotantesNaoCompareceram / qtdRespAlunosVotantesConstantes) * 100)}%</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={6} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography ></Typography>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-
-                            {/* _________________________________________________________________________________________ */}
-
-                            <Grid container direction="column" padding={2} >
-                                <Grid container item direction="row" textAlign='center'>
-                                    <Grid item xs={4} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >Responsáveis por alunos não votantes</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={1}>
-                                        <Box padding={2} border={1} height='100%'>
-                                            <Typography >N°</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={1} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >%</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={6} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >Nº por extenso</Typography>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
-
-                                <Grid container item direction="row" textAlign='center'>
-                                    <Grid item xs={4} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >Eleitores constantes na lista</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={1}>
-                                        <Box padding={2} border={1} height='100%'>
-                                            <Typography >{qtdRespAlunosNaoVotantesConstantes}</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={1} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >100%</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={6} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography ></Typography>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
-
-                                <Grid container item direction="row" textAlign='center'>
-                                    <Grid item xs={4} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >Eleitores que compareceram</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={1}>
-                                        <Box padding={2} border={1} height='100%'>
-                                            <Typography >{qtdRespAlunosNaoVotantesCompareceram}</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={1} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >{Math.ceil((qtdRespAlunosNaoVotantesCompareceram / qtdRespAlunosNaoVotantesConstantes) * 100)}%</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={6} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography ></Typography>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
-
-                                <Grid container item direction="row" textAlign='center'>
-                                    <Grid item xs={4} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >Eleitores que não compareceram</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={1}>
-                                        <Box padding={2} border={1} height='100%'>
-                                            <Typography >{qtdRespAlunosNaoVotantesNaoCompareceram}</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={1} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography >{Math.floor((qtdRespAlunosNaoVotantesNaoCompareceram / qtdRespAlunosNaoVotantesConstantes) * 100)}%</Typography>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={6} >
-                                        <Box padding={2} border={1} height='100%' >
-                                            <Typography ></Typography>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-
+                            <Box>
+                                <TabelaResponsaveisAlunosNaoVotantes qtdRespAlunosNaoVotantesConstantes={qtdRespAlunosNaoVotantesConstantes} qtdRespAlunosNaoVotantesCompareceram={qtdRespAlunosNaoVotantesCompareceram} qtdRespAlunosNaoVotantesNaoCompareceram={qtdRespAlunosNaoVotantesNaoCompareceram} />
+                            </Box>
 
                         </Box>
                     </Box>
