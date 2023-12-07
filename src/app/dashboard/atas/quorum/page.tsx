@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { useUserContext } from "@/userContext";
 import { apiUrl } from "@/utils/api";
-import { resultadoVotoTypes } from '@/utils/types/result.eleicao.types';
+import { resultadoVotoTypes } from '@/utils/types/resultadoVotosEleicaoTypes';
 import { useRef } from 'react';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';

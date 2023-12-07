@@ -36,7 +36,7 @@ const qtdeVotos = {
   },
 };
 
-const passouQuorum = (qtdeVotos: ResultadoVoto) => {
+export const passouQuorum = (qtdeVotos: ResultadoVoto) => {
   const {
     quantidadeFuncionarios,
     funcionariosVotaram,
@@ -89,7 +89,7 @@ const passouQuorum = (qtdeVotos: ResultadoVoto) => {
   };
 };
 
-const percentualVotos = (qtdeVotos: ResultadoVoto) => {
+export const percentualVotos = (qtdeVotos: ResultadoVoto) => {
   const { votos } = qtdeVotos;
   const {
     votosRespAlunosVotantes,
@@ -100,10 +100,12 @@ const percentualVotos = (qtdeVotos: ResultadoVoto) => {
 
   const arrayDeCandidatos = Object.keys(votosAlunos);
 
+  //console.log(arrayDeCandidatos)
+
   const qtdeVotosCandidato = arrayDeCandidatos.map((candidato) => {
+
     const qtdeVotosRespAlunosVotantes = votosRespAlunosVotantes[candidato];
-    const qtdeVotosRespAlunosNaoVotantes =
-      votosRespAlunosNaoVotantes[candidato];
+    const qtdeVotosRespAlunosNaoVotantes = votosRespAlunosNaoVotantes[candidato];
     const qtdeVotosAlunos = votosAlunos[candidato];
     const qtdeVotosFuncionarios = votosFuncionarios[candidato];
 
@@ -111,6 +113,14 @@ const percentualVotos = (qtdeVotos: ResultadoVoto) => {
       qtdeVotosRespAlunosNaoVotantes +
       qtdeVotosAlunos +
       qtdeVotosRespAlunosVotantes;
+
+
+    const somaPaisAlunosFuncionarios = somaPaisAlunos + qtdeVotosFuncionarios
+
+    const percentualAlunos = qtdeVotos.alunosVotaram > 0 ? ((qtdeVotosAlunos * 50) / qtdeVotos.quantidadeAlunosVotantes) : 0;
+
+    const percentualRespAlunosNaoVotantes = qtdeVotos.quantidadeAlunosNaoVotantes > 0 ? ((qtdeVotosRespAlunosNaoVotantes * 50) / qtdeVotos.quantidadeAlunosNaoVotantes) : 0;
+    console.log(percentualAlunos)
 
     const percentualRespAlunos =
       (somaPaisAlunos * 50) /
@@ -124,16 +134,25 @@ const percentualVotos = (qtdeVotos: ResultadoVoto) => {
     const percentualTotal = percentualRespAlunos + percentualFunc;
 
     return {
-      candidato,
+      //candidato,
+      qtdeVotosAlunos,
+      percentualFunc,
       somaPaisAlunos,
       qtdeVotosFuncionarios,
+      percentualAlunos,
       percentualTotal,
+      percentualRespAlunosNaoVotantes,
+      somaPaisAlunosFuncionarios,
+      qtdeVotosRespAlunosVotantes,
+      qtdeVotosRespAlunosNaoVotantes,
     };
   });
   return qtdeVotosCandidato;
 };
 
-const resultadoFinal = (qtdeVotos: ResultadoVoto) => {
+console.log(percentualVotos)
+
+export const resultadoFinal = (qtdeVotos: ResultadoVoto) => {
   const confirmaQuorum = passouQuorum(qtdeVotos);
   const confirmaPercentual = percentualVotos(qtdeVotos);
 
@@ -183,4 +202,4 @@ const resultadoFinal = (qtdeVotos: ResultadoVoto) => {
   return { candidatoApto, candidatoEleito, motivosIndeferimento };
 };
 
-console.log(JSON.stringify(resultadoFinal(qtdeVotos)));
+// console.log(JSON.stringify(resultadoFinal(qtdeVotos)));
