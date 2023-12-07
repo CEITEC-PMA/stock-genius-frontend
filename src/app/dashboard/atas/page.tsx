@@ -122,7 +122,7 @@ export default function Atas() {
           {/* {alunosNaoVotantes.length ? <AtaAlunosNaoVotantes /> : null} */}
         </Box>
       </Box>
-      <Box
+      {/* <Box
         alignContent="center"
         display="flex"
         flexDirection="column"
@@ -172,7 +172,7 @@ export default function Atas() {
             </Button>
           </Link>
         </Box>
-      </Box>
+      </Box> */}
     </Box>
   );
 }
