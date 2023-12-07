@@ -32,6 +32,7 @@ export default function TabelaQuorumComparecimento({
 }: ITabelaQuorumComparecimento) {
 
     console.log(qtdAlunosCompareceram)
+    console.log(qtdAlunosCompareceram)
     console.log(dadosQuorum)
 
     return (
@@ -59,6 +60,7 @@ export default function TabelaQuorumComparecimento({
 
                 <TableRow>
 
+                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}><Typography>{qtdAlunosCompareceram} de {qtdAlunosConstantes}</Typography> </TableCell>
                     <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}><Typography>{qtdAlunosCompareceram} de {qtdAlunosConstantes}</Typography> </TableCell>
                     <TableCell sx={{
                         border: '1px solid black', textAlign: 'center',
