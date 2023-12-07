@@ -258,7 +258,7 @@ export default function Quorum() {
                             </Typography>
                         </Box>
 
-                        <Box mt={1} component={Paper} textAlign='center' >
+                        <Box mt={1} component={Paper} textAlign='center' mx={1}  >
 
                             <TabelaQuorumComparecimento
                                 qtdAlunosConstantes={qtdAlunosConstantes}
