@@ -31,7 +31,7 @@ export default function TabelaQuorumComparecimento({
     qtdFuncionarosCompareceram
 }: ITabelaQuorumComparecimento) {
 
-    console.log(qtdAlunosCompareceram)
+    console.log(qtdRespAlunosVotantesConstantes)
 
     return (
         <Table sx={{ border: '1px solid black' }}>
@@ -64,11 +64,11 @@ export default function TabelaQuorumComparecimento({
                     <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}><Typography> {qtdRespAlunosNaoVotantesCompareceram} de {qtdRespAlunosNaoVotantesConstantes}</Typography>  </TableCell>
                     <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}><Typography sx={{ color: (qtdRespAlunosNaoVotantesCompareceram / qtdRespAlunosNaoVotantesConstantes * 100) < 20 ? 'red' : 'black' }}>{qtdRespAlunosNaoVotantesConstantes ? (qtdRespAlunosNaoVotantesCompareceram / qtdRespAlunosNaoVotantesConstantes * 100).toFixed(2) : 0} % </Typography> </TableCell>
 
-                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}><Typography>{qtdRespAlunosVotantesConstantes}</Typography> </TableCell>
-                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}><Typography sx={{ color: (qtdRespAlunosVotantesConstantes / qtdRespAlunosVotantesConstantes * 100) < 20 ? 'red' : 'black' }}>{qtdRespAlunosVotantesConstantes > 0 ? (qtdRespAlunosVotantesCompareceram / qtdRespAlunosVotantesConstantes * 100).toFixed(2) : 0} %</Typography> </TableCell>
+                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}><Typography>{qtdRespAlunosVotantesCompareceram} de {qtdRespAlunosVotantesConstantes} </Typography> </TableCell>
+                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}><Typography sx={{ color: (qtdRespAlunosVotantesCompareceram / qtdRespAlunosVotantesConstantes * 100) < 20 ? 'red' : 'black' }}>{qtdRespAlunosVotantesConstantes ? (qtdRespAlunosVotantesCompareceram / qtdRespAlunosVotantesConstantes * 100).toFixed(2) : 0} %</Typography> </TableCell>
 
                     <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}><Typography> </Typography> {qtdFuncionarosCompareceram} de {qtdFuncionariosConstantes} </TableCell>
-                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}><Typography sx={{ color: (qtdFuncionarosCompareceram / qtdFuncionariosConstantes * 100) < 50 ? 'red' : 'black' }}>{qtdFuncionariosConstantes > 0 ? (qtdFuncionarosCompareceram / qtdFuncionariosConstantes * 100).toFixed(2) : 0}%</Typography>  </TableCell>
+                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}><Typography sx={{ color: (qtdFuncionarosCompareceram / qtdFuncionariosConstantes * 100) < 50 ? 'red' : 'black' }}>{qtdFuncionariosConstantes ? (qtdFuncionarosCompareceram / qtdFuncionariosConstantes * 100).toFixed(2) : 0}%</Typography>  </TableCell>
 
                 </TableRow>
 

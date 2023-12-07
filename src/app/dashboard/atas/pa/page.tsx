@@ -130,13 +130,11 @@ export default function PA() {
 
                     <Box display="flex" flexDirection="column" component={Paper}>
 
-                        <Box bgcolor='gray' textAlign='center' mt={2} >
+                        <Box textAlign='center' mt={2} >
                             <Image
                                 width={320}
                                 height={55}
-                                src={
-                                    "https://portaleducacao.anapolis.go.gov.br/portal/wp-content/uploads/2021/04/LOGO-SECRETARIA-EDUCACAO-1.png"
-                                }
+                                src="https://cdn.anapolis.go.gov.br/img/logos/sem_fundo/azuis/educacao.png"
                                 alt="Logo"
                             />
 

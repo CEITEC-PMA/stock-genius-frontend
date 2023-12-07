@@ -197,6 +197,7 @@ export default function Quorum() {
     const qtdRespAlunosVotantesNaoCompareceram = qtdRespAlunosVotantesConstantes - qtdRespAlunosVotantesCompareceram
 
 
+    console.log(qtdRespAlunosVotantesConstantes)
 
     // Responsáveis por Alunos Não Votantes
     const qtdRespAlunosNaoVotantesConstantes = resultadoVoto.quantidadeAlunosNaoVotantes;
@@ -207,21 +208,6 @@ export default function Quorum() {
     const qtdFuncionariosConstantes = resultadoVoto.quantidadeFuncionarios;
     const qtdFuncionarosCompareceram = resultadoVoto.funcionariosVotaram;
     const qtdFucionariosNaoCompareceram = qtdFuncionariosConstantes - qtdFuncionarosCompareceram
-
-    // const diretorApto = resultadoFinal(resultadoVoto)
-    // console.log(diretorApto)
-
-    //console.log(candidatos)
-
-
-
-
-
-
-    //console.log(totalVotos)
-
-
-
 
 
     const getTargetElement = () => document.getElementById('content-id');
@@ -239,13 +225,11 @@ export default function Quorum() {
 
                     <Box display="flex" flexDirection="column" component={Paper}>
 
-                        <Box bgcolor='gray' textAlign='center' mt={2} >
+                        <Box textAlign='center' mt={2} >
                             <Image
                                 width={320}
                                 height={55}
-                                src={
-                                    "https://portaleducacao.anapolis.go.gov.br/portal/wp-content/uploads/2021/04/LOGO-SECRETARIA-EDUCACAO-1.png"
-                                }
+                                src="https://cdn.anapolis.go.gov.br/img/logos/sem_fundo/azuis/educacao.png"
                                 alt="Logo"
                             />
 
@@ -270,7 +254,7 @@ export default function Quorum() {
                             </Typography>
 
                             <Typography>
-                                Quórum - Comparecimento de Eleitores
+                                <strong>Quórum - Comparecimento de Eleitores</strong>
                             </Typography>
                         </Box>
 
@@ -281,7 +265,7 @@ export default function Quorum() {
                                 qtdAlunosCompareceram={qtdAlunosCompareceram}
                                 qtdRespAlunosNaoVotantesConstantes={qtdRespAlunosNaoVotantesConstantes}
                                 qtdRespAlunosNaoVotantesCompareceram={qtdRespAlunosNaoVotantesCompareceram}
-                                qtdRespAlunosVotantesConstantes={qtdRespAlunosVotantesCompareceram}
+                                qtdRespAlunosVotantesConstantes={qtdRespAlunosVotantesConstantes}
                                 qtdFuncionariosConstantes={qtdFuncionariosConstantes}
                                 qtdFuncionarosCompareceram={qtdFuncionarosCompareceram}
                                 qtdRespAlunosVotantesCompareceram={qtdRespAlunosVotantesCompareceram}
@@ -292,7 +276,7 @@ export default function Quorum() {
                             {/* ________________________________________________________________________________ */}
 
                             <Box my={2}>
-                                <Typography>Votos de Pais / Responsáveis e alunos</Typography>
+                                <Typography><strong>Votos de Pais / Responsáveis e alunos</strong> </Typography>
                             </Box>
                             <TabelaQuorumVotosPaisRespAlunosCopy dadosQuorum={dadosQuorum} />
 
@@ -300,7 +284,7 @@ export default function Quorum() {
                             {/* _______________________________________________________________________________________     */}
 
                             <Box my={2}>
-                                <Typography>Votos de Professores e Servidores Aministrativos</Typography>
+                                <Typography><strong>Votos de Professores e Servidores Aministrativos</strong></Typography>
                             </Box>
 
                             <TabelaQuorumServidoresCopy dadosQuorum={dadosQuorum} />
@@ -308,7 +292,7 @@ export default function Quorum() {
                             {/* _________________________________________________________________________________________ */}
 
                             <Box my={2}>
-                                <Typography>Resultado Final</Typography>
+                                <Typography variant='h6'> <strong> Resultado Final</strong></Typography>
                             </Box>
 
                             <TabelaResultadoFinalCopy dadosQuorum={dadosQuorum} />
