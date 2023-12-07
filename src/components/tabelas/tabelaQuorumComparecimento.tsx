@@ -49,7 +49,7 @@ export default function TabelaQuorumComparecimento({
                 <TableRow>
                     <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}><Typography>QtdAlunos Votantes</Typography> </TableCell>
                     <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}><Typography>Percentual</Typography> </TableCell>
-                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}><Typography>QtdPais/Responsaveis (AVN)</Typography></TableCell>
+                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}><Typography>QtdPais/Responsaveis (ANV)</Typography></TableCell>
                     <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}><Typography>Percentual</Typography> </TableCell>
                     <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}><Typography>QtdPais/Responsaveis (AV)</Typography></TableCell>
                     <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}><Typography>Percentual</Typography> </TableCell>
@@ -60,7 +60,7 @@ export default function TabelaQuorumComparecimento({
 
                 <TableRow>
 
-                    <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}><Typography>{qtdAlunosCompareceram} de {qtdAlunosConstantes}</Typography> </TableCell>
+
                     <TableCell sx={{ border: '1px solid black', textAlign: 'center' }}><Typography>{qtdAlunosCompareceram} de {qtdAlunosConstantes}</Typography> </TableCell>
                     <TableCell sx={{
                         border: '1px solid black', textAlign: 'center',
