@@ -44,7 +44,7 @@ export default function TabelaQuorumComparecimento({
               textAlign: "center",
             }}
           >
-            <Typography>Alunos Votantes -50%</Typography>{" "}
+            <Typography>Alunos Votantes - 50%</Typography>{" "}
           </TableCell>
           <TableCell
             colSpan={2}
@@ -131,19 +131,19 @@ export default function TabelaQuorumComparecimento({
             <Typography>
               {qtdAlunosConstantes
                 ? ((qtdAlunosCompareceram / qtdAlunosConstantes) * 100).toFixed(
-                    2
-                  )
-                : 0}{" "}
+                  2
+                )
+                : 0}
               %
-            </Typography>{" "}
+            </Typography>
           </TableCell>
 
           <TableCell sx={{ border: "1px solid black", textAlign: "center" }}>
             <Typography>
-              {" "}
-              {qtdRespAlunosNaoVotantesCompareceram} de{" "}
+
+              {qtdRespAlunosNaoVotantesCompareceram} de
               {qtdRespAlunosNaoVotantesConstantes}
-            </Typography>{" "}
+            </Typography>
           </TableCell>
           <TableCell
             sx={{
@@ -153,14 +153,14 @@ export default function TabelaQuorumComparecimento({
                 (qtdRespAlunosNaoVotantesCompareceram /
                   qtdRespAlunosNaoVotantesConstantes) *
                   100 <
-                20
+                  20
                   ? "red"
                   : "white",
               color:
                 (qtdRespAlunosNaoVotantesCompareceram /
                   qtdRespAlunosNaoVotantesConstantes) *
                   100 <
-                20
+                  20
                   ? "white"
                   : "black",
             }}
@@ -168,56 +168,43 @@ export default function TabelaQuorumComparecimento({
             <Typography>
               {qtdRespAlunosNaoVotantesConstantes
                 ? (
-                    (qtdRespAlunosNaoVotantesCompareceram /
-                      qtdRespAlunosNaoVotantesConstantes) *
-                    100
-                  ).toFixed(2)
-                : 0}{" "}
-              %{" "}
-            </Typography>{" "}
+                  (qtdRespAlunosNaoVotantesCompareceram /
+                    qtdRespAlunosNaoVotantesConstantes) *
+                  100
+                ).toFixed(2)
+                : 0}
+              %
+            </Typography>
           </TableCell>
 
           <TableCell sx={{ border: "1px solid black", textAlign: "center" }}>
             <Typography>
-              {qtdRespAlunosVotantesCompareceram} de{" "}
-              {qtdRespAlunosVotantesConstantes}{" "}
-            </Typography>{" "}
+              {qtdRespAlunosVotantesCompareceram} de
+              {qtdRespAlunosVotantesConstantes}
+            </Typography>
           </TableCell>
           <TableCell
             sx={{
               border: "1px solid black",
               textAlign: "center",
-              bgcolor:
-                (qtdRespAlunosVotantesCompareceram /
-                  qtdRespAlunosVotantesConstantes) *
-                  100 <
-                20
-                  ? "red"
-                  : "white",
-              color:
-                (qtdRespAlunosVotantesCompareceram /
-                  qtdRespAlunosVotantesConstantes) *
-                  100 <
-                20
-                  ? "white"
-                  : "black",
+
             }}
           >
             <Typography>
               {qtdRespAlunosVotantesConstantes
                 ? (
-                    (qtdRespAlunosVotantesCompareceram /
-                      qtdRespAlunosVotantesConstantes) *
-                    100
-                  ).toFixed(2)
-                : 0}{" "}
+                  (qtdRespAlunosVotantesCompareceram /
+                    qtdRespAlunosVotantesConstantes) *
+                  100
+                ).toFixed(2)
+                : 0}
               %
-            </Typography>{" "}
+            </Typography>
           </TableCell>
 
           <TableCell sx={{ border: "1px solid black", textAlign: "center" }}>
             <Typography> </Typography> {qtdFuncionarosCompareceram} de{" "}
-            {qtdFuncionariosConstantes}{" "}
+            {qtdFuncionariosConstantes}
           </TableCell>
           <TableCell
             sx={{
@@ -225,25 +212,19 @@ export default function TabelaQuorumComparecimento({
               textAlign: "center",
               bgcolor:
                 (qtdFuncionarosCompareceram / qtdFuncionariosConstantes) * 100 <
-                50
+                  50
                   ? "red"
                   : "white",
               color:
                 (qtdFuncionarosCompareceram / qtdFuncionariosConstantes) * 100 <
-                50
+                  50
                   ? "white"
                   : "black",
             }}
           >
-            <Typography sx={{}}>
-              {qtdFuncionariosConstantes
-                ? (
-                    (qtdFuncionarosCompareceram / qtdFuncionariosConstantes) *
-                    100
-                  ).toFixed(2)
-                : 0}
-              %
-            </Typography>{" "}
+            <Typography>
+              {qtdFuncionariosConstantes ? ((qtdFuncionarosCompareceram / qtdFuncionariosConstantes) * 100).toFixed(2) : 0}  %
+            </Typography>
           </TableCell>
         </TableRow>
       </TableBody>
