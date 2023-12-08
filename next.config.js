@@ -14,21 +14,18 @@ const nextConfig = {
         port: "",
         pathname: "/img/**",
       },
-
       {
         protocol: "https",
         hostname: "api.anapolis.go.gov.br",
         port: "",
         pathname: "/apiupload/**",
       },
-
       {
-        protocol: 'https',
-        hostname: 'api.anapolis.go.gov.br',
-        port: '',
-        pathname: '/apieleicaoteste/**',
+        protocol: "https",
+        hostname: "api.anapolis.go.gov.br",
+        port: "",
+        pathname: "/**",
       },
-
       {
         protocol: "https",
         hostname: "portaleducacao.anapolis.go.gov.br",
