@@ -208,8 +208,8 @@ export default function VotacaoFinal(props: {
         <div style={{ marginTop: "35px" }}>
           {resultadoEleicao.candidatoApto && (
             <Typography>
-              Com {resultadoEleicao.percentualMaior.toFixed(2)}% dos votos e ,
-              o/a candidato(a) vencedor foi {resultadoEleicao.candidatoEleito}!
+              Com {resultadoEleicao.percentualMaior.toFixed(2)}% dos votos, o/a
+              candidato(a) vencedor foi {resultadoEleicao.candidatoEleito}!
             </Typography>
           )}
           {!resultadoEleicao.candidatoApto && (

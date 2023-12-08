@@ -30,11 +30,13 @@ import Link from "next/link";
 import TabelaMembros from "@/components/tabelas/tabelaMembros";
 import TabelaEleitores from "@/components/tabelas/TabelaEleitores";
 import { resultadoVotosEleicaoTypes } from "@/utils/types/resultadoVotosEleicaoTypes";
+import { Zona } from "@/utils/types/candidato.types";
 
 export default function PsaAdmin({ params }: { params: { id: string } }) {
   const [resultadoVoto, setResultadoVoto] =
     useState<resultadoVotosEleicaoTypes>({} as resultadoVotosEleicaoTypes);
   const [isLoading, setIsloading] = useState(true);
+  const [zona, setZona] = useState<Zona | null>(null);
   const { user } = useUserContext();
   const { id } = params;
 
@@ -59,6 +61,20 @@ export default function PsaAdmin({ params }: { params: { id: string } }) {
       },
     },
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const getDadosZona = async () => {
+      const response = await fetch(`${apiUrl}/api/v1/zona/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const responseJson = await response.json();
+      setZona(responseJson.zona);
+    };
+    getDadosZona();
+  }, [id]);
 
   useEffect(() => {
     //fetch
@@ -132,7 +148,7 @@ export default function PsaAdmin({ params }: { params: { id: string } }) {
               <Box textAlign="center" mt={3}>
                 <Typography>Prefeitura Municipal de Anápolis</Typography>
                 <Typography>Secretaria Municipal de Educação</Typography>
-                <Typography>{user.nome}</Typography>
+                <Typography>{zona ? zona?.nome : "Carregando"}</Typography>
               </Box>
 
               <Box

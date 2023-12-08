@@ -16,7 +16,7 @@ import generatePDF, { Resolution, Margin, Options } from "react-to-pdf";
 import { Box, Button, Container, Table, Typography } from "@mui/material";
 import { resultadoVoto } from "@/utils/resultado.eleicao.mock";
 import Link from "next/link";
-import { Candidato } from "@/utils/types/candidato.types";
+import { Candidato, Zona } from "@/utils/types/candidato.types";
 import TabelaQuorumComparecimento from "@/components/tabelas/tabelaQuorumComparecimento";
 //import { passouQuorum, percentualVotos, resultadoFinal } from '@/utils/processarVotos';
 import TabelaQuorumVotosPaisRespAlunos from "@/components/tabelas/tabelaQuorumVotosPaisRespAlunos";
@@ -68,6 +68,7 @@ export default function Quorum({ params }: { params: { id: string } }) {
   const [candidatos, setCandidatos] = useState<Candidato[]>([]);
   const [isLoading, setIsloading] = useState(true);
   const [dadosQuorum, setDadosQuorum] = useState<DadosQuorum[]>([]);
+  const [zona, setZona] = useState<Zona | null>(null);
   const { user } = useUserContext();
   const { id } = params;
 
@@ -90,6 +91,20 @@ export default function Quorum({ params }: { params: { id: string } }) {
       },
     },
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const getDadosZona = async () => {
+      const response = await fetch(`${apiUrl}/api/v1/zona/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const responseJson = await response.json();
+      setZona(responseJson.zona);
+    };
+    getDadosZona();
+  }, [id]);
 
   // Fetch Alunos, Responsaveis, Funcionários
   useEffect(() => {
@@ -122,8 +137,6 @@ export default function Quorum({ params }: { params: { id: string } }) {
     }
   }, [user._id]);
 
-  console.log(resultadoVoto);
-
   // Fetch Candidatos
   useEffect(() => {
     //fetch
@@ -144,8 +157,6 @@ export default function Quorum({ params }: { params: { id: string } }) {
       getDadosCandidatos();
     }
   }, [user._id]);
-
-  console.log(candidatos);
 
   // fetch quorum
   useEffect(() => {
@@ -189,8 +200,6 @@ export default function Quorum({ params }: { params: { id: string } }) {
     resultadoVoto.respAlunosVotantesVotaram;
   const qtdRespAlunosVotantesNaoCompareceram =
     qtdRespAlunosVotantesConstantes - qtdRespAlunosVotantesCompareceram;
-
-  console.log(qtdRespAlunosVotantesConstantes);
 
   // Responsáveis por Alunos Não Votantes
   const qtdRespAlunosNaoVotantesConstantes =
@@ -236,7 +245,7 @@ export default function Quorum({ params }: { params: { id: string } }) {
             <Box textAlign="center" mt={2}>
               <Typography>Prefeitura Municipal de Anápolis</Typography>
               <Typography>Secretaria Municipal de Educação</Typography>
-              <Typography>{user.nome}</Typography>
+              <Typography>{zona ? zona?.nome : "Carregando"}</Typography>
             </Box>
 
             <Box

@@ -63,7 +63,7 @@ export default function TabelaQuorumVotosPaisRespAlunosCopy({
                   textAlign: "center",
                 }}
               >
-                <Typography>Votos responsaveis por alunos votantes</Typography>{" "}
+                <Typography>Votos responsáveis por alunos votantes</Typography>{" "}
               </TableCell>
               <TableCell
                 sx={{
@@ -73,7 +73,7 @@ export default function TabelaQuorumVotosPaisRespAlunosCopy({
                 }}
               >
                 <Typography>
-                  Votos responsaveis por alunos não votantes
+                  Votos responsáveis por alunos não votantes
                 </Typography>{" "}
               </TableCell>
               <TableCell
