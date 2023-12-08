@@ -51,8 +51,14 @@ export default function Votacao() {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(dadosParaEnviar),
-    });
-    avancarEtapa();
+    })
+      .then((response) => {
+        console.log(response);
+        avancarEtapa();
+      })
+      .catch((error) => {
+        alert("Não foi possível completar o voto. Tente novamente!");
+      });
   };
 
   const renderVotacao = (etapa: number) => {

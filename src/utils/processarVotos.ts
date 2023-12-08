@@ -108,14 +108,6 @@ const percentualVotos = (qtdeVotos: NumerosVotacao) => {
       qtdeVotosAlunosNumeric.numero_votos +
       qtdeVotosRespAlunosVotantesNumeric.numero_votos;
 
-
-    const somaPaisAlunosFuncionarios = somaPaisAlunos + qtdeVotosFuncionarios
-
-    const percentualAlunos = qtdeVotos.alunosVotaram > 0 ? ((qtdeVotosAlunos * 50) / qtdeVotos.quantidadeAlunosVotantes) : 0;
-
-    const percentualRespAlunosNaoVotantes = qtdeVotos.quantidadeAlunosNaoVotantes > 0 ? ((qtdeVotosRespAlunosNaoVotantes * 50) / qtdeVotos.quantidadeAlunosNaoVotantes) : 0;
-    console.log(percentualAlunos)
-
     const percentualRespAlunos =
       (somaPaisAlunos * 50) /
       (qtdeVotos.quantidadeAlunosNaoVotantes +
@@ -134,7 +126,6 @@ const percentualVotos = (qtdeVotos: NumerosVotacao) => {
       candidato,
       somaPaisAlunos,
       qtdeVotosFuncionarios,
-      percentualAlunos,
       percentualTotal,
       nome_candidato: qtdeVotosAlunosNumeric.nome_candidato,
       numero_votos: qtdeVotosAlunosNumeric.numero_votos,
