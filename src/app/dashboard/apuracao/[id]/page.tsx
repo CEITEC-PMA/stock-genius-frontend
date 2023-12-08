@@ -214,30 +214,57 @@ export default function Apuracao({ params }: { params: { id: string } }) {
   }, [id]);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    if (!user.role || !user.role.includes("super-adm")) {
+      const token = localStorage.getItem("token");
 
-    const getNumerosVotacao = async () => {
-      try {
-        const response = await fetch(`${apiUrl}/api/v1/votacao/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+      const getNumerosVotacao = async () => {
+        try {
+          const response = await fetch(`${apiUrl}/api/v1/votacao`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
 
-        if (!response.ok) {
-          alert("Erro ao obter os resultados dos votos, tente novamente");
-          console.error("Erro ao obter resultados de votos");
-          return;
+          if (!response.ok) {
+            console.error("Erro ao obter resultados de votos");
+            return;
+          }
+
+          const numerosVotacaoJson = await response.json();
+          setNumerosVotacao(numerosVotacaoJson);
+          console.log(response);
+        } catch (error) {
+          console.error("Erro na solicitação, tente novamente", error);
         }
+      };
 
-        const numerosVotacaoJson = await response.json();
-        setNumerosVotacao(numerosVotacaoJson);
-      } catch (error) {
-        console.error("Erro na solicitação, tente novamente", error);
-      }
-    };
+      getNumerosVotacao();
+    } else {
+      const token = localStorage.getItem("token");
 
-    getNumerosVotacao();
+      const getNumerosVotacao = async () => {
+        try {
+          const response = await fetch(`${apiUrl}/api/v1/votacao/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (!response.ok) {
+            console.error("Erro ao obter resultados de votos");
+            return;
+          }
+
+          const numerosVotacaoJson = await response.json();
+          setNumerosVotacao(numerosVotacaoJson);
+          console.log(response);
+        } catch (error) {
+          console.error("Erro na solicitação, tente novamente", error);
+        }
+      };
+
+      getNumerosVotacao();
+    }
   }, [zona?._id]);
 
   useEffect(() => {
@@ -246,181 +273,174 @@ export default function Apuracao({ params }: { params: { id: string } }) {
     }
   }, [numerosVotacao]);
 
-  if (user.role && user.role.includes("super-adm")) {
-    return (
+  // if (!user.role || !user.role.includes("super-adm")) return <Unauthorized />;
+
+  return (
+    <Box margin="0" padding="0" height={`calc(100vh - 66px)`} overflow="hidden">
+      <Typography
+        variant={smDown ? "h6" : mdDown ? "h5" : "h5"}
+        textAlign="center"
+        marginTop={2}
+        color=" #0f4c81"
+      >
+        ELEIÇÕES MUNICIPAIS DE DIRETORES BIÊNIO 2024/25 -{" "}
+        {isLoading ? "Carregando..." : zona?.nome}
+      </Typography>
       <Box
-        margin="0"
-        padding="0"
-        height={`calc(100vh - 66px)`}
-        overflow="hidden"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="flex-start"
+        height="100%"
       >
         <Typography
-          variant={smDown ? "h6" : mdDown ? "h5" : "h5"}
+          variant="h6"
           textAlign="center"
-          marginTop={2}
-          color=" #0f4c81"
+          marginTop={0.2}
+          color=" #000"
         >
-          ELEIÇÕES MUNICIPAIS DE DIRETORES BIÊNIO 2024/25 -{" "}
-          {isLoading ? "Carregando..." : zona?.nome}
+          Apuração da votação
         </Typography>
         <Box
           display="flex"
-          flexDirection="column"
+          width="100%"
+          marginTop="5px"
           alignItems="center"
-          justifyContent="flex-start"
-          height="100%"
+          justifyContent="center"
+          gap={2.5}
         >
-          <Typography
-            variant="h6"
-            textAlign="center"
-            marginTop={0.2}
-            color=" #000"
-          >
-            Apuração da votação
-          </Typography>
-          <Box
-            display="flex"
-            width="100%"
-            marginTop="5px"
-            alignItems="center"
-            justifyContent="center"
-            gap={2.5}
-          >
-            <Box>
-              {numerosVotacao?.quantidadeAlunosVotantes !== 0 && (
-                <Button
-                  variant="contained"
-                  startIcon={<Face6Icon style={{ fontSize: 24 }} />}
-                  onClick={() => handleTipo("Alunos")}
-                  style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
-                >
-                  Alunos
-                </Button>
-              )}
-            </Box>
-            <Box>
+          <Box>
+            {numerosVotacao?.quantidadeAlunosVotantes !== 0 && (
               <Button
                 variant="contained"
-                startIcon={<EscalatorWarningIcon style={{ fontSize: 24 }} />}
-                onClick={() => handleTipo("Responsáveis")}
+                startIcon={<Face6Icon style={{ fontSize: 24 }} />}
+                onClick={() => handleTipo("Alunos")}
                 style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
-              >
-                Responsáveis
-              </Button>
-            </Box>
-            <Box>
-              <Button
-                variant="contained"
-                startIcon={<BadgeIcon style={{ fontSize: 24 }} />}
-                onClick={() => handleTipo("Funcionários")}
-                style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
-              >
-                Funcionários
-              </Button>
-            </Box>
-            <Box>
-              <Button
-                variant="contained"
-                startIcon={<PollIcon style={{ fontSize: 24 }} />}
-                onClick={() => handleTipo("Resultado Final")}
-                style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
-              >
-                Resultado Final
-              </Button>
-            </Box>
-          </Box>
-          {tipoResultado === "Alunos" && (
-            <>
-              <Typography
-                variant="h5"
-                textAlign="center"
-                marginTop={0.8}
-                marginBottom={0.8}
-                color="#000"
               >
                 Alunos
-              </Typography>
-              {numerosVotacao ? (
-                <VotacaoAlunos
-                  candidatos={candidatos}
-                  numerosVotacao={numerosVotacao}
-                  resultadoEleicao={resultadoEleicao}
-                />
-              ) : (
-                <p>Carregando resultados...</p>
-              )}
-            </>
-          )}
-          {tipoResultado === "Responsáveis" && (
-            <>
-              <Typography
-                variant="h5"
-                textAlign="center"
-                marginTop={0.8}
-                marginBottom={0.8}
-                color="#000"
-              >
-                Responsáveis
-              </Typography>
-              {numerosVotacao ? (
-                <VotacaoResp
-                  candidatos={candidatos}
-                  numerosVotacao={numerosVotacao}
-                  resultadoEleicao={resultadoEleicao}
-                />
-              ) : (
-                <p>Carregando...</p>
-              )}
-            </>
-          )}
-          {tipoResultado === "Funcionários" && (
-            <>
-              <Typography
-                variant="h5"
-                textAlign="center"
-                marginTop={0.8}
-                marginBottom={0.8}
-                color="#000"
-              >
-                Funcionários
-              </Typography>
-              {numerosVotacao ? (
-                <VotacaoFuncionarios
-                  candidatos={candidatos}
-                  numerosVotacao={numerosVotacao}
-                  resultadoEleicao={resultadoEleicao}
-                />
-              ) : (
-                <p>Carregando...</p>
-              )}
-            </>
-          )}
-          {tipoResultado === "Resultado Final" && (
-            <>
-              <Typography
-                variant="h5"
-                textAlign="center"
-                marginTop={0.8}
-                marginBottom={0.8}
-                color="#000"
-              >
-                Resultado Final
-              </Typography>
-              {numerosVotacao ? (
-                <VotacaoFinal
-                  candidatos={candidatos}
-                  numerosVotacao={numerosVotacao}
-                  resultadoEleicao={resultadoEleicao}
-                />
-              ) : (
-                <p>Carregando...</p>
-              )}
-            </>
-          )}
+              </Button>
+            )}
+          </Box>
+          <Box>
+            <Button
+              variant="contained"
+              startIcon={<EscalatorWarningIcon style={{ fontSize: 24 }} />}
+              onClick={() => handleTipo("Responsáveis")}
+              style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
+            >
+              Responsáveis
+            </Button>
+          </Box>
+          <Box>
+            <Button
+              variant="contained"
+              startIcon={<BadgeIcon style={{ fontSize: 24 }} />}
+              onClick={() => handleTipo("Funcionários")}
+              style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
+            >
+              Funcionários
+            </Button>
+          </Box>
+          <Box>
+            <Button
+              variant="contained"
+              startIcon={<PollIcon style={{ fontSize: 24 }} />}
+              onClick={() => handleTipo("Resultado Final")}
+              style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
+            >
+              Resultado Final
+            </Button>
+          </Box>
         </Box>
+        {tipoResultado === "Alunos" && (
+          <>
+            <Typography
+              variant="h5"
+              textAlign="center"
+              marginTop={0.8}
+              marginBottom={0.8}
+              color="#000"
+            >
+              Alunos
+            </Typography>
+            {numerosVotacao ? (
+              <VotacaoAlunos
+                candidatos={candidatos}
+                numerosVotacao={numerosVotacao}
+                resultadoEleicao={resultadoEleicao}
+              />
+            ) : (
+              <p>Carregando resultados...</p>
+            )}
+          </>
+        )}
+        {tipoResultado === "Responsáveis" && (
+          <>
+            <Typography
+              variant="h5"
+              textAlign="center"
+              marginTop={0.8}
+              marginBottom={0.8}
+              color="#000"
+            >
+              Responsáveis
+            </Typography>
+            {numerosVotacao ? (
+              <VotacaoResp
+                candidatos={candidatos}
+                numerosVotacao={numerosVotacao}
+                resultadoEleicao={resultadoEleicao}
+              />
+            ) : (
+              <p>Carregando...</p>
+            )}
+          </>
+        )}
+        {tipoResultado === "Funcionários" && (
+          <>
+            <Typography
+              variant="h5"
+              textAlign="center"
+              marginTop={0.8}
+              marginBottom={0.8}
+              color="#000"
+            >
+              Funcionários
+            </Typography>
+            {numerosVotacao ? (
+              <VotacaoFuncionarios
+                candidatos={candidatos}
+                numerosVotacao={numerosVotacao}
+                resultadoEleicao={resultadoEleicao}
+              />
+            ) : (
+              <p>Carregando...</p>
+            )}
+          </>
+        )}
+        {tipoResultado === "Resultado Final" && (
+          <>
+            <Typography
+              variant="h5"
+              textAlign="center"
+              marginTop={0.8}
+              marginBottom={0.8}
+              color="#000"
+            >
+              Resultado Final
+            </Typography>
+            {numerosVotacao ? (
+              <VotacaoFinal
+                candidatos={candidatos}
+                numerosVotacao={numerosVotacao}
+                resultadoEleicao={resultadoEleicao}
+              />
+            ) : (
+              <p>Carregando...</p>
+            )}
+          </>
+        )}
       </Box>
-    );
-  } else {
-    return <Unauthorized />;
-  }
+    </Box>
+  );
 }

@@ -21,17 +21,13 @@ interface ITAbelaQuorumVotosPaisRespAlunos {
 export default function TabelaQuorumVotosPaisRespAlunosCopy({
   dadosQuorum,
 }: ITAbelaQuorumVotosPaisRespAlunos) {
-  console.log(dadosQuorum);
-
-  const qtdAlunosResponsaveis = dadosQuorum.map((quorum) => {
+  const qtdAlunosResponsaveis = dadosQuorum?.map((quorum) => {
     return quorum.totalVotosAlunosResponsaveis;
   });
-
-  const somaQtdAlunosResponsaveis = qtdAlunosResponsaveis.reduce(
+  const somaQtdAlunosResponsaveis = qtdAlunosResponsaveis?.reduce(
     (acumulator, value) => acumulator + value,
     0
   );
-
   return (
     <Box display="flex">
       <Box flex={1}>
@@ -89,7 +85,7 @@ export default function TabelaQuorumVotosPaisRespAlunosCopy({
           </TableHead>
 
           <TableBody>
-            {dadosQuorum.map((dados, i) => (
+            {dadosQuorum?.map((dados, i) => (
               <TableRow key={i}>
                 <TableCell
                   sx={{

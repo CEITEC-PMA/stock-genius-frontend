@@ -74,77 +74,70 @@ export default function BuscaResultado() {
     router.push(`/dashboard/atas/atasResultado/${id}`);
   };
 
-  if (user.role && user.role.includes("super-adm")) {
-    return (
+  if (!user.role || !user.role.includes("super-adm")) return <Unauthorized />;
+
+  return (
+    <Box margin="0" padding="0" height={`calc(100vh - 66px)`} overflow="hidden">
+      <Typography
+        variant={smDown ? "h6" : mdDown ? "h5" : "h4"}
+        textAlign="center"
+        marginTop={2}
+        color=" #0f4c81"
+      >
+        ELEIÇÕES MUNICIPAIS DE DIRETORES BIÊNIO 2024/25
+      </Typography>
       <Box
-        margin="0"
-        padding="0"
-        height={`calc(100vh - 66px)`}
-        overflow="hidden"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="flex-start"
+        height="100%"
       >
         <Typography
-          variant={smDown ? "h6" : mdDown ? "h5" : "h4"}
+          variant="h4"
           textAlign="center"
-          marginTop={2}
-          color=" #0f4c81"
+          marginTop={1.2}
+          color=" #000"
         >
-          ELEIÇÕES MUNICIPAIS DE DIRETORES BIÊNIO 2024/25
+          Resultado da Eleições nas Unidades de Ensino
         </Typography>
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="flex-start"
-          height="100%"
-        >
-          <Typography
-            variant="h4"
-            textAlign="center"
-            marginTop={1.2}
-            color=" #000"
-          >
-            Resultado da Eleições nas Unidades de Ensino
-          </Typography>
-          {isLoading === false && (
-            <Box marginTop={4}>
-              <Autocomplete
-                options={zonas}
-                getOptionLabel={(option) => option.nome}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Digite o nome da Unidade de Ensino"
-                    variant="outlined"
-                    onChange={(e) => setInputValue(e.target.value)}
-                    sx={{ width: 500, backgroundColor: "#fff" }}
-                  />
-                )}
-                value={selectedOption}
-                onChange={handleOptionChange}
-                renderOption={(props, option) => (
-                  <li {...props} key={option._id}>
-                    {option.nome}
-                  </li>
-                )}
-              />
-            </Box>
-          )}
-          {selectedOption && (
-            <Box marginTop={4}>
-              <Button
-                variant="contained"
-                startIcon={<PollIcon style={{ fontSize: 46 }} />}
-                style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
-                onClick={() => handleAcompanharClick(selectedOption._id)}
-              >
-                Acessar atas de resultado da Unidade escolhida
-              </Button>
-            </Box>
-          )}
-        </Box>
+        {isLoading === false && (
+          <Box marginTop={4}>
+            <Autocomplete
+              options={zonas}
+              getOptionLabel={(option) => option.nome}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Digite o nome da Unidade de Ensino"
+                  variant="outlined"
+                  onChange={(e) => setInputValue(e.target.value)}
+                  sx={{ width: 500, backgroundColor: "#fff" }}
+                />
+              )}
+              value={selectedOption}
+              onChange={handleOptionChange}
+              renderOption={(props, option) => (
+                <li {...props} key={option._id}>
+                  {option.nome}
+                </li>
+              )}
+            />
+          </Box>
+        )}
+        {selectedOption && (
+          <Box marginTop={4}>
+            <Button
+              variant="contained"
+              startIcon={<PollIcon style={{ fontSize: 46 }} />}
+              style={{ backgroundColor: "#0F4C81", color: "#ffffff" }}
+              onClick={() => handleAcompanharClick(selectedOption._id)}
+            >
+              Acessar atas de resultado da Unidade escolhida
+            </Button>
+          </Box>
+        )}
       </Box>
-    );
-  } else {
-    return <Unauthorized />;
-  }
+    </Box>
+  );
 }

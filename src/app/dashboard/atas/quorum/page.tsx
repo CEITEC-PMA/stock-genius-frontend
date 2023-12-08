@@ -158,6 +158,7 @@ export default function Quorum() {
           },
         });
         const responseJson = await response.json();
+        console.log(response);
         setDadosQuorum(responseJson.resposta);
       };
       getDadosQuorum();
@@ -205,7 +206,9 @@ export default function Quorum() {
 
   const getTargetElement = () => document.getElementById("content-id");
 
-  if (!user.role || !user.role.includes("super-adm")) return <Unauthorized />;
+  console.log(dadosQuorum, "dadosQuorum");
+
+  // if (!user.role || !user.role.includes("super-adm")) return <Unauthorized />;
 
   return (
     <>

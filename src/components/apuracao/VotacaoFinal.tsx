@@ -168,7 +168,7 @@ export default function VotacaoFinal(props: {
               />
             </PieChart>
           </div>
-          <div
+          {/* <div
             style={{
               display: "flex",
               flexDirection: "column",
@@ -203,7 +203,7 @@ export default function VotacaoFinal(props: {
                 ]}
               />
             </PieChart>
-          </div>
+          </div> */}
         </div>
         <div style={{ marginTop: "35px" }}>
           {resultadoEleicao.candidatoApto && (

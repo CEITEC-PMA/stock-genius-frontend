@@ -79,7 +79,7 @@ export default function Atas() {
   }, [user._id]);
   return (
     <Box mb={8}>
-      <Box>
+      {/* <Box>
         <Box textAlign="center" my={8} mb={12}>
           <Typography variant="h3">LISTAS DE ASSINATURA</Typography>
         </Box>
@@ -118,11 +118,11 @@ export default function Atas() {
               );
             })}
           </Box>
-          {/* {alunosVotantes.length ? <AtaAlunosVotantes /> : null} */}
-          {/* {alunosNaoVotantes.length ? <AtaAlunosNaoVotantes /> : null} */}
+          {alunosVotantes.length ? <AtaAlunosVotantes /> : null}
+          {alunosNaoVotantes.length ? <AtaAlunosNaoVotantes /> : null}
         </Box>
-      </Box>
-      {/* <Box
+      </Box> */}
+      <Box
         alignContent="center"
         display="flex"
         flexDirection="column"
@@ -172,7 +172,7 @@ export default function Atas() {
             </Button>
           </Link>
         </Box>
-      </Box> */}
+      </Box>
     </Box>
   );
 }

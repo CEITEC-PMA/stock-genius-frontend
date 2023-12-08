@@ -8,7 +8,7 @@ import {
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-export default function Unauthorized() {
+export default function VotacaoEncerrada() {
   const theme = useTheme();
   const router = useRouter();
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
@@ -33,7 +33,7 @@ export default function Unauthorized() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.push("/dashboard");
+      router.push("/dashboard/atas");
     }, 500);
 
     return () => clearTimeout(timer);
@@ -62,7 +62,7 @@ export default function Unauthorized() {
           marginTop={1.2}
           color=" #000"
         >
-          Você não possui autorização para acessar essa página
+          Votação encerrada! É necessário imprimir as 3 atas de resultado.
         </Typography>
         <Box width="100%" maxWidth="400px" alignSelf="center" marginTop="48px">
           <Typography align="center" marginBottom="6px">

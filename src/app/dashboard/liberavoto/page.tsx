@@ -15,6 +15,7 @@ import { Aluno } from "@/utils/types/aluno.types";
 import BadgeIcon from "@mui/icons-material/Badge";
 import { Funcionario } from "@/utils/types/funcionario.types";
 import Unauthorized from "@/components/unauthorized";
+import VotacaoEncerrada from "@/components/votacaoEncerrada";
 
 export default function LiberaVoto() {
   const [alunos, setAlunos] = useState<Aluno[]>([]);
@@ -94,7 +95,9 @@ export default function LiberaVoto() {
     }
   };
 
-  // if (user.role && user.role.includes("super-adm")) {
+  if (!user.role || !user.role.includes("super-adm"))
+    return <VotacaoEncerrada />;
+
   return (
     <>
       <Box

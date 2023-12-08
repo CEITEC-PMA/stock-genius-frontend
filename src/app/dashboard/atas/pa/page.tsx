@@ -87,7 +87,6 @@ export default function PA() {
       getDadosVotos();
     }
   }, [user._id]);
-  console.log(resultadoVoto);
 
   // Alunos Votantes
   const qtdAlunosConstantes = resultadoVoto.quantidadeAlunosVotantes;
@@ -102,7 +101,6 @@ export default function PA() {
   const qtdRespAlunosVotantesNaoCompareceram =
     qtdRespAlunosVotantesConstantes - qtdRespAlunosVotantesCompareceram;
 
-  console.log(qtdRespAlunosVotantesNaoCompareceram);
   qtdAlunosCompareceram;
   // Responsáveis por Alunos Não Votantes
   const qtdRespAlunosNaoVotantesConstantes =
@@ -114,7 +112,7 @@ export default function PA() {
 
   const getTargetElement = () => document.getElementById("content-id");
 
-  if (!user.role || !user.role.includes("super-adm")) return <Unauthorized />;
+  // if (!user.role || !user.role.includes("super-adm")) return <Unauthorized />;
 
   return (
     <>

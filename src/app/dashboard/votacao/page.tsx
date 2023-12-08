@@ -2,6 +2,8 @@
 import ConfirmaCandidato from "@/components/votacao/ConfirmaCandidato";
 import EscolhaCandidato from "@/components/votacao/EscolhaCandidato";
 import FinalizarVotacao from "@/components/votacao/FinalizarVotacao";
+import VotacaoEncerrada from "@/components/votacaoEncerrada";
+import { useUserContext } from "@/userContext";
 import { apiUrl } from "@/utils/api";
 import { Candidato } from "@/utils/types/candidato.types";
 import { useSearchParams } from "next/navigation";
@@ -16,6 +18,7 @@ export default function Votacao() {
 
   const tipo = searchParams.get("tipo") ?? "";
   const id = searchParams.get("id") ?? "";
+  const { user } = useUserContext();
 
   useEffect(() => {
     const handleResize = () => {
@@ -28,6 +31,9 @@ export default function Votacao() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  if (!user.role || !user.role.includes("super-adm"))
+    return <VotacaoEncerrada />;
 
   const avancarEtapa = () => {
     setEtapa((prev) => prev + 1);

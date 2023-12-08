@@ -39,7 +39,7 @@ export default function TabelaResultadoFinalCopy({
   let ResultadoFinalEleicao: IResultadoFinalEleicao[] = [];
 
   ResultadoFinalEleicao = dadosQuorum
-    .filter(({ nome }) => nome !== "Branco" && nome !== "Nulo")
+    ?.filter(({ nome }) => nome !== "Branco" && nome !== "Nulo")
     .map(
       ({
         nome,
@@ -56,15 +56,13 @@ export default function TabelaResultadoFinalCopy({
       })
     );
 
-  console.log(ResultadoFinalEleicao);
-
-  let cpfCandidato = ResultadoFinalEleicao.map((cpf) => {
+  let cpfCandidato = ResultadoFinalEleicao?.map((cpf) => {
     return cpf.cpf;
   });
   //console.log(cpfCandidato)
   let cpfSemPontos = [];
 
-  for (let i = 0; i < cpfCandidato.length; i++) {
+  for (let i = 0; i < cpfCandidato?.length; i++) {
     cpfSemPontos[i] = cpfCandidato[i]
       .replace(".", "")
       .replace(".", "")
@@ -78,7 +76,7 @@ export default function TabelaResultadoFinalCopy({
   //     return `${apiUrl}/fotosCandidato/12332112312/file-1700133965104.webp`;
   // }
 
-  const fotos = ResultadoFinalEleicao.map((dados) => {
+  const fotos = ResultadoFinalEleicao?.map((dados) => {
     return dados.foto;
   });
 
@@ -95,8 +93,6 @@ export default function TabelaResultadoFinalCopy({
       ResultadoFinalEleicao[i].caminhoCompletoFoto = caminhoCompletoFoto[i];
     }
   }
-
-  console.log(ResultadoFinalEleicao);
 
   return (
     <>
@@ -146,7 +142,7 @@ export default function TabelaResultadoFinalCopy({
               </TableRow>
             </TableHead>
             <TableBody>
-              {ResultadoFinalEleicao.map((resultado, i) => (
+              {ResultadoFinalEleicao?.map((resultado, i) => (
                 <TableRow key={i}>
                   <TableCell
                     sx={{

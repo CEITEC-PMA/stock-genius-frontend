@@ -90,10 +90,6 @@ export default function Psa() {
     }
   }, [user._id]);
 
-  console.log(resultadoVoto);
-
-  // console.log(resultadoVoto?.quantidadeFuncionarios)
-
   const qtdFuncionariosConstantes = resultadoVoto.quantidadeFuncionarios;
   const qtdFuncionarosCompareceram = resultadoVoto.funcionariosVotaram;
   const qtdFucionariosNaoCompareceram =
@@ -101,7 +97,7 @@ export default function Psa() {
 
   const getTargetElement = () => document.getElementById("content-id");
 
-  if (!user.role || !user.role.includes("super-adm")) return <Unauthorized />;
+  // if (!user.role || !user.role.includes("super-adm")) return <Unauthorized />;
 
   return (
     <>

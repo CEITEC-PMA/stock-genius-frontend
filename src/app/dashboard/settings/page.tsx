@@ -122,72 +122,70 @@ export default function Settings() {
     setSelectedOption(value);
   };
 
-  if (user.role && user.role.includes("super-adm")) {
-    return (
-      <Box margin="24px">
-        <Grid container alignItems="center" flexDirection="column">
-          <Grid item>
-            <Typography variant="h3" marginBottom="12x" textAlign="center">
-              Redefinição de senha de usuário
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            marginTop="200px"
-            alignItems="center"
-            display="flex"
-            flexDirection="column"
-            gap="24px"
-          >
-            {isLoading === false && (
-              <Box marginTop={4}>
-                <Autocomplete
-                  options={zonas}
-                  getOptionLabel={(option) => option.nome}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Digite o nome da Unidade de Ensino"
-                      variant="outlined"
-                      onChange={(e) => setInputValue(e.target.value)}
-                      sx={{ width: 500, backgroundColor: "#fff" }}
-                    />
-                  )}
-                  value={selectedOption}
-                  onChange={handleOptionChange}
-                  renderOption={(props, option) => (
-                    <li {...props} key={option._id}>
-                      {option.nome}
-                    </li>
-                  )}
-                />
-              </Box>
-            )}
-            {selectedOption && (
-              <Button
-                variant="contained"
-                startIcon={<RotateLeftIcon />}
-                size="large"
-                onClick={() => openModal()}
-              >
-                Resetar senha
-              </Button>
-            )}
-            <CustomModal
-              open={isModalOpen}
-              title="Atenção!"
-              description={`Confirma o reset de senha da unidade ${selectedOption?.nome}?`}
-              onClose={closeModal}
-              yesButtonLabel="Sim"
-              noButtonLabel="Não"
-              onYesButtonClick={() => handleReset(textFieldValue)}
-              onNoButtonClick={closeModal}
-            />
-          </Grid>
+  if (!user.role || !user.role.includes("super-adm")) return <Unauthorized />;
+
+  return (
+    <Box margin="24px">
+      <Grid container alignItems="center" flexDirection="column">
+        <Grid item>
+          <Typography variant="h3" marginBottom="12x" textAlign="center">
+            Redefinição de senha de usuário
+          </Typography>
         </Grid>
-      </Box>
-    );
-  } else {
-    return <Unauthorized />;
-  }
+        <Grid
+          item
+          marginTop="200px"
+          alignItems="center"
+          display="flex"
+          flexDirection="column"
+          gap="24px"
+        >
+          {isLoading === false && (
+            <Box marginTop={4}>
+              <Autocomplete
+                options={zonas}
+                getOptionLabel={(option) => option.nome}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Digite o nome da Unidade de Ensino"
+                    variant="outlined"
+                    onChange={(e) => setInputValue(e.target.value)}
+                    sx={{ width: 500, backgroundColor: "#fff" }}
+                  />
+                )}
+                value={selectedOption}
+                onChange={handleOptionChange}
+                renderOption={(props, option) => (
+                  <li {...props} key={option._id}>
+                    {option.nome}
+                  </li>
+                )}
+              />
+            </Box>
+          )}
+          {selectedOption && (
+            <Button
+              variant="contained"
+              startIcon={<RotateLeftIcon />}
+              size="large"
+              onClick={() => openModal()}
+            >
+              Resetar senha
+            </Button>
+          )}
+          <CustomModal
+            open={isModalOpen}
+            title="Atenção!"
+            description={`Confirma o reset de senha da unidade ${selectedOption?.nome}?`}
+            onClose={closeModal}
+            yesButtonLabel="Sim"
+            noButtonLabel="Não"
+            onYesButtonClick={() => handleReset(textFieldValue)}
+            onNoButtonClick={closeModal}
+          />
+        </Grid>
+      </Grid>
+    </Box>
+  );
 }
