@@ -141,8 +141,7 @@ export default function TabelaQuorumComparecimento({
           <TableCell sx={{ border: "1px solid black", textAlign: "center" }}>
             <Typography>
 
-              {qtdRespAlunosNaoVotantesCompareceram} de
-              {qtdRespAlunosNaoVotantesConstantes}
+              {qtdRespAlunosNaoVotantesCompareceram} de {qtdRespAlunosNaoVotantesConstantes}
             </Typography>
           </TableCell>
           <TableCell
@@ -179,8 +178,7 @@ export default function TabelaQuorumComparecimento({
 
           <TableCell sx={{ border: "1px solid black", textAlign: "center" }}>
             <Typography>
-              {qtdRespAlunosVotantesCompareceram} de
-              {qtdRespAlunosVotantesConstantes}
+              {qtdRespAlunosVotantesCompareceram} de {qtdRespAlunosVotantesConstantes}
             </Typography>
           </TableCell>
           <TableCell
