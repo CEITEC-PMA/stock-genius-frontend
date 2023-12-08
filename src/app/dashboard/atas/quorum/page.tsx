@@ -152,11 +152,14 @@ export default function Quorum() {
     const token = localStorage.getItem("token");
     if (user._id) {
       const getDadosQuorum = async () => {
-        const response = await fetch(`${apiUrl}/api/v1/voto/dadosQuorum`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `${apiUrl}/api/v1/voto/dadosQuorum/${user._id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const responseJson = await response.json();
         console.log(response);
         setDadosQuorum(responseJson.resposta);
