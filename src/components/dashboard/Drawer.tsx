@@ -119,12 +119,24 @@ export default function DrawerComponent({
           isActive={pathname === "/dashboard/funcionarios"}
         /> */}
 
-        <ListItems
-          label="Listas e Atas"
-          icon={<DescriptionIcon />}
-          to="/dashboard/atas"
-          isActive={pathname === "/dashboard/atas"}
-        />
+        {user.role?.includes("super-adm") ? (
+          <ListItems
+            label="Listas e Atas"
+            icon={<DescriptionIcon />}
+            to="/dashboard/buscaResultado"
+            isActive={
+              pathname === "/dashboard/buscaResultado" ||
+              pathname.startsWith("/dashboard/atas/atasResultado")
+            }
+          />
+        ) : (
+          <ListItems
+            label="Listas e Atas"
+            icon={<DescriptionIcon />}
+            to="/dashboard/atas"
+            isActive={pathname === "/dashboard/atas"}
+          />
+        )}
 
         {user.role?.includes("super-adm") ? (
           <ListItems

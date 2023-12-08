@@ -218,7 +218,7 @@ export default function Apuracao({ params }: { params: { id: string } }) {
 
     const getNumerosVotacao = async () => {
       try {
-        const response = await fetch(`${apiUrl}/api/v1/votacao`, {
+        const response = await fetch(`${apiUrl}/api/v1/votacao/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

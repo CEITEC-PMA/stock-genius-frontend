@@ -205,7 +205,7 @@ export default function VotacaoFinal(props: {
             </PieChart>
           </div>
         </div>
-        <div style={{ marginTop: "15px" }}>
+        <div style={{ marginTop: "35px" }}>
           {resultadoEleicao.candidatoApto && (
             <Typography>
               Com {resultadoEleicao.percentualMaior.toFixed(2)}% dos votos e ,
