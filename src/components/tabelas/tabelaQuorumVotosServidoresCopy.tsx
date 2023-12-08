@@ -48,7 +48,7 @@ export default function TabelaQuorumServidoresCopy({ dadosQuorum }: ITabelaQuoru
                                 </TableRow>
                             ))}
                             <TableRow>
-                                <TableCell colSpan={2} sx={{ border: '1px solid black', textAlign: 'center' }}><Typography>TOTAL VOTOS VÁLIDOS SEGMENTO PROFESSORES ADMINISTRATIVO: {somaQtdFuncionarios}</Typography></TableCell>
+                                <TableCell colSpan={2} sx={{ border: '1px solid black', textAlign: 'center' }}><Typography>TOTAL VOTOS VÁLIDOS SEGMENTO PROFESSORES E SERVIDORES ADMINISTRATIVO: {somaQtdFuncionarios}</Typography></TableCell>
 
                             </TableRow>
                         </TableBody>

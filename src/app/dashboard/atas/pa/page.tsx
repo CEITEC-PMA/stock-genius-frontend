@@ -156,7 +156,7 @@ export default function PA() {
               gap={2}
             >
               <Typography variant="h5">
-                ATA DA MESA COLETORA - RESPONSAVEIS E ALUNOS (PA)
+                ATA DA MESA COLETORA - RESPONSÁVEIS E ALUNOS (PA)
               </Typography>
 
               <Typography variant="h6">
