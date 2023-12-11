@@ -243,6 +243,11 @@ export default function DataTable() {
     }
   }
 
+  const candidatosFiltrados = candidatos.filter(
+    (candidatos: Candidato) =>
+      candidatos.nome !== "Branco" && candidatos.nome !== "Nulo"
+  );
+
   for (const candidato of candidatos) {
     if (candidato.aprovado === "Indeferida") {
       contadorIndeferidas++;
@@ -250,7 +255,7 @@ export default function DataTable() {
   }
 
   let contadorEmAnalise =
-    candidatos.length - contadorDeferidas - contadorIndeferidas;
+    candidatosFiltrados.length - contadorDeferidas - contadorIndeferidas;
 
   if (!user.role || !user.role.includes("super-adm")) return <Unauthorized />;
   return (
@@ -296,7 +301,7 @@ export default function DataTable() {
         >
           <DataGrid
             getRowId={(row) => row._id}
-            rows={candidatos}
+            rows={candidatosFiltrados}
             columns={columns}
             initialState={{
               pagination: {
