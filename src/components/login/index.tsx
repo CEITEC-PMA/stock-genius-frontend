@@ -106,12 +106,13 @@ export default function LoginPage() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const dataToSend = {
-      inep: data.get("inep"),
-      password: data.get("senha"),
+      username: data.get("username"),
+      password: data.get("password"),
     };
-    const { password, inep } = dataToSend;
-    if (!inep) {
-      setErrorMessage("Por favor digite o número do INEP");
+    console.log(dataToSend);
+    const { password, username } = dataToSend;
+    if (!username) {
+      setErrorMessage("Por favor digite o número do CPF");
       setOpen(true);
     }
     if (!password) {
@@ -119,10 +120,10 @@ export default function LoginPage() {
       setOpen(true);
     } else {
       if (password.length < 6) {
-        setErrorMessage("a senha deve ter pelo menos 6 caracteres");
+        setErrorMessage("A senha deve ter pelo menos 6 caracteres");
         setOpen(true);
       } else {
-        const response = await fetch(`${apiUrl}/api/v1/usuarios/login`, {
+        const response = await fetch(`${apiUrl}/v1/auth/login-cpf`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -142,7 +143,7 @@ export default function LoginPage() {
                 router.push("/dashboard");
               }
             } else if (response.status === 401) {
-              throw new Error("Inep ou Senha Inválidos");
+              throw new Error("CPF ou Senha Inválidos");
             }
           })
           .catch((error) => {
@@ -187,21 +188,21 @@ export default function LoginPage() {
             margin="normal"
             required
             fullWidth
-            name="inep"
-            label="INEP"
+            name="username"
+            label="CPF"
             type="tel"
-            id="inep"
-            autoComplete="inep"
+            id="username"
+            autoComplete="username"
           />
           <TextField
             margin="normal"
             required
             fullWidth
-            name="senha"
+            name="password"
             label="Senha"
             type="password"
-            id="senha"
-            autoComplete="senha-atual"
+            id="password"
+            autoComplete="current-password"
           />
           <Button
             type="submit"
@@ -246,7 +247,11 @@ export default function LoginPage() {
             </DialogContent>
             <DialogActions>
               {/* <Button onClick={handleCloseDialog}>Cancelar</Button> */}
-              <Button variant="contained" onClick={handleResetPassword}>
+              <Button
+                variant="contained"
+                disabled={!passwordsMatch}
+                onClick={handleResetPassword}
+              >
                 Enviar
               </Button>
             </DialogActions>

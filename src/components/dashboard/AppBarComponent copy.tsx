@@ -83,7 +83,7 @@ export default function AppBarComponent({
                 noWrap
                 sx={{ flexGrow: 1 }}
               >
-                Sistema de Eleição de Diretores
+                Stock Genius - SEMED
               </Typography>
             </Grid>
           </Grid>
