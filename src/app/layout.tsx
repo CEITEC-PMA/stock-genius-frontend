@@ -10,8 +10,8 @@ import { UserContextProvider } from "@/userContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "SED - Sistema de Eleição de Diretores",
-  description: "Sistema de Eleição de Diretores",
+  title: "Stock Genius - SEMED",
+  description: "Sistema de Gestão de Materiais",
 };
 
 export default async function RootLayout({

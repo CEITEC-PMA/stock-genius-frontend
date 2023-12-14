@@ -21,6 +21,7 @@ import {
   Snackbar,
   Stack,
 } from "@mui/material";
+import type { DialogProps } from "@mui/material";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { signIn } from "next-auth/react";
 
@@ -29,12 +30,11 @@ export default function LoginPage() {
   const [token, setToken] = useState("");
   const [openDialog, setOpenDialog] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
-  const [errorInep, setErrorInep] = React.useState("");
   const router = useRouter();
   const [openSnack, setOpenSnack] = useState(false);
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
-  const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [passwordsMatch, setPasswordsMatch] = useState(false);
 
   React.useEffect(() => {
     const token = localStorage.getItem("token");
@@ -86,20 +86,17 @@ export default function LoginPage() {
   };
 
   const handleResetPassword = async () => {
-    if (password.length >= 6 && password === rePassword) {
-      await fetch(`${apiUrl}/api/v1/zona/`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ password }),
-      }).then(() => {
-        localStorage.setItem("token", token);
-        router.push("/dashboard");
-      });
-    } else {
-    }
+    await fetch(`${apiUrl}/v1/auth/primeiroacesso`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ password }),
+    }).then(() => {
+      localStorage.setItem("token", token);
+      router.push("/dashboard");
+    });
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -109,7 +106,6 @@ export default function LoginPage() {
       username: data.get("username"),
       password: data.get("password"),
     };
-    console.log(dataToSend);
     const { password, username } = dataToSend;
     if (!username) {
       setErrorMessage("Por favor digite o número do CPF");
@@ -133,9 +129,9 @@ export default function LoginPage() {
           .then(async (response) => {
             if (response.status === 200) {
               const resJson = await response.json();
-              if (resJson.usuario.acesso === 0) {
-                const tokenBackEnd = resJson.usuario.token;
-                setToken(tokenBackEnd);
+              if (resJson.message === "Primeiro acesso") {
+                // const tokenBackEnd = resJson.usuario.token;
+                // setToken(tokenBackEnd);
                 handleOpenDialog();
               } else {
                 const token = resJson.usuario.token;
@@ -153,6 +149,8 @@ export default function LoginPage() {
       }
     }
   };
+
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
   return (
     <Container maxWidth="xs">
@@ -212,12 +210,12 @@ export default function LoginPage() {
           >
             Enviar
           </Button>
-          <Dialog open={openDialog} onClose={handleCloseDialog}>
+          <Dialog open={openDialog}>
             <DialogTitle>Redefina a sua senha</DialogTitle>
             <DialogContent>
               <DialogContentText marginBottom="8px">
-                Seja bem-vindo ao Sistema de Eleição de Diretores! Neste
-                primeiro acesso, redefina sua senha.
+                Neste primeiro acesso, redefina sua senha. Sua senha deve conter
+                pelo menos 8 caracteres, com pelo menos 1 letra e 1 número.
               </DialogContentText>
               <TextField
                 autoFocus
@@ -229,6 +227,18 @@ export default function LoginPage() {
                   minLength: 6,
                 }}
                 fullWidth
+                error={
+                  !!(
+                    !passwordsMatch ||
+                    (password && !passwordRegex.test(password))
+                  )
+                }
+                helperText={
+                  (!passwordsMatch && "As senhas não coincidem.") ||
+                  (password &&
+                    !passwordRegex.test(password) &&
+                    "A senha deve ter pelo menos 8 caracteres, com pelo menos 1 letra e 1 número.")
+                }
                 onChange={handlePasswordChange}
               />
               <TextField
@@ -242,14 +252,19 @@ export default function LoginPage() {
                 }}
                 fullWidth
                 onChange={handleRePasswordChange}
-                helperText={!passwordsMatch && "As senhas não coincidem."}
+                helperText={
+                  (!passwordsMatch && "As senhas não coincidem.") ||
+                  (rePassword &&
+                    password !== rePassword &&
+                    "As senhas não coincidem.")
+                }
               />
             </DialogContent>
             <DialogActions>
               {/* <Button onClick={handleCloseDialog}>Cancelar</Button> */}
               <Button
                 variant="contained"
-                disabled={!passwordsMatch}
+                disabled={!passwordsMatch || !passwordRegex.test(password)}
                 onClick={handleResetPassword}
               >
                 Enviar
