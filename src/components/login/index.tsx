@@ -35,6 +35,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(false);
+  const [username, setUsername] = useState("");
 
   React.useEffect(() => {
     const token = localStorage.getItem("token");
@@ -86,17 +87,26 @@ export default function LoginPage() {
   };
 
   const handleResetPassword = async () => {
-    await fetch(`${apiUrl}/v1/auth/primeiroacesso`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ password }),
-    }).then(() => {
-      localStorage.setItem("token", token);
-      router.push("/dashboard");
-    });
+    try {
+      const response = await fetch(`${apiUrl}/v1/auth/primeiroacesso`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ username, password }),
+      });
+      if (response.ok) {
+        console.log(response);
+        // localStorage.setItem("token", token);
+        // router.push("/dashboard");
+      } else {
+        throw new Error("Falha ao redefinir a senha");
+      }
+    } catch (error) {
+      setErrorMessage(error.message);
+      setOpen(true);
+    }
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -191,6 +201,7 @@ export default function LoginPage() {
             type="tel"
             id="username"
             autoComplete="username"
+            onChange={(e) => setUsername(e.target.value)}
           />
           <TextField
             margin="normal"
