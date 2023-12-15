@@ -44,7 +44,7 @@ export default function DashboardPage() {
           >
             <Image
               height={462.28}
-              src="https://api.anapolis.go.gov.br/apiupload/documentos/eleicao/girl.jpeg"
+              src="https://api.anapolis.go.gov.br/apiupload/stock/home.jpg"
               width={693.85}
               style={{
                 maxWidth: "100%",
