@@ -77,15 +77,6 @@ export default function DrawerComponent({
       <Divider />
 
       <List component="nav">
-        {isBeforeDeadline && (
-          <ListItems
-            label="Registrar Candidato"
-            icon={<PersonAddAlt1 />}
-            to="/dashboard/candidato/register"
-            isActive={pathname === "/dashboard/candidato/register"}
-          />
-        )}
-
         <ListItems
           label="Liberar voto"
           icon={<HowToVoteIcon />}
@@ -105,78 +96,6 @@ export default function DrawerComponent({
             pathname.startsWith("/dashboard/candidato/checklist/")
           }
         />
-
-        {/* <ListItems
-          label="Alunos"
-          icon={<Face6Icon />}
-          to="/dashboard/alunos"
-          isActive={pathname === "/dashboard/alunos"}
-        />
-        <ListItems
-          label="Funcionários"
-          icon={<BadgeIcon />}
-          to="/dashboard/funcionarios"
-          isActive={pathname === "/dashboard/funcionarios"}
-        /> */}
-
-        {user.role?.includes("super-adm") ? (
-          <ListItems
-            label="Listas e Atas"
-            icon={<DescriptionIcon />}
-            to="/dashboard/buscaResultado"
-            isActive={
-              pathname === "/dashboard/buscaResultado" ||
-              pathname.startsWith("/dashboard/atas/atasResultado")
-            }
-          />
-        ) : (
-          <ListItems
-            label="Listas e Atas"
-            icon={<DescriptionIcon />}
-            to="/dashboard/atas"
-            isActive={pathname === "/dashboard/atas"}
-          />
-        )}
-
-        {user.role?.includes("super-adm") ? (
-          <ListItems
-            label="Apuração dos votos"
-            icon={<PollIcon />}
-            to="/dashboard/buscaApuracao"
-            isActive={
-              pathname === "/dashboard/buscaApuracao" ||
-              pathname.startsWith("/dashboard/apuracao/")
-            }
-          />
-        ) : (
-          <ListItems
-            label="Apuração dos votos"
-            icon={<PollIcon />}
-            to={`/dashboard/apuracao/${user._id}`}
-            isActive={
-              pathname === "/dashboard/buscaApuracao" ||
-              pathname.startsWith("/dashboard/apuracao/")
-            }
-          />
-        )}
-
-        {user.role?.includes("super-adm") && (
-          <ListItems
-            label="Lista Completa - ADM"
-            icon={<GroupIcon />}
-            to="/dashboard/dataAdm"
-            isActive={pathname === "/dashboard/dataAdm"}
-          />
-        )}
-
-        {user.role?.includes("super-adm") && (
-          <ListItems
-            label="Redefinição de senha"
-            icon={<RotateLeftIcon />}
-            to="/dashboard/settings"
-            isActive={pathname === "/dashboard/settings"}
-          />
-        )}
       </List>
     </Drawer>
   );

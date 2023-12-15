@@ -92,14 +92,16 @@ export default function LoginPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ username, password }),
       });
       if (response.ok) {
-        console.log(response);
-        // localStorage.setItem("token", token);
-        // router.push("/dashboard");
+        const resJson = await response.json();
+        console.log(resJson);
+        const tokenBackEnd = resJson.tokens.access.token;
+        setToken(tokenBackEnd);
+        localStorage.setItem("token", token);
+        router.push("/dashboard");
       } else {
         throw new Error("Falha ao redefinir a senha");
       }
@@ -140,11 +142,10 @@ export default function LoginPage() {
             if (response.status === 200) {
               const resJson = await response.json();
               if (resJson.message === "Primeiro acesso") {
-                // const tokenBackEnd = resJson.usuario.token;
-                // setToken(tokenBackEnd);
                 handleOpenDialog();
               } else {
-                const token = resJson.usuario.token;
+                const token = resJson.tokens.access.token;
+                setToken(token);
                 localStorage.setItem("token", token);
                 router.push("/dashboard");
               }
